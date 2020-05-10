@@ -1,0 +1,56 @@
+add_sources(
+	beamdef.h
+	BSPIO.h
+	BSPIO.cpp
+	CAutoString.h
+	CBitSet.h
+	CCommand.h
+	CCommand.cpp
+	CFile.h
+	CHashStringPool.h
+	CHashStringPool.cpp
+	Color.h
+	com_model.h
+	con_nprint.h
+	const.h
+	CPlane.h
+	CPlane.cpp
+	crc.h
+	cvardef.h
+	director_cmds.h
+	dlight.h
+	dll_state.h
+	entity_state.h
+	entity_types.h
+	enums.h
+	event_args.h
+	event_flags.h
+	Game.h
+	hltv.h
+	in_buttons.h
+	MiniBSPFile.h
+	MinMax.h
+	netadr.h
+	parsemsg.h
+	parsemsg.cpp
+	particledef.h
+	Platform.h
+	Platform.cpp
+	pmtrace.h
+	qfont.h
+	screenfade.h
+	Sequence.h
+	simple_checksum.h
+	steam_util.h
+	StringUtils.h
+	StringUtils.cpp
+	studio_event.h
+	usercmd.h
+	UTFUtils.h
+	UTFUtils.cpp
+	weaponinfo.h
+	winsani_in.h
+	winsani_out.h
+)
+
+add_subdirectory( logging )

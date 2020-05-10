@@ -1,0 +1,14 @@
+add_sources(
+	camera.h
+	in_camera.cpp
+	GameStudioModelRenderer.h
+	GameStudioModelRenderer.cpp
+	SpriteRenderUtils.h
+	SpriteRenderUtils.cpp
+	StudioModelRenderer.h
+	StudioModelRenderer.cpp
+	tri.h
+	tri.cpp
+	view.h
+	view.cpp
+)

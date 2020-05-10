@@ -1,0 +1,10 @@
+add_sources(
+	CCycler.h
+	CCycler.cpp
+	CCyclerSprite.h
+	CCyclerSprite.cpp
+	CGenericCycler.h
+	CGenericCycler.cpp
+	CWeaponCycler.h
+	CWeaponCycler.cpp
+)

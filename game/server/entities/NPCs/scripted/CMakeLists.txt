@@ -1,0 +1,9 @@
+add_sources(
+	CCineAI.h
+	CCineAI.cpp
+	CCineMonster.h
+	CCineMonster.cpp
+	CScriptedSentence.h
+	CScriptedSentence.cpp
+	Scripted.h
+)

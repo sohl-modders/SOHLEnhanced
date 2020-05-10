@@ -1,0 +1,10 @@
+add_sources(
+	CElectrifiedWire.h
+	CElectrifiedWire.cpp
+	CRope.h
+	CRope.cpp
+	CRopeSample.h
+	CRopeSample.cpp
+	CRopeSegment.h
+	CRopeSegment.cpp
+)

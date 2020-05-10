@@ -1,0 +1,9 @@
+add_sources(
+	CRestore.h
+	CRestore.cpp
+	CSave.h
+	CSave.cpp
+	CSaveRestoreBuffer.h
+	CSaveRestoreBuffer.cpp
+	SaveRestoreDefs.h
+)

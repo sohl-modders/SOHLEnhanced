@@ -1,0 +1,24 @@
+add_sources(
+	CAirtank.h
+	CAirtank.cpp
+	CHealthKit.h
+	CHealthKit.cpp
+	CItem.h
+	CItem.cpp
+	CItemAntidote.h
+	CItemAntidote.cpp
+	CItemBattery.h
+	CItemBattery.cpp
+	CItemLongJump.h
+	CItemLongJump.cpp
+	CItemSecurity.h
+	CItemSecurity.cpp
+	CItemSuit.h
+	CItemSuit.cpp
+	CRecharge.h
+	CRecharge.cpp
+	CWallHealth.h
+	CWallHealth.cpp
+	CWorldItem.h
+	CWorldItem.cpp
+)

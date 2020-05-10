@@ -1,0 +1,20 @@
+add_sources(
+	CGraph.h
+	CGraph.cpp
+	CLink.h
+	CNode.h
+	CNodeEnt.h
+	CNodeEnt.cpp
+	CNodeViewer.h
+	CNodeViewer.cpp
+	CQueue.h
+	CQueue.cpp
+	CQueuePriority.h
+	CQueuePriority.cpp
+	CStack.h
+	CStack.cpp
+	CTestHull.h
+	CTestHull.cpp
+	NodeConstants.h
+	Nodes.h
+)

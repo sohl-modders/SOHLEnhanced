@@ -1,0 +1,30 @@
+add_sources(
+	CGameCounter.h
+	CGameCounter.cpp
+	CGameCounterSet.h
+	CGameCounterSet.cpp
+	CGameEnd.h
+	CGameEnd.cpp
+	CGamePlayerEquip.h
+	CGamePlayerEquip.cpp
+	CGamePlayerHurt.h
+	CGamePlayerHurt.cpp
+	CGamePlayerTeam.h
+	CGamePlayerTeam.cpp
+	CGamePlayerZone.h
+	CGamePlayerZone.cpp
+	CGameScore.h
+	CGameScore.cpp
+	CGameTeamMaster.h
+	CGameTeamMaster.cpp
+	CGameTeamSet.h
+	CGameTeamSet.cpp
+	CGameText.h
+	CGameText.cpp
+	CRuleBrushEntity.h
+	CRuleBrushEntity.cpp
+	CRuleEntity.h
+	CRuleEntity.cpp
+	CRulePointEntity.h
+	CRulePointEntity.cpp
+)

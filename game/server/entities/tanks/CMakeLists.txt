@@ -1,0 +1,14 @@
+add_sources(
+	CFuncTank.h
+	CFuncTank.cpp
+	CFuncTankControls.h
+	CFuncTankControls.cpp
+	CFuncTankGun.h
+	CFuncTankGun.cpp
+	CFuncTankLaser.h
+	CFuncTankLaser.cpp
+	CFuncTankMortar.h
+	CFuncTankMortar.cpp
+	CFuncTankRocket.h
+	CFuncTankRocket.cpp
+)

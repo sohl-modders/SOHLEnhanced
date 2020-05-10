@@ -1,0 +1,12 @@
+add_sources(
+	CEnvironment.h
+	CEnvironment.cpp
+	CPartGrassPiece.h
+	CPartGrassPiece.cpp
+	CPartRainDrop.h
+	CPartRainDrop.cpp
+	CPartSnowFlake.h
+	CPartSnowFlake.cpp
+	CPartWind.h
+	CPartWind.cpp
+)

@@ -1,0 +1,12 @@
+add_sources(
+	CXenHair.h
+	CXenHair.cpp
+	CXenPLight.h
+	CXenPLight.cpp
+	CXenSpore.h
+	CXenSpore.cpp
+	CXenTree.h
+	CXenTree.cpp
+	CXenTreeTrigger.h
+	CXenTreeTrigger.cpp
+)

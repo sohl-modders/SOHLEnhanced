@@ -1,0 +1,26 @@
+add_sources(
+	CBasePlatTrain.h
+	CBasePlatTrain.cpp
+	CFuncPlat.h
+	CFuncPlat.cpp
+	CFuncPlatRot.h
+	CFuncPlatRot.cpp
+	CFuncTrackAuto.h
+	CFuncTrackAuto.cpp
+	CFuncTrackChange.h
+	CFuncTrackChange.cpp
+	CFuncTrackTrain.h
+	CFuncTrackTrain.cpp
+	CFuncTrain.h
+	CFuncTrain.cpp
+	CFuncTrainControls.h
+	CFuncTrainControls.cpp
+	CGunTarget.h
+	CGunTarget.cpp
+	CPathCorner.h
+	CPathCorner.cpp
+	CPathTrack.h
+	CPathTrack.cpp
+	CPlatTrigger.h
+	CPlatTrigger.cpp
+)

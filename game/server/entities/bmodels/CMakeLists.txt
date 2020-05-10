@@ -1,0 +1,16 @@
+add_sources(
+	CFuncConveyor.h
+	CFuncConveyor.cpp
+	CFuncIllusionary.h
+	CFuncIllusionary.cpp
+	CFuncMonsterClip.h
+	CFuncMonsterClip.cpp
+	CFuncRotating.h
+	CFuncRotating.cpp
+	CFuncWall.h
+	CFuncWall.cpp
+	CFuncWallToggle.h
+	CFuncWallToggle.cpp
+	CPendulum.h
+	CPendulum.cpp
+)

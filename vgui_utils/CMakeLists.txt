@@ -1,0 +1,19 @@
+add_sources(
+	CImageLabel.h
+	CImageLabel.cpp
+	vgui_checkbutton2.h
+	vgui_checkbutton2.cpp
+	vgui_defaultinputsignal.h
+	vgui_grid.h
+	vgui_grid.cpp
+	vgui_helpers.h
+	vgui_helpers.cpp
+	vgui_listbox.h
+	vgui_listbox.cpp
+	vgui_loadtga.h
+	vgui_loadtga.cpp
+	vgui_scrollbar2.h
+	vgui_scrollbar2.cpp
+	vgui_slider2.h
+	vgui_slider2.cpp
+)
