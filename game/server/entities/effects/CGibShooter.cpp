@@ -143,7 +143,7 @@ CGib *CGibShooter::CreateGib( void )
 		return NULL;
 
 	auto pGib = CGib::GibCreate( "models/hgibs.mdl" );
-	pGib->m_bloodColor = BLOOD_COLOR_RED;
+	pGib->SetBloodColor(BLOOD_COLOR_RED);
 
 	if( GetBody() <= 1 )
 	{

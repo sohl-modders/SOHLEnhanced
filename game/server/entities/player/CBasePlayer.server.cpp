@@ -168,7 +168,7 @@ void CBasePlayer::Spawn()
 	m_iStepLeft = 0;
 	m_flFieldOfView = 0.5;// some monsters use this to determine whether or not the player is looking at them.
 
-	m_bloodColor = BLOOD_COLOR_RED;
+	SetBloodColor(BLOOD_COLOR_RED);
 	m_flNextAttack = UTIL_WeaponTimeBase();
 
 	m_iFlashBattery = 99;
@@ -623,11 +623,10 @@ bool CBasePlayer::Restore( CRestore &restore )
 	vecViewAngle.z = 0;	// Clear out roll
 	SetViewAngle( vecViewAngle );
 	SetAbsAngles( GetViewAngle() );
-
 	SetFixAngleMode( FIXANGLE_SET );		// turn this way immediately
 
-											// Copied from spawn() for now
-	m_bloodColor = BLOOD_COLOR_RED;
+	// Copied from spawn() for now
+	SetBloodColor(BLOOD_COLOR_RED);
 
 	g_ulModelIndexPlayer = GetModelIndex();
 

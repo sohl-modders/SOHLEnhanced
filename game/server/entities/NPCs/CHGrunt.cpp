@@ -757,7 +757,7 @@ void CHGrunt :: Spawn()
 
 	SetSolidType( SOLID_SLIDEBOX );
 	SetMoveType( MOVETYPE_STEP );
-	m_bloodColor		= BLOOD_COLOR_RED;
+	SetBloodColor(BLOOD_COLOR_RED);
 	GetEffects().ClearAll();
 	SetHealth( gSkillData.GetHGruntHealth() );
 	m_flFieldOfView		= 0.2;// indicates the width of this monster's forward view cone ( as a dotproduct result )

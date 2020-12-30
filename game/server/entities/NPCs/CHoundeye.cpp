@@ -236,7 +236,7 @@ void CHoundeye :: Spawn()
 
 	SetSolidType( SOLID_SLIDEBOX );
 	SetMoveType( MOVETYPE_STEP );
-	m_bloodColor		= BLOOD_COLOR_YELLOW;
+	SetBloodColor(BLOOD_COLOR_YELLOW);
 	GetEffects().ClearAll();
 	SetHealth( gSkillData.GetHoundeyeHealth() );
 	SetYawSpeed( 5 );//!!! should we put this in the monster's changeanim function since turn rates may vary with state/anim?

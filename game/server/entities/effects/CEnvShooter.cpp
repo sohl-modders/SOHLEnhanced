@@ -65,7 +65,7 @@ CGib *CEnvShooter::CreateGib( void )
 		bodyPart = RANDOM_LONG( 0, GetBody() - 1 );
 
 	pGib->SetBody( bodyPart );
-	pGib->m_bloodColor = DONT_BLEED;
+	pGib->SetBloodColor(DONT_BLEED);
 	pGib->m_material = m_iGibMaterial;
 
 	pGib->SetRenderMode( GetRenderMode() );

@@ -158,3 +158,23 @@ bool CBaseEntity::FBoxVisible( const CBaseEntity* pTarget, Vector& vecTargetOrig
 {
 	return false;
 }
+
+void CBaseEntity::SetModel(const char* model)
+{
+	SET_MODEL(ENT(pev),model);
+}
+
+int CBaseEntity::PrecacheModel(const char* iszModelName)
+{
+	return PRECACHE_MODEL(iszModelName);
+}
+
+int CBaseEntity::PrecacheSound(const char* pszSoundName)
+{
+	return PRECACHE_SOUND(pszSoundName);
+}
+
+unsigned short CBaseEntity::PrecacheEvent(int type, const char* psz)
+{
+	return PRECACHE_EVENT(type, psz);
+}

@@ -82,12 +82,12 @@ void CGib::BounceGibTouch( CBaseEntity *pOther )
 	}
 	else
 	{
-		if( g_Language != LANGUAGE_GERMAN && m_cBloodDecals > 0 && m_bloodColor != DONT_BLEED )
+		if( g_Language != LANGUAGE_GERMAN && m_cBloodDecals > 0 && BloodColor() != DONT_BLEED )
 		{
 			vecSpot = GetAbsOrigin() + Vector( 0, 0, 8 );//move up a bit, and trace down.
 			UTIL_TraceLine( vecSpot, vecSpot + Vector( 0, 0, -24 ), ignore_monsters, ENT( pev ), &tr );
 
-			UTIL_BloodDecalTrace( &tr, m_bloodColor );
+			UTIL_BloodDecalTrace( &tr, BloodColor() );
 
 			m_cBloodDecals--;
 		}
@@ -123,7 +123,7 @@ void CGib::StickyGibTouch( CBaseEntity *pOther )
 
 	UTIL_TraceLine( GetAbsOrigin(), GetAbsOrigin() + GetAbsVelocity() * 32, ignore_monsters, ENT( pev ), &tr );
 
-	UTIL_BloodDecalTrace( &tr, m_bloodColor );
+	UTIL_BloodDecalTrace( &tr, BloodColor() );
 
 	SetAbsAngles( UTIL_VecToAngles( tr.vecPlaneNormal * -1 ) );
 	SetAbsVelocity( g_vecZero );
@@ -151,7 +151,7 @@ void CGib::WaitTillLand( void )
 		SetNextThink( gpGlobals->time + m_lifeTime );
 
 		// If you bleed, you stink!
-		if( m_bloodColor != DONT_BLEED )
+		if( BloodColor() != DONT_BLEED )
 		{
 			// ok, start stinkin!
 			CSoundEnt::InsertSound( bits_SOUND_MEAT, GetAbsOrigin(), 384, 25 );
@@ -216,7 +216,7 @@ void CGib::SpawnHeadGib( CBaseEntity* pVictim )
 		pGib->SetAngularVelocity( vecAVelocity );
 
 		// copy owner's blood color
-		pGib->m_bloodColor = pVictim->BloodColor();
+		pGib->SetBloodColor(pVictim->BloodColor());
 
 		if( pVictim->GetHealth() > -50 )
 		{
@@ -289,7 +289,7 @@ void CGib::SpawnRandomGibs( CBaseEntity* pVictim, int cGibs, int human )
 			pGib->SetAngularVelocity( vecAVelocity );
 
 			// copy owner's blood color
-			pGib->m_bloodColor = pVictim->BloodColor();
+			pGib->SetBloodColor(pVictim->BloodColor());
 
 			if( pVictim->GetHealth() > -50 )
 			{
@@ -360,7 +360,7 @@ void CGib::SpawnStickyGibs( CBaseEntity* pVictim, Vector vecOrigin, int cGibs )
 			pGib->SetAngularVelocity( vecAVelocity );
 
 			// copy owner's blood color
-			pGib->m_bloodColor = pVictim->BloodColor();
+			pGib->SetBloodColor(pVictim->BloodColor());
 
 			if( pVictim->GetHealth() > -50 )
 			{

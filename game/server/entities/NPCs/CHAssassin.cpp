@@ -179,7 +179,7 @@ void CHAssassin :: Spawn()
 
 	SetSolidType( SOLID_SLIDEBOX );
 	SetMoveType( MOVETYPE_STEP );
-	m_bloodColor		= BLOOD_COLOR_RED;
+	SetBloodColor(BLOOD_COLOR_RED);
 	GetEffects().ClearAll();
 	SetHealth( gSkillData.GetHAssassinHealth() );
 	m_flFieldOfView		= VIEW_FIELD_WIDE; // indicates the width of this monster's forward view cone ( as a dotproduct result )

@@ -395,4 +395,6 @@ void Cvar_DirectSet( cvar_t* pCvar, const float flValue );
 */
 int UTIL_CountPlayers();
 
+char* COM_FileExtension(const char* in);
+
 #endif //GAME_SHARED_UTIL_H

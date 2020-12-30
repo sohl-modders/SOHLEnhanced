@@ -576,7 +576,7 @@ void CScientist :: Spawn( void )
 
 	SetSolidType( SOLID_SLIDEBOX );
 	SetMoveType( MOVETYPE_STEP );
-	m_bloodColor		= BLOOD_COLOR_RED;
+	SetBloodColor(BLOOD_COLOR_RED);
 	SetHealth( gSkillData.GetScientistHealth() );
 	SetViewOffset( Vector ( 0, 0, 50 ) );// position of the eyes relative to monster's origin.
 	m_flFieldOfView		= VIEW_FIELD_WIDE; // NOTE: we need a wide field of view so scientists will notice player and say hello

@@ -231,7 +231,7 @@ void CHeadCrab :: Spawn()
 
 	SetSolidType( SOLID_SLIDEBOX );
 	SetMoveType( MOVETYPE_STEP );
-	m_bloodColor		= BLOOD_COLOR_GREEN;
+	SetBloodColor(BLOOD_COLOR_GREEN);
 	GetEffects().ClearAll();
 	SetHealth( gSkillData.GetHeadcrabHealth() );
 	SetViewOffset( Vector ( 0, 0, 20 ) );// position of the eyes relative to monster's origin.

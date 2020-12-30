@@ -506,7 +506,7 @@ void CGargantua :: Spawn()
 
 	SetSolidType( SOLID_SLIDEBOX );
 	SetMoveType( MOVETYPE_STEP );
-	m_bloodColor		= BLOOD_COLOR_GREEN;
+	SetBloodColor(BLOOD_COLOR_GREEN);
 	SetHealth( gSkillData.GetGargantuaHealth() );
 	//SetViewOffset( Vector ( 0, 0, 96 ) );// taken from mdl file
 	m_flFieldOfView		= -0.2;// width of forward view cone ( as a dotproduct result )
@@ -874,7 +874,7 @@ void CGargantua::RunTask( const Task_t& task )
 					bodyPart = RANDOM_LONG( 0, GetBody() -1 );
 
 				pGib->SetBody( bodyPart );
-				pGib->m_bloodColor = BLOOD_COLOR_YELLOW;
+				pGib->SetBloodColor(BLOOD_COLOR_YELLOW);
 				pGib->m_material = matNone;
 				pGib->SetAbsOrigin( GetAbsOrigin() );
 				pGib->SetAbsVelocity( UTIL_RandomBloodVector() * RANDOM_FLOAT( 300, 500 ) );

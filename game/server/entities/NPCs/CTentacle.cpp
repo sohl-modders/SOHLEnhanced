@@ -112,7 +112,7 @@ void CTentacle :: Spawn( )
 	SetTakeDamageMode( DAMAGE_AIM );
 	GetFlags() |= FL_MONSTER;
 	
-	m_bloodColor		= BLOOD_COLOR_GREEN;
+	SetBloodColor(BLOOD_COLOR_GREEN);
 
 	SetThink( &CTentacle::Start );
 	SetTouch( &CTentacle::HitTouch );

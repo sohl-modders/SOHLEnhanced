@@ -374,7 +374,7 @@ void CIchthyosaur :: Spawn()
 
 	SetSolidType( SOLID_BBOX );
 	SetMoveType( MOVETYPE_FLY );
-	m_bloodColor		= BLOOD_COLOR_GREEN;
+	SetBloodColor(BLOOD_COLOR_GREEN);
 	SetHealth( gSkillData.GetIchthyosaurHealth() );
 	SetViewOffset( Vector ( 0, 0, 16 ) );
 	m_flFieldOfView		= VIEW_FIELD_WIDE;

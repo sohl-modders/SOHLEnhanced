@@ -66,7 +66,7 @@ void CBarnacle :: Spawn()
 	SetSolidType( SOLID_SLIDEBOX );
 	SetMoveType( MOVETYPE_NONE );
 	SetTakeDamageMode( DAMAGE_AIM );
-	m_bloodColor		= BLOOD_COLOR_RED;
+	SetBloodColor(BLOOD_COLOR_RED);
 	GetEffects() = EF_INVLIGHT; // take light from the ceiling 
 	SetHealth( 25 );
 	m_flFieldOfView		= 0.5;// indicates the width of this monster's forward view cone ( as a dotproduct result )

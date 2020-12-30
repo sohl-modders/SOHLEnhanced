@@ -82,7 +82,7 @@ void CRoach :: Spawn()
 
 	SetSolidType( SOLID_SLIDEBOX );
 	SetMoveType( MOVETYPE_STEP );
-	m_bloodColor		= BLOOD_COLOR_YELLOW;
+	SetBloodColor(BLOOD_COLOR_YELLOW);
 	GetEffects().ClearAll();
 	SetHealth( 1 );
 	m_flFieldOfView		= 0.5;// indicates the width of this monster's forward view cone ( as a dotproduct result )

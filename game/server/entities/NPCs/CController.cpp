@@ -274,7 +274,7 @@ void CController :: Spawn()
 	SetSolidType( SOLID_SLIDEBOX );
 	SetMoveType( MOVETYPE_FLY );
 	GetFlags() |= FL_FLY;
-	m_bloodColor		= BLOOD_COLOR_GREEN;
+	SetBloodColor(BLOOD_COLOR_GREEN);
 	SetHealth( gSkillData.GetControllerHealth() );
 	SetViewOffset( Vector( 0, 0, -2 ) );// position of the eyes relative to monster's origin.
 	m_flFieldOfView		= VIEW_FIELD_FULL;// indicates the width of this monster's forward view cone ( as a dotproduct result )

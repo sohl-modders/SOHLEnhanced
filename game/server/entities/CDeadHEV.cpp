@@ -20,7 +20,7 @@ void CDeadHEV::Spawn( void )
 	SetYawSpeed( 8 );
 	SetSequence( 0 );
 	SetBody( 1 );
-	m_bloodColor = BLOOD_COLOR_RED;
+	SetBloodColor(BLOOD_COLOR_RED);
 
 	SetSequence( LookupSequence( m_szPoses[ m_iPose ] ) );
 

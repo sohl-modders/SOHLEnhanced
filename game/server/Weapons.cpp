@@ -41,6 +41,13 @@ DLL_GLOBAL	short	g_sModelIndexBubbles;// holds the index for the bubbles model
 DLL_GLOBAL	short	g_sModelIndexBloodDrop;// holds the sprite index for the initial blood
 DLL_GLOBAL	short	g_sModelIndexBloodSpray;// holds the sprite index for splattered blood
 
+DLL_GLOBAL	short	g_sModelIndexNullModel; //null model index
+DLL_GLOBAL	short	g_sModelIndexErrorModel;//error model index
+DLL_GLOBAL	short	g_sModelIndexNullSprite;//null sprite index
+DLL_GLOBAL	short	g_sModelIndexErrorSprite;//error sprite index
+DLL_GLOBAL	short	g_sSoundIndexNullSound;//null sound index
+DLL_GLOBAL	unsigned short	g_usEventIndexNullEvent;//null event index
+
 CMultiDamage g_MultiDamage;
 
 /*
@@ -184,6 +191,13 @@ void W_Precache()
 
 	g_sModelIndexLaser = PRECACHE_MODEL( (char *)g_pModelNameLaser );
 	g_sModelIndexLaserDot = PRECACHE_MODEL("sprites/laserdot.spr");
+
+	//WARNING!!! this is critical stuff! do not edit this
+	g_sSoundIndexNullSound = PRECACHE_SOUND("common/null.wav");
+	g_sModelIndexNullModel = PRECACHE_MODEL("models/null.mdl");
+	g_sModelIndexErrorModel = PRECACHE_MODEL("models/error.mdl");
+	g_sModelIndexNullSprite = PRECACHE_MODEL("sprites/null.spr");
+	g_sModelIndexErrorSprite = PRECACHE_MODEL("sprites/error.spr");
 
 
 	// used by explosions

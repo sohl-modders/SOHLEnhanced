@@ -37,7 +37,7 @@ void CDeadHGrunt::Spawn( void )
 	GetEffects().ClearAll();
 	SetYawSpeed( 8 );
 	SetSequence( 0 );
-	m_bloodColor = BLOOD_COLOR_RED;
+	SetBloodColor(BLOOD_COLOR_RED);
 
 	SetSequence( LookupSequence( m_szPoses[ m_iPose ] ) );
 

@@ -24,23 +24,26 @@ public:
 	DECLARE_CLASS( CGib, CBaseEntity );
 	DECLARE_DATADESC();
 
+	int		m_bloodColor;
+	int		m_cBloodDecals;
+	int		m_material;
+	float	m_lifeTime;
+
 	static CGib* GibCreate( const char* szGibModel );
 
 	void CreateGib( const char *szGibModel );
 	void BounceGibTouch( CBaseEntity *pOther );
 	void StickyGibTouch( CBaseEntity *pOther );
 	void WaitTillLand( void );
-	void		LimitVelocity( void );
+	void LimitVelocity( void );
 
 	virtual int	ObjectCaps() const override { return ( CBaseEntity::ObjectCaps() & ~FCAP_ACROSS_TRANSITION ) | FCAP_DONT_SAVE; }
 	static	void SpawnHeadGib( CBaseEntity* pVictim );
 	static	void SpawnRandomGibs( CBaseEntity* pVictim, int cGibs, int human );
 	static  void SpawnStickyGibs( CBaseEntity* pVictim, Vector vecOrigin, int cGibs );
 
-	int		m_bloodColor;
-	int		m_cBloodDecals;
-	int		m_material;
-	float	m_lifeTime;
+	virtual int BloodColor() const override { return m_bloodColor; }
+	virtual void SetBloodColor(const int bloodColor) { m_bloodColor = bloodColor; }
 };
 
 #endif //GAME_SERVER_ENTITIES_EFFECTS_CGIB_H

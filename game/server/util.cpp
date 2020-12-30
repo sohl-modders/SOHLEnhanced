@@ -1340,6 +1340,22 @@ void Cvar_DirectSet( cvar_t* pCvar, const float flValue )
 	g_engfuncs.pfnCvar_DirectSet( pCvar, UTIL_VarArgs( "%f", flValue ) );
 }
 
+char* COM_FileExtension(const char* in)
+{
+	static char exten[8];
+	int i;
+
+	while (*in && *in != '.')
+		in++;
+	if (!*in)
+		return "";
+	in++;
+	for (i = 0; i < 7 && *in; i++, in++)
+		exten[i] = *in;
+	exten[i] = 0;
+	return exten;
+}
+
 int UTIL_CountPlayers()
 {
 	int	num = 0;

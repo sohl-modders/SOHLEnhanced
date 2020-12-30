@@ -66,6 +66,13 @@ extern DLL_GLOBAL	short	g_sModelIndexBubbles;// holds the index for the bubbles 
 extern DLL_GLOBAL	short	g_sModelIndexBloodDrop;// holds the sprite index for blood drops
 extern DLL_GLOBAL	short	g_sModelIndexBloodSpray;// holds the sprite index for blood spray (bigger)
 
+extern DLL_GLOBAL	short	g_sModelIndexNullModel; //null model index
+extern DLL_GLOBAL	short	g_sModelIndexErrorModel;//error model index
+extern DLL_GLOBAL	short	g_sModelIndexNullSprite;//null sprite index
+extern DLL_GLOBAL	short	g_sModelIndexErrorSprite;//error sprite index
+extern DLL_GLOBAL	short	g_sSoundIndexNullSound;//null sound index
+extern DLL_GLOBAL	unsigned short	g_usEventIndexNullEvent;//null event index
+
 extern void DecalGunshot( TraceResult *pTrace, int iBulletType );
 extern void SpawnBlood(Vector vecSpot, int bloodColor, float flDamage);
 extern int DamageDecal( CBaseEntity *pEntity, int bitsDamageType );

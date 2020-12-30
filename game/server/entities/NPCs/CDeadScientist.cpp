@@ -38,7 +38,7 @@ void CDeadScientist::Spawn()
 	// Corpses have less health
 	SetHealth( 8 );//gSkillData.GetScientistHealth();
 
-	m_bloodColor = BLOOD_COLOR_RED;
+	SetBloodColor(BLOOD_COLOR_RED);
 
 	if( GetBody() == -1 )
 	{// -1 chooses a random head
