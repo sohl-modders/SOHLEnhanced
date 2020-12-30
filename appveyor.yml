@@ -18,7 +18,6 @@ cache:
 environment:
   COMPILER_VERSION: Visual Studio 2019 version 16.1
   matrix:
-    - BUILD_RULES: -DUSE_OPFOR=0
     - BUILD_RULES: -DUSE_OPFOR=1
 
 before_build:
