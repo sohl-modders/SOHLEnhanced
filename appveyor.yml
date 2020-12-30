@@ -10,7 +10,7 @@ configuration:
 
 # Build with all those possible configurations
 environment:
-  COMPILER_VERSION: Visual Studio 2019 version 16.1
+  COMPILER_VERSION: Visual Studio 14 2015
   COMPILER_TOOLSET: v140_xp
   matrix:
     - BUILD_RULES: -DUSE_OPFOR=1
