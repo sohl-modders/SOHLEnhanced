@@ -17,7 +17,7 @@ include( MSVCRuntime )
 include( WinXPSupport )
 include( Ternary )
 
-project( HLEnhanced )
+project( SOHLEnhanced )
 
 #C++14 support
 set( SHARED_COMPILER_FLAGS "-std=c++1y" )
