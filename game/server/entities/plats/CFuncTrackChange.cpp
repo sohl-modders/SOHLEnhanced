@@ -57,7 +57,7 @@ void CFuncTrackChange::Spawn( void )
 void CFuncTrackChange::Precache( void )
 {
 	// Can't trigger sound
-	PRECACHE_SOUND( "buttons/button11.wav" );
+	PrecacheSound( "buttons/button11.wav" );
 
 	CFuncPlatRot::Precache();
 }

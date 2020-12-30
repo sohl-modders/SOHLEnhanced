@@ -42,7 +42,7 @@ void CMessage::Spawn( void )
 void CMessage::Precache( void )
 {
 	if( pev->noise )
-		PRECACHE_SOUND( ( char * ) STRING( pev->noise ) );
+		PrecacheSound( ( char * ) STRING( pev->noise ) );
 }
 
 void CMessage::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value )

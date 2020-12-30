@@ -42,12 +42,12 @@ void CEnvSpark::Spawn( void )
 
 void CEnvSpark::Precache( void )
 {
-	PRECACHE_SOUND( "buttons/spark1.wav" );
-	PRECACHE_SOUND( "buttons/spark2.wav" );
-	PRECACHE_SOUND( "buttons/spark3.wav" );
-	PRECACHE_SOUND( "buttons/spark4.wav" );
-	PRECACHE_SOUND( "buttons/spark5.wav" );
-	PRECACHE_SOUND( "buttons/spark6.wav" );
+	PrecacheSound( "buttons/spark1.wav" );
+	PrecacheSound( "buttons/spark2.wav" );
+	PrecacheSound( "buttons/spark3.wav" );
+	PrecacheSound( "buttons/spark4.wav" );
+	PrecacheSound( "buttons/spark5.wav" );
+	PrecacheSound( "buttons/spark6.wav" );
 }
 
 void CEnvSpark::SparkThink( void )

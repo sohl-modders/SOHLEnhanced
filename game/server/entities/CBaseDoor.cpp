@@ -162,14 +162,14 @@ void CBaseDoor::Precache( void )
 	// set the door's "in-motion" sound
 	pszSound = DoorMoveSound( m_bMoveSnd );
 
-	PRECACHE_SOUND( pszSound );
+	PrecacheSound( pszSound );
 
 	pev->noiseMoving = MAKE_STRING( pszSound );
 
 	// set the door's 'reached destination' stop sound
 	pszSound = DoorStopSound( m_bStopSnd );
 
-	PRECACHE_SOUND( pszSound );
+	PrecacheSound( pszSound );
 
 	pev->noiseArrived = MAKE_STRING( pszSound );
 
@@ -178,14 +178,14 @@ void CBaseDoor::Precache( void )
 	if( m_bLockedSound )
 	{
 		pszSound = ButtonSound( ( int ) m_bLockedSound );
-		PRECACHE_SOUND( pszSound );
+		PrecacheSound( pszSound );
 		m_ls.sLockedSound = ALLOC_STRING( pszSound );
 	}
 
 	if( m_bUnlockedSound )
 	{
 		pszSound = ButtonSound( ( int ) m_bUnlockedSound );
-		PRECACHE_SOUND( pszSound );
+		PrecacheSound( pszSound );
 		m_ls.sUnlockedSound = ALLOC_STRING( pszSound );
 	}
 

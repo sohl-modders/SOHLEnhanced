@@ -55,7 +55,7 @@ void CApacheHVR::Precache( void )
 {
 	PrecacheModel( "models/HVR.mdl" );
 	m_iTrail = PrecacheModel( "sprites/smoke.spr" );
-	PRECACHE_SOUND( "weapons/rocket1.wav" );
+	PrecacheSound( "weapons/rocket1.wav" );
 }
 
 void CApacheHVR::IgniteThink( void )

@@ -60,7 +60,7 @@ void CPushable::Spawn( void )
 void CPushable::Precache( void )
 {
 	for( int i = 0; i < 3; i++ )
-		PRECACHE_SOUND( m_soundNames[ i ] );
+		PrecacheSound( m_soundNames[ i ] );
 
 	if( GetSpawnFlags().Any( SF_PUSH_BREAKABLE ) )
 		CBreakable::Precache();

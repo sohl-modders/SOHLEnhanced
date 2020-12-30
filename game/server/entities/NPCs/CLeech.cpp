@@ -192,9 +192,9 @@ void CLeech::Precache( void )
 	PrecacheModel("models/leech.mdl");
 
 	for ( i = 0; i < ARRAYSIZE( pAttackSounds ); i++ )
-		PRECACHE_SOUND((char *)pAttackSounds[i]);
+		PrecacheSound((char *)pAttackSounds[i]);
 	for ( i = 0; i < ARRAYSIZE( pAlertSounds ); i++ )
-		PRECACHE_SOUND((char *)pAlertSounds[i]);
+		PrecacheSound((char *)pAlertSounds[i]);
 }
 
 void CLeech::OnTakeDamage( const CTakeDamageInfo& info )

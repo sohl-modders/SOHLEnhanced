@@ -93,16 +93,16 @@ void CApache::Precache( void )
 {
 	PrecacheModel("models/apache.mdl");
 
-	PRECACHE_SOUND("apache/ap_rotor1.wav");
-	PRECACHE_SOUND("apache/ap_rotor2.wav");
-	PRECACHE_SOUND("apache/ap_rotor3.wav");
-	PRECACHE_SOUND("apache/ap_whine1.wav");
+	PrecacheSound("apache/ap_rotor1.wav");
+	PrecacheSound("apache/ap_rotor2.wav");
+	PrecacheSound("apache/ap_rotor3.wav");
+	PrecacheSound("apache/ap_whine1.wav");
 
-	PRECACHE_SOUND("weapons/mortarhit.wav");
+	PrecacheSound("weapons/mortarhit.wav");
 
 	m_iSpriteTexture = PrecacheModel( "sprites/white.spr" );
 
-	PRECACHE_SOUND("turret/tu_fire1.wav");
+	PrecacheSound("turret/tu_fire1.wav");
 
 	PrecacheModel("sprites/lgtning.spr");
 

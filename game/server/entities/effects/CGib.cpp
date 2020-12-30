@@ -37,18 +37,20 @@ void CGib::CreateGib( const char *szGibModel )
 	SetMoveType( MOVETYPE_BOUNCE );
 	SetFriction( 0.55 ); // deading the bounce a bit
 
-						  // sometimes an entity inherits the edict from a former piece of glass,
-						  // and will spawn using the same render FX or rendermode! bad!
+	// sometimes an entity inherits the edict from a former piece of glass,
+	// and will spawn using the same render FX or rendermode! bad!
 	SetRenderAmount( 255 );
 	SetRenderMode( kRenderNormal );
 	SetRenderFX( kRenderFxNone );
 	SetSolidType( SOLID_SLIDEBOX );/// hopefully this will fix the VELOCITY TOO LOW crap
 
+	PrecacheModel(szGibModel);
 	SetModel( szGibModel );
 	SetSize( Vector( 0, 0, 0 ), Vector( 0, 0, 0 ) );
 
 	SetNextThink( gpGlobals->time + 4 );
 	m_lifeTime = 25;
+	
 	SetThink( &CGib::WaitTillLand );
 	SetTouch( &CGib::BounceGibTouch );
 

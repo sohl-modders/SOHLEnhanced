@@ -102,13 +102,13 @@ void CSqueakGrenade::Spawn( void )
 void CSqueakGrenade::Precache( void )
 {
 	PrecacheModel( "models/w_squeak.mdl" );
-	PRECACHE_SOUND( "squeek/sqk_blast1.wav" );
-	PRECACHE_SOUND( "common/bodysplat.wav" );
-	PRECACHE_SOUND( "squeek/sqk_die1.wav" );
-	PRECACHE_SOUND( "squeek/sqk_hunt1.wav" );
-	PRECACHE_SOUND( "squeek/sqk_hunt2.wav" );
-	PRECACHE_SOUND( "squeek/sqk_hunt3.wav" );
-	PRECACHE_SOUND( "squeek/sqk_deploy1.wav" );
+	PrecacheSound( "squeek/sqk_blast1.wav" );
+	PrecacheSound( "common/bodysplat.wav" );
+	PrecacheSound( "squeek/sqk_die1.wav" );
+	PrecacheSound( "squeek/sqk_hunt1.wav" );
+	PrecacheSound( "squeek/sqk_hunt2.wav" );
+	PrecacheSound( "squeek/sqk_hunt3.wav" );
+	PrecacheSound( "squeek/sqk_deploy1.wav" );
 }
 
 

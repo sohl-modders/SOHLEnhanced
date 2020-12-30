@@ -45,21 +45,21 @@ void CGlock::Precache( void )
 {
 	BaseClass::Precache();
 
-	PRECACHE_MODEL("models/v_9mmhandgun.mdl");
-	PRECACHE_MODEL("models/w_9mmhandgun.mdl");
-	PRECACHE_MODEL("models/p_9mmhandgun.mdl");
+	PrecacheModel("models/v_9mmhandgun.mdl");
+	PrecacheModel("models/w_9mmhandgun.mdl");
+	PrecacheModel("models/p_9mmhandgun.mdl");
 
-	m_iShell = PRECACHE_MODEL ("models/shell.mdl");// brass shell
+	m_iShell = PrecacheModel("models/shell.mdl");// brass shell
 
-	PRECACHE_SOUND("items/9mmclip1.wav");
-	PRECACHE_SOUND("items/9mmclip2.wav");
+	PrecacheSound("items/9mmclip1.wav");
+	PrecacheSound("items/9mmclip2.wav");
 
-	PRECACHE_SOUND ("weapons/pl_gun1.wav");//silenced handgun
-	PRECACHE_SOUND ("weapons/pl_gun2.wav");//silenced handgun
-	PRECACHE_SOUND ("weapons/pl_gun3.wav");//handgun
+	PrecacheSound ("weapons/pl_gun1.wav");//silenced handgun
+	PrecacheSound ("weapons/pl_gun2.wav");//silenced handgun
+	PrecacheSound ("weapons/pl_gun3.wav");//handgun
 
-	m_usFireGlock1 = PRECACHE_EVENT( 1, "events/glock1.sc" );
-	m_usFireGlock2 = PRECACHE_EVENT( 1, "events/glock2.sc" );
+	m_usFireGlock1 = PrecacheEvent("events/glock1.sc" );
+	m_usFireGlock2 = PrecacheEvent("events/glock2.sc" );
 }
 
 bool CGlock::Deploy()
@@ -218,7 +218,7 @@ class CGlockAmmo : public CBasePlayerAmmo
 	void Precache( void ) override
 	{
 		PRECACHE_MODEL ("models/w_9mmclip.mdl");
-		PRECACHE_SOUND("items/9mmclip1.wav");
+		PrecacheSound("items/9mmclip1.wav");
 	}
 	bool AddAmmo( CBaseEntity *pOther ) override
 	{ 

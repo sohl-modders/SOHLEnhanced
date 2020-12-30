@@ -81,18 +81,18 @@ void CFuncTrackTrain::Precache( void )
 		// no sound
 		pev->noise = 0;
 		break;
-	case 1: PRECACHE_SOUND( "plats/ttrain1.wav" ); pev->noise = MAKE_STRING( "plats/ttrain1.wav" ); break;
-	case 2: PRECACHE_SOUND( "plats/ttrain2.wav" ); pev->noise = MAKE_STRING( "plats/ttrain2.wav" ); break;
-	case 3: PRECACHE_SOUND( "plats/ttrain3.wav" ); pev->noise = MAKE_STRING( "plats/ttrain3.wav" ); break;
-	case 4: PRECACHE_SOUND( "plats/ttrain4.wav" ); pev->noise = MAKE_STRING( "plats/ttrain4.wav" ); break;
-	case 5: PRECACHE_SOUND( "plats/ttrain6.wav" ); pev->noise = MAKE_STRING( "plats/ttrain6.wav" ); break;
-	case 6: PRECACHE_SOUND( "plats/ttrain7.wav" ); pev->noise = MAKE_STRING( "plats/ttrain7.wav" ); break;
+	case 1: PrecacheSound( "plats/ttrain1.wav" ); pev->noise = MAKE_STRING( "plats/ttrain1.wav" ); break;
+	case 2: PrecacheSound( "plats/ttrain2.wav" ); pev->noise = MAKE_STRING( "plats/ttrain2.wav" ); break;
+	case 3: PrecacheSound( "plats/ttrain3.wav" ); pev->noise = MAKE_STRING( "plats/ttrain3.wav" ); break;
+	case 4: PrecacheSound( "plats/ttrain4.wav" ); pev->noise = MAKE_STRING( "plats/ttrain4.wav" ); break;
+	case 5: PrecacheSound( "plats/ttrain6.wav" ); pev->noise = MAKE_STRING( "plats/ttrain6.wav" ); break;
+	case 6: PrecacheSound( "plats/ttrain7.wav" ); pev->noise = MAKE_STRING( "plats/ttrain7.wav" ); break;
 	}
 
-	PRECACHE_SOUND( "plats/ttrain_brake1.wav" );
-	PRECACHE_SOUND( "plats/ttrain_start1.wav" );
+	PrecacheSound( "plats/ttrain_brake1.wav" );
+	PrecacheSound( "plats/ttrain_start1.wav" );
 
-	m_usAdjustPitch = PRECACHE_EVENT( 1, "events/train.sc" );
+	m_usAdjustPitch = PrecacheEvent( "events/train.sc" );
 }
 
 void CFuncTrackTrain::Blocked( CBaseEntity *pOther )

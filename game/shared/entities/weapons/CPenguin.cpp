@@ -32,16 +32,16 @@ void CPenguin::Precache()
 {
 	BaseClass::Precache();
 
-	PRECACHE_MODEL( "models/w_penguinnest.mdl" );
-	PRECACHE_MODEL( "models/v_penguin.mdl" );
-	PRECACHE_MODEL( "models/p_penguin.mdl" );
+	PrecacheModel( "models/w_penguinnest.mdl" );
+	PrecacheModel( "models/v_penguin.mdl" );
+	PrecacheModel( "models/p_penguin.mdl" );
 
-	PRECACHE_SOUND( "squeek/sqk_hunt2.wav" );
-	PRECACHE_SOUND( "squeek/sqk_hunt3.wav" );
+	PrecacheSound( "squeek/sqk_hunt2.wav" );
+	PrecacheSound( "squeek/sqk_hunt3.wav" );
 
 	UTIL_PrecacheOther( "monster_penguin" );
 
-	m_usPenguinFire = PRECACHE_EVENT( 1, "events/penguinfire.sc" );
+	m_usPenguinFire = PrecacheEvent( "events/penguinfire.sc" );
 }
 
 void CPenguin::Spawn()

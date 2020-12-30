@@ -30,7 +30,7 @@ void CRotButton::Spawn( void )
 	//a sound of 0 should not make a sound
 	//----------------------------------------------------
 	pszSound = ButtonSound( m_sounds );
-	PRECACHE_SOUND( pszSound );
+	PrecacheSound( pszSound );
 	pev->noise = ALLOC_STRING( pszSound );
 
 	// set the axis of rotation

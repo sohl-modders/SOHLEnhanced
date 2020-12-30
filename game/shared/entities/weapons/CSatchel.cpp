@@ -144,10 +144,10 @@ void CSatchelCharge :: SatchelThink( void )
 
 void CSatchelCharge :: Precache( void )
 {
-	PRECACHE_MODEL("models/grenade.mdl");
-	PRECACHE_SOUND("weapons/g_bounce1.wav");
-	PRECACHE_SOUND("weapons/g_bounce2.wav");
-	PRECACHE_SOUND("weapons/g_bounce3.wav");
+	PrecacheModel("models/grenade.mdl");
+	PrecacheSound("weapons/g_bounce1.wav");
+	PrecacheSound("weapons/g_bounce2.wav");
+	PrecacheSound("weapons/g_bounce3.wav");
 }
 
 void CSatchelCharge :: BounceSound( void )

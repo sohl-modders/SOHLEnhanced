@@ -33,7 +33,7 @@ LINK_ENTITY_TO_CLASS( ammo_spore, CSporeAmmo );
 void CSporeAmmo::Precache()
 {
 	PrecacheModel( "models/spore_ammo.mdl" );
-	PRECACHE_SOUND( "weapons/spore_ammo.wav" );
+	PrecacheSound( "weapons/spore_ammo.wav" );
 }
 
 void CSporeAmmo::Spawn()

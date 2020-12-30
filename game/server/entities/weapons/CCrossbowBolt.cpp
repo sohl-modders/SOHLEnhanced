@@ -59,11 +59,11 @@ void CCrossbowBolt::Spawn()
 void CCrossbowBolt::Precache()
 {
 	PrecacheModel( "models/crossbow_bolt.mdl" );
-	PRECACHE_SOUND( "weapons/xbow_hitbod1.wav" );
-	PRECACHE_SOUND( "weapons/xbow_hitbod2.wav" );
-	PRECACHE_SOUND( "weapons/xbow_fly1.wav" );
-	PRECACHE_SOUND( "weapons/xbow_hit1.wav" );
-	PRECACHE_SOUND( "fvox/beep.wav" );
+	PrecacheSound( "weapons/xbow_hitbod1.wav" );
+	PrecacheSound( "weapons/xbow_hitbod2.wav" );
+	PrecacheSound( "weapons/xbow_fly1.wav" );
+	PrecacheSound( "weapons/xbow_hit1.wav" );
+	PrecacheSound( "fvox/beep.wav" );
 	m_iTrail = PrecacheModel( "sprites/streak.spr" );
 }
 

@@ -84,7 +84,7 @@ void CAirtank::Spawn()
 void CAirtank::Precache()
 {
 	PrecacheModel("models/w_oxygen.mdl");
-	PRECACHE_SOUND("doors/aliendoor3.wav");
+	PrecacheSound("doors/aliendoor3.wav");
 }
 
 void CAirtank::Killed( const CTakeDamageInfo& info, GibAction gibAction )

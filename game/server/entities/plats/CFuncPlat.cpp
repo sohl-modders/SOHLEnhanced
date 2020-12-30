@@ -38,8 +38,8 @@ void CFuncPlat::Spawn()
 void CFuncPlat::Precache()
 {
 	CBasePlatTrain::Precache();
-	//PRECACHE_SOUND("plats/platmove1.wav");
-	//PRECACHE_SOUND("plats/platstop1.wav");
+	//PrecacheSound("plats/platmove1.wav");
+	//PrecacheSound("plats/platstop1.wav");
 	//TODO: why is this in precache? PrecacheOther could create useless entities because of this... - Solokiller
 	if( !IsTogglePlat() )
 		CPlatTrigger::PlatSpawnInsideTrigger( this );		// the "start moving" trigger

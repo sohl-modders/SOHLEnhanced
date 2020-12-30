@@ -22,7 +22,7 @@ void CEnvBeverage::Spawn( void )
 void CEnvBeverage::Precache( void )
 {
 	PrecacheModel( "models/can.mdl" );
-	PRECACHE_SOUND( "weapons/g_bounce3.wav" );
+	PrecacheSound( "weapons/g_bounce3.wav" );
 }
 
 void CEnvBeverage::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value )

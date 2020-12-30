@@ -65,7 +65,7 @@ void CMomentaryDoor::Precache( void )
 	//Not much use here, but if people need it...
 	const char* pszSound = DoorMoveSound( m_bMoveSnd );
 
-	PRECACHE_SOUND( pszSound );
+	PrecacheSound( pszSound );
 
 	pev->noiseMoving = MAKE_STRING( pszSound );
 }

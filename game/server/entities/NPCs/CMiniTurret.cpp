@@ -47,9 +47,9 @@ void CMiniTurret::Precache()
 {
 	CBaseTurret::Precache();
 	PrecacheModel( "models/miniturret.mdl" );
-	PRECACHE_SOUND( "weapons/hks1.wav" );
-	PRECACHE_SOUND( "weapons/hks2.wav" );
-	PRECACHE_SOUND( "weapons/hks3.wav" );
+	PrecacheSound( "weapons/hks1.wav" );
+	PrecacheSound( "weapons/hks2.wav" );
+	PrecacheSound( "weapons/hks3.wav" );
 }
 
 void CMiniTurret::Shoot( Vector &vecSrc, Vector &vecDirToEnemy )

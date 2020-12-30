@@ -21,7 +21,7 @@ void CItemBattery::Spawn( void )
 void CItemBattery::Precache( void )
 {
 	PrecacheModel( "models/w_battery.mdl" );
-	PRECACHE_SOUND( "items/gunpickup2.wav" );
+	PrecacheSound( "items/gunpickup2.wav" );
 }
 
 bool CItemBattery::MyTouch( CBasePlayer *pPlayer )

@@ -63,7 +63,7 @@ void CMomentaryRotButton::Spawn( void )
 	SetModel( GetModelName() );
 
 	const char* pszSound = ButtonSound( m_sounds );
-	PRECACHE_SOUND( pszSound );
+	PrecacheSound( pszSound );
 	pev->noise = ALLOC_STRING( pszSound );
 	m_lastUsed = 0;
 }

@@ -22,7 +22,7 @@ void CHealthKit::Spawn( void )
 void CHealthKit::Precache( void )
 {
 	PrecacheModel( "models/w_medkit.mdl" );
-	PRECACHE_SOUND( "items/smallmedkit1.wav" );
+	PrecacheSound( "items/smallmedkit1.wav" );
 }
 
 bool CHealthKit::MyTouch( CBasePlayer *pPlayer )

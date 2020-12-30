@@ -136,19 +136,19 @@ void CRpg::Precache( void )
 {
 	BaseClass::Precache();
 
-	PRECACHE_MODEL("models/w_rpg.mdl");
-	PRECACHE_MODEL("models/v_rpg.mdl");
-	PRECACHE_MODEL("models/p_rpg.mdl");
+	PrecacheModel("models/w_rpg.mdl");
+	PrecacheModel("models/v_rpg.mdl");
+	PrecacheModel("models/p_rpg.mdl");
 
-	PRECACHE_SOUND("items/9mmclip1.wav");
+	PrecacheSound("items/9mmclip1.wav");
 
 	UTIL_PrecacheOther( "laser_spot" );
 	UTIL_PrecacheOther( "rpg_rocket" );
 
-	PRECACHE_SOUND("weapons/rocketfire1.wav");
-	PRECACHE_SOUND("weapons/glauncher.wav"); // alternative fire sound
+	PrecacheSound("weapons/rocketfire1.wav");
+	PrecacheSound("weapons/glauncher.wav"); // alternative fire sound
 
-	m_usRpg = PRECACHE_EVENT ( 1, "events/rpg.sc" );
+	m_usRpg = PrecacheEvent ( "events/rpg.sc" );
 }
 
 bool CRpg::AddToPlayer( CBasePlayer *pPlayer )
@@ -403,7 +403,7 @@ public:
 	void Precache( void ) override
 	{
 		PRECACHE_MODEL ("models/w_rpgammo.mdl");
-		PRECACHE_SOUND("items/9mmclip1.wav");
+		PrecacheSound("items/9mmclip1.wav");
 	}
 	bool AddAmmo( CBaseEntity *pOther ) override
 	{ 

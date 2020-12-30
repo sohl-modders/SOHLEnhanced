@@ -43,14 +43,14 @@ void CSqueak::Precache( void )
 {
 	BaseClass::Precache();
 
-	PRECACHE_MODEL("models/w_sqknest.mdl");
-	PRECACHE_MODEL("models/v_squeak.mdl");
-	PRECACHE_MODEL("models/p_squeak.mdl");
-	PRECACHE_SOUND("squeek/sqk_hunt2.wav");
-	PRECACHE_SOUND("squeek/sqk_hunt3.wav");
+	PrecacheModel("models/w_sqknest.mdl");
+	PrecacheModel("models/v_squeak.mdl");
+	PrecacheModel("models/p_squeak.mdl");
+	PrecacheSound("squeek/sqk_hunt2.wav");
+	PrecacheSound("squeek/sqk_hunt3.wav");
 	UTIL_PrecacheOther("monster_snark");
 
-	m_usSnarkFire = PRECACHE_EVENT ( 1, "events/snarkfire.sc" );
+	m_usSnarkFire = PrecacheEvent("events/snarkfire.sc" );
 }
 
 bool CSqueak::Deploy()

@@ -59,9 +59,9 @@ void CNihilanthHVR::Precache( void )
 	PrecacheModel( "sprites/animglow01.spr" );
 	PrecacheModel( "sprites/xspark4.spr" );
 	PrecacheModel( "sprites/muzzleflash3.spr" );
-	PRECACHE_SOUND( "debris/zap4.wav" );
-	PRECACHE_SOUND( "weapons/electro4.wav" );
-	PRECACHE_SOUND( "x/x_teleattack1.wav" );
+	PrecacheSound( "debris/zap4.wav" );
+	PrecacheSound( "weapons/electro4.wav" );
+	PrecacheSound( "x/x_teleattack1.wav" );
 }
 
 void CNihilanthHVR::CircleInit( CBaseEntity *pTarget )

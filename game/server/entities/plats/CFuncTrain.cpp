@@ -60,15 +60,15 @@ void CFuncTrain::Precache( void )
 		break;
 
 	case 1:
-		PRECACHE_SOUND( "plats/train2.wav" );
-		PRECACHE_SOUND( "plats/train1.wav" );
+		PrecacheSound( "plats/train2.wav" );
+		PrecacheSound( "plats/train1.wav" );
 		pev->noise = MAKE_STRING( "plats/train2.wav" );
 		pev->noise1 = MAKE_STRING( "plats/train1.wav" );
 		break;
 
 	case 2:
-		PRECACHE_SOUND( "plats/platmove1.wav" );
-		PRECACHE_SOUND( "plats/platstop1.wav" );
+		PrecacheSound( "plats/platmove1.wav" );
+		PrecacheSound( "plats/platstop1.wav" );
 		pev->noise = MAKE_STRING( "plats/platstop1.wav" );
 		pev->noise1 = MAKE_STRING( "plats/platmove1.wav" );
 		break;

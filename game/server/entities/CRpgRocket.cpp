@@ -84,7 +84,7 @@ void CRpgRocket::Precache( void )
 {
 	PrecacheModel( "models/rpgrocket.mdl" );
 	m_iTrail = PrecacheModel( "sprites/smoke.spr" );
-	PRECACHE_SOUND( "weapons/rocket1.wav" );
+	PrecacheSound( "weapons/rocket1.wav" );
 }
 
 

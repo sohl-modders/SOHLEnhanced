@@ -103,9 +103,9 @@ void CRoach :: Precache()
 {
 	PrecacheModel("models/roach.mdl");
 
-	PRECACHE_SOUND("roach/rch_die.wav");
-	PRECACHE_SOUND("roach/rch_walk.wav");
-	PRECACHE_SOUND("roach/rch_smash.wav");
+	PrecacheSound("roach/rch_die.wav");
+	PrecacheSound("roach/rch_walk.wav");
+	PrecacheSound("roach/rch_smash.wav");
 }	
 
 

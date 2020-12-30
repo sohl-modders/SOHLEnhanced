@@ -57,17 +57,17 @@ void CCrossbow::Precache( void )
 {
 	BaseClass::Precache();
 
-	PRECACHE_MODEL("models/w_crossbow.mdl");
-	PRECACHE_MODEL("models/v_crossbow.mdl");
-	PRECACHE_MODEL("models/p_crossbow.mdl");
+	PrecacheModel("models/w_crossbow.mdl");
+	PrecacheModel("models/v_crossbow.mdl");
+	PrecacheModel("models/p_crossbow.mdl");
 
-	PRECACHE_SOUND("weapons/xbow_fire1.wav");
-	PRECACHE_SOUND("weapons/xbow_reload1.wav");
+	PrecacheSound("weapons/xbow_fire1.wav");
+	PrecacheSound("weapons/xbow_reload1.wav");
 
 	UTIL_PrecacheOther( "crossbow_bolt" );
 
-	m_usCrossbow = PRECACHE_EVENT( 1, "events/crossbow1.sc" );
-	m_usCrossbow2 = PRECACHE_EVENT( 1, "events/crossbow2.sc" );
+	m_usCrossbow = PrecacheEvent("events/crossbow1.sc" );
+	m_usCrossbow2 = PrecacheEvent("events/crossbow2.sc" );
 }
 
 bool CCrossbow::Deploy()
@@ -311,7 +311,7 @@ public:
 	void Precache( void ) override
 	{
 		PRECACHE_MODEL ("models/w_crossbow_clip.mdl");
-		PRECACHE_SOUND("items/9mmclip1.wav");
+		PrecacheSound("items/9mmclip1.wav");
 	}
 	bool AddAmmo( CBaseEntity *pOther ) override
 	{ 

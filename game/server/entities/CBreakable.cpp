@@ -288,22 +288,22 @@ void CBreakable::Precache( void )
 	case matWood:
 		pGibName = "models/woodgibs.mdl";
 		
-		PRECACHE_SOUND("debris/bustcrate1.wav");
-		PRECACHE_SOUND("debris/bustcrate2.wav");
+		PrecacheSound("debris/bustcrate1.wav");
+		PrecacheSound("debris/bustcrate2.wav");
 		break;
 	case matFlesh:
 		pGibName = "models/fleshgibs.mdl";
 		
-		PRECACHE_SOUND("debris/bustflesh1.wav");
-		PRECACHE_SOUND("debris/bustflesh2.wav");
+		PrecacheSound("debris/bustflesh1.wav");
+		PrecacheSound("debris/bustflesh2.wav");
 		break;
 	case matComputer:
-		PRECACHE_SOUND("buttons/spark5.wav");
-		PRECACHE_SOUND("buttons/spark6.wav");
+		PrecacheSound("buttons/spark5.wav");
+		PrecacheSound("buttons/spark6.wav");
 		pGibName = "models/computergibs.mdl";
 		
-		PRECACHE_SOUND("debris/bustmetal1.wav");
-		PRECACHE_SOUND("debris/bustmetal2.wav");
+		PrecacheSound("debris/bustmetal1.wav");
+		PrecacheSound("debris/bustmetal2.wav");
 		break;
 
 	default:
@@ -311,31 +311,31 @@ void CBreakable::Precache( void )
 	case matGlass:
 		pGibName = "models/glassgibs.mdl";
 		
-		PRECACHE_SOUND("debris/bustglass1.wav");
-		PRECACHE_SOUND("debris/bustglass2.wav");
+		PrecacheSound("debris/bustglass1.wav");
+		PrecacheSound("debris/bustglass2.wav");
 		break;
 	case matMetal:
 		pGibName = "models/metalplategibs.mdl";
 		
-		PRECACHE_SOUND("debris/bustmetal1.wav");
-		PRECACHE_SOUND("debris/bustmetal2.wav");
+		PrecacheSound("debris/bustmetal1.wav");
+		PrecacheSound("debris/bustmetal2.wav");
 		break;
 	case matCinderBlock:
 		pGibName = "models/cindergibs.mdl";
 		
-		PRECACHE_SOUND("debris/bustconcrete1.wav");
-		PRECACHE_SOUND("debris/bustconcrete2.wav");
+		PrecacheSound("debris/bustconcrete1.wav");
+		PrecacheSound("debris/bustconcrete2.wav");
 		break;
 	case matRocks:
 		pGibName = "models/rockgibs.mdl";
 		
-		PRECACHE_SOUND("debris/bustconcrete1.wav");
-		PRECACHE_SOUND("debris/bustconcrete2.wav");
+		PrecacheSound("debris/bustconcrete1.wav");
+		PrecacheSound("debris/bustconcrete2.wav");
 		break;
 	case matCeilingTile:
 		pGibName = "models/ceilinggibs.mdl";
 		
-		PRECACHE_SOUND ("debris/bustceiling.wav");  
+		PrecacheSound("debris/bustceiling.wav");
 		break;
 	}
 	MaterialSoundPrecache( m_Material );

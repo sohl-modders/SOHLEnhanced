@@ -53,22 +53,22 @@ void CDisplacer::Precache()
 {
 	BaseClass::Precache();
 
-	PRECACHE_MODEL( "models/v_displacer.mdl" );
-	PRECACHE_MODEL( "models/w_displacer.mdl" );
-	PRECACHE_MODEL( "models/p_displacer.mdl" );
+	PrecacheModel( "models/v_displacer.mdl" );
+	PrecacheModel( "models/w_displacer.mdl" );
+	PrecacheModel( "models/p_displacer.mdl" );
 
-	PRECACHE_SOUND( "weapons/displacer_fire.wav" );
-	PRECACHE_SOUND( "weapons/displacer_self.wav" );
-	PRECACHE_SOUND( "weapons/displacer_spin.wav" );
-	PRECACHE_SOUND( "weapons/displacer_spin2.wav" );
+	PrecacheSound( "weapons/displacer_fire.wav" );
+	PrecacheSound( "weapons/displacer_self.wav" );
+	PrecacheSound( "weapons/displacer_spin.wav" );
+	PrecacheSound( "weapons/displacer_spin2.wav" );
 
-	PRECACHE_SOUND( "buttons/button11.wav" );
+	PrecacheSound( "buttons/button11.wav" );
 
-	m_iSpriteTexture = PRECACHE_MODEL( "sprites/shockwave.spr" );
+	m_iSpriteTexture = PrecacheModel( "sprites/shockwave.spr" );
 
 	UTIL_PrecacheOther( "displacer_ball" );
 
-	m_usFireDisplacer = PRECACHE_EVENT( 1, "events/displacer.sc" );
+	m_usFireDisplacer = PrecacheEvent("events/displacer.sc" );
 }
 
 void CDisplacer::Spawn()

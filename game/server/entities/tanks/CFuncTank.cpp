@@ -81,7 +81,7 @@ void CFuncTank::Precache( void )
 		PrecacheModel( ( char * ) STRING( m_iszSpriteFlash ) );
 
 	if( pev->noise )
-		PRECACHE_SOUND( ( char * ) STRING( pev->noise ) );
+		PrecacheSound( ( char * ) STRING( pev->noise ) );
 }
 
 void CFuncTank::KeyValue( KeyValueData *pkvd )

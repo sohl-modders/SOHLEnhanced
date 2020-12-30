@@ -25,7 +25,7 @@ LINK_ENTITY_TO_CLASS( ammo_556, CAmmo556 );
 void CAmmo556::Precache()
 {
 	PrecacheModel( "models/w_saw_clip.mdl" );
-	PRECACHE_SOUND( "items/9mmclip1.wav" );
+	PrecacheSound( "items/9mmclip1.wav" );
 }
 
 void CAmmo556::Spawn()

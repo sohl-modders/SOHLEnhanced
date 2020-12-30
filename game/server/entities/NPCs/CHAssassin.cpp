@@ -200,10 +200,10 @@ void CHAssassin :: Precache()
 {
 	PrecacheModel("models/hassassin.mdl");
 
-	PRECACHE_SOUND("weapons/pl_gun1.wav");
-	PRECACHE_SOUND("weapons/pl_gun2.wav");
+	PrecacheSound("weapons/pl_gun1.wav");
+	PrecacheSound("weapons/pl_gun2.wav");
 
-	PRECACHE_SOUND("debris/beamstart1.wav");
+	PrecacheSound("debris/beamstart1.wav");
 
 	m_iShell = PrecacheModel("models/shell.mdl");// brass shell
 }	

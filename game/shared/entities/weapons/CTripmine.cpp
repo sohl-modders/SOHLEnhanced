@@ -54,11 +54,11 @@ void CTripmine::Precache( void )
 {
 	BaseClass::Precache();
 
-	PRECACHE_MODEL ("models/v_tripmine.mdl");
-	PRECACHE_MODEL ("models/p_tripmine.mdl");
+	PrecacheModel("models/v_tripmine.mdl");
+	PrecacheModel("models/p_tripmine.mdl");
 	UTIL_PrecacheOther( "monster_tripmine" );
 
-	m_usTripFire = PRECACHE_EVENT( 1, "events/tripfire.sc" );
+	m_usTripFire = PrecacheEvent("events/tripfire.sc" );
 }
 
 bool CTripmine::Deploy()

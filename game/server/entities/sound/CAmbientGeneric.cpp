@@ -300,7 +300,7 @@ void CAmbientGeneric::Precache( void )
 	if( HasMessage() && strlen( szSoundFile ) > 1 )
 	{
 		if( *szSoundFile != '!' )
-			PRECACHE_SOUND( szSoundFile );
+			PrecacheSound( szSoundFile );
 	}
 	// init all dynamic modulation parms
 	InitModulationParms();
