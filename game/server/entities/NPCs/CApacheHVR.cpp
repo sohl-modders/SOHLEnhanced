@@ -53,8 +53,8 @@ void CApacheHVR::Spawn( void )
 
 void CApacheHVR::Precache( void )
 {
-	PRECACHE_MODEL( "models/HVR.mdl" );
-	m_iTrail = PRECACHE_MODEL( "sprites/smoke.spr" );
+	PrecacheModel( "models/HVR.mdl" );
+	m_iTrail = PrecacheModel( "sprites/smoke.spr" );
 	PRECACHE_SOUND( "weapons/rocket1.wav" );
 }
 

@@ -13,7 +13,7 @@ LINK_ENTITY_TO_CLASS( monster_hevsuit_dead, CDeadHEV );
 //=========================================================
 void CDeadHEV::Spawn( void )
 {
-	PRECACHE_MODEL( "models/player.mdl" );
+	PrecacheModel( "models/player.mdl" );
 	SetModel( "models/player.mdl" );
 
 	GetEffects().ClearAll();

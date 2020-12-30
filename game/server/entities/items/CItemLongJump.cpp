@@ -19,7 +19,7 @@ void CItemLongJump::Spawn( void )
 
 void CItemLongJump::Precache( void )
 {
-	PRECACHE_MODEL( "models/w_longjump.mdl" );
+	PrecacheModel( "models/w_longjump.mdl" );
 }
 
 bool CItemLongJump::MyTouch( CBasePlayer *pPlayer )

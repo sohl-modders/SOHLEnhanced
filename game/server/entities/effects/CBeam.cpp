@@ -164,7 +164,7 @@ void CBeam::BeamInit( const char *pSpriteName, int width )
 	SetFrame( 0 );
 	SetScrollRate( 0 );
 	SetModelName( pSpriteName );
-	SetTexture( PRECACHE_MODEL( pSpriteName ) );
+	SetTexture(PrecacheModel( pSpriteName ) );
 	SetWidth( width );
 	SetSkin( 0 );
 	SetSequence( 0 );

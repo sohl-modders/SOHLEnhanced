@@ -760,7 +760,7 @@ void CHGrunt :: Spawn()
 	SetBloodColor(BLOOD_COLOR_RED);
 	GetEffects().ClearAll();
 	SetHealth( gSkillData.GetHGruntHealth() );
-	m_flFieldOfView		= 0.2;// indicates the width of this monster's forward view cone ( as a dotproduct result )
+	SetFieldOfView(0.2);// indicates the width of this monster's forward view cone ( as a dotproduct result )
 	m_MonsterState		= MONSTERSTATE_NONE;
 	m_flNextGrenadeCheck = gpGlobals->time + 1;
 	m_flNextPainTime	= gpGlobals->time;
@@ -814,7 +814,7 @@ void CHGrunt :: Spawn()
 
 void CHGrunt :: Precache()
 {
-	PRECACHE_MODEL("models/hgrunt.mdl");
+	PrecacheModel("models/hgrunt.mdl");
 
 	PRECACHE_SOUND( "hgrunt/gr_mgun1.wav" );
 	PRECACHE_SOUND( "hgrunt/gr_mgun2.wav" );

@@ -21,7 +21,7 @@ void CEnvBeverage::Spawn( void )
 
 void CEnvBeverage::Precache( void )
 {
-	PRECACHE_MODEL( "models/can.mdl" );
+	PrecacheModel( "models/can.mdl" );
 	PRECACHE_SOUND( "weapons/g_bounce3.wav" );
 }
 

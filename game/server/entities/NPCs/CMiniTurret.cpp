@@ -46,7 +46,7 @@ void CMiniTurret::Spawn()
 void CMiniTurret::Precache()
 {
 	CBaseTurret::Precache();
-	PRECACHE_MODEL( "models/miniturret.mdl" );
+	PrecacheModel( "models/miniturret.mdl" );
 	PRECACHE_SOUND( "weapons/hks1.wav" );
 	PRECACHE_SOUND( "weapons/hks2.wav" );
 	PRECACHE_SOUND( "weapons/hks3.wav" );

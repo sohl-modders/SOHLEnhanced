@@ -41,7 +41,7 @@ void CXenHair::Spawn( void )
 
 void CXenHair::Precache( void )
 {
-	PRECACHE_MODEL( "models/hair.mdl" );
+	PrecacheModel( "models/hair.mdl" );
 }
 
 void CXenHair::Think( void )

@@ -158,7 +158,7 @@ void CBloater :: Spawn()
 	SetBloodColor(BLOOD_COLOR_GREEN);
 	SetHealth( 40 );
 	SetViewOffset( VEC_VIEW );// position of the eyes relative to monster's origin.
-	m_flFieldOfView		= 0.5;// indicates the width of this monster's forward view cone ( as a dotproduct result )
+	SetFieldOfView(0.5);// indicates the width of this monster's forward view cone ( as a dotproduct result )
 	m_MonsterState		= MONSTERSTATE_NONE;
 
 	MonsterInit();
@@ -166,7 +166,7 @@ void CBloater :: Spawn()
 
 void CBloater :: Precache()
 {
-	PRECACHE_MODEL("models/floater.mdl");
+	PrecacheModel("models/floater.mdl");
 }	
 
 //=========================================================

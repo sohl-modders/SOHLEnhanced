@@ -19,7 +19,7 @@ void CItemSuit::Spawn( void )
 
 void CItemSuit::Precache( void )
 {
-	PRECACHE_MODEL( "models/w_suit.mdl" );
+	PrecacheModel( "models/w_suit.mdl" );
 }
 
 bool CItemSuit::MyTouch( CBasePlayer *pPlayer )

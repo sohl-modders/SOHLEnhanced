@@ -38,7 +38,7 @@ void CCyclerSprite::Spawn( void )
 	m_animate = 1;
 	m_lastTime = gpGlobals->time;
 
-	PRECACHE_MODEL( GetModelName() );
+	PrecacheModel( GetModelName() );
 	SetModel( GetModelName() );
 
 	m_maxFrame = ( float ) MODEL_FRAMES( GetModelIndex() ) - 1;

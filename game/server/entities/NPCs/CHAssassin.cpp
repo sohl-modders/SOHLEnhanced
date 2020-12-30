@@ -182,7 +182,7 @@ void CHAssassin :: Spawn()
 	SetBloodColor(BLOOD_COLOR_RED);
 	GetEffects().ClearAll();
 	SetHealth( gSkillData.GetHAssassinHealth() );
-	m_flFieldOfView		= VIEW_FIELD_WIDE; // indicates the width of this monster's forward view cone ( as a dotproduct result )
+	SetFieldOfView(VIEW_FIELD_WIDE); // indicates the width of this monster's forward view cone ( as a dotproduct result )
 	m_MonsterState		= MONSTERSTATE_NONE;
 	m_afCapability		= bits_CAP_MELEE_ATTACK1 | bits_CAP_DOORS_GROUP;
 	SetFriction( 1 );
@@ -198,14 +198,14 @@ void CHAssassin :: Spawn()
 
 void CHAssassin :: Precache()
 {
-	PRECACHE_MODEL("models/hassassin.mdl");
+	PrecacheModel("models/hassassin.mdl");
 
 	PRECACHE_SOUND("weapons/pl_gun1.wav");
 	PRECACHE_SOUND("weapons/pl_gun2.wav");
 
 	PRECACHE_SOUND("debris/beamstart1.wav");
 
-	m_iShell = PRECACHE_MODEL ("models/shell.mdl");// brass shell
+	m_iShell = PrecacheModel("models/shell.mdl");// brass shell
 }	
 	
 

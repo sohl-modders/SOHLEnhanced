@@ -33,7 +33,7 @@ LINK_ENTITY_TO_CLASS( monster_sitting_scientist, CSittingScientist );
 //
 void CSittingScientist::Spawn()
 {
-	PRECACHE_MODEL( "models/scientist.mdl" );
+	PrecacheModel( "models/scientist.mdl" );
 	SetModel( "models/scientist.mdl" );
 	Precache();
 	InitBoneControllers();
@@ -46,7 +46,7 @@ void CSittingScientist::Spawn()
 	SetHealth( 50 );
 
 	SetBloodColor(BLOOD_COLOR_RED);
-	m_flFieldOfView = VIEW_FIELD_WIDE; // indicates the width of this monster's forward view cone ( as a dotproduct result )
+	SetFieldOfView(VIEW_FIELD_WIDE); // indicates the width of this monster's forward view cone ( as a dotproduct result )
 
 	m_afCapability = bits_CAP_HEAR | bits_CAP_TURN_HEAD;
 

@@ -376,7 +376,7 @@ void CBigMomma :: Spawn()
 	SetBloodColor(BLOOD_COLOR_GREEN);
 	SetHealth( 150 * gSkillData.GetBigMommaHealthFactor() );
 	SetViewOffset( Vector ( 0, 0, 128 ) );// position of the eyes relative to monster's origin.
-	m_flFieldOfView		= 0.3;// indicates the width of this monster's forward view cone ( as a dotproduct result )
+	SetFieldOfView(0.3);// indicates the width of this monster's forward view cone ( as a dotproduct result )
 	m_MonsterState		= MONSTERSTATE_NONE;
 
 	MonsterInit();
@@ -384,7 +384,7 @@ void CBigMomma :: Spawn()
 
 void CBigMomma :: Precache()
 {
-	PRECACHE_MODEL("models/big_mom.mdl");
+	PrecacheModel("models/big_mom.mdl");
 
 	PRECACHE_SOUND_ARRAY( pChildDieSounds );
 	PRECACHE_SOUND_ARRAY( pSackSounds );
@@ -399,9 +399,9 @@ void CBigMomma :: Precache()
 	UTIL_PrecacheOther( BIG_CHILDCLASS );
 
 	// TEMP: Squid
-	PRECACHE_MODEL("sprites/mommaspit.spr");// spit projectile.
-	gSpitSprite = PRECACHE_MODEL("sprites/mommaspout.spr");// client side spittle.
-	gSpitDebrisSprite = PRECACHE_MODEL("sprites/mommablob.spr" );
+	PrecacheModel("sprites/mommaspit.spr");// spit projectile.
+	gSpitSprite = PrecacheModel("sprites/mommaspout.spr");// client side spittle.
+	gSpitDebrisSprite = PrecacheModel("sprites/mommablob.spr" );
 
 	PRECACHE_SOUND( "bullchicken/bc_acid1.wav" );
 	PRECACHE_SOUND( "bullchicken/bc_spithit1.wav" );

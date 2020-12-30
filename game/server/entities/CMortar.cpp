@@ -40,7 +40,7 @@ void CMortar::Spawn()
 
 void CMortar::Precache()
 {
-	m_spriteTexture = PRECACHE_MODEL( "sprites/lgtning.spr" );
+	m_spriteTexture = PrecacheModel( "sprites/lgtning.spr" );
 }
 
 void CMortar::MortarExplode( void )

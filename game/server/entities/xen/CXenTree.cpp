@@ -66,8 +66,8 @@ void CXenTree::Spawn( void )
 
 void CXenTree::Precache( void )
 {
-	PRECACHE_MODEL( "models/tree.mdl" );
-	PRECACHE_MODEL( XEN_PLANT_GLOW_SPRITE );
+	PrecacheModel( "models/tree.mdl" );
+	PrecacheModel( XEN_PLANT_GLOW_SPRITE );
 	PRECACHE_SOUND_ARRAY( pAttackHitSounds );
 	PRECACHE_SOUND_ARRAY( pAttackMissSounds );
 }

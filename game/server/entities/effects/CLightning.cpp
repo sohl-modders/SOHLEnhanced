@@ -82,7 +82,7 @@ void CLightning::Spawn( void )
 
 void CLightning::Precache( void )
 {
-	m_spriteTexture = PRECACHE_MODEL( ( char * ) STRING( m_iszSpriteName ) );
+	m_spriteTexture = PrecacheModel( ( char * ) STRING( m_iszSpriteName ) );
 	CBeam::Precache();
 }
 

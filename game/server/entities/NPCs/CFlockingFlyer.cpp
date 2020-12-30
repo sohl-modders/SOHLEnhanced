@@ -41,8 +41,8 @@ void CFlockingFlyer::Spawn()
 
 void CFlockingFlyer::Precache()
 {
-	//PRECACHE_MODEL("models/aflock.mdl");
-	PRECACHE_MODEL( "models/boid.mdl" );
+	//PrecacheModel("models/aflock.mdl");
+	PrecacheModel( "models/boid.mdl" );
 	CFlockingFlyerFlock::PrecacheFlockSounds();
 }
 
@@ -55,7 +55,7 @@ void CFlockingFlyer::SpawnCommonCode()
 	SetHealth( 1 );
 
 	m_fPathBlocked = false;// obstacles will be detected
-	m_flFieldOfView = 0.2;
+	SetFieldOfView(0.2);
 
 	//SetModel( "models/aflock.mdl");
 	SetModel( "models/boid.mdl" );

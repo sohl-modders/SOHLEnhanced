@@ -319,7 +319,7 @@ void CBarney :: Spawn()
 	SetBloodColor(BLOOD_COLOR_RED);
 	SetHealth( gSkillData.GetBarneyHealth() );
 	SetViewOffset( Vector ( 0, 0, 50 ) );// position of the eyes relative to monster's origin.
-	m_flFieldOfView		= VIEW_FIELD_WIDE; // NOTE: we need a wide field of view so npc will notice player and say hello
+	SetFieldOfView(VIEW_FIELD_WIDE); // NOTE: we need a wide field of view so npc will notice player and say hello
 	m_MonsterState		= MONSTERSTATE_NONE;
 
 	SetBody( 0 ); // gun in holster
@@ -333,7 +333,7 @@ void CBarney :: Spawn()
 
 void CBarney :: Precache()
 {
-	PRECACHE_MODEL("models/barney.mdl");
+	PrecacheModel("models/barney.mdl");
 
 	PRECACHE_SOUND("barney/ba_attack1.wav" );
 	PRECACHE_SOUND("barney/ba_attack2.wav" );

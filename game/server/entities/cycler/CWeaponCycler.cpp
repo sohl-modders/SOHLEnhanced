@@ -33,7 +33,7 @@ void CWeaponCycler::Spawn()
 	SetSolidType( SOLID_SLIDEBOX );
 	SetMoveType( MOVETYPE_NONE );
 
-	PRECACHE_MODEL( GetModelName() );
+	PrecacheModel( GetModelName() );
 	SetModel( GetModelName() );
 	m_iszModel = MAKE_STRING( GetModelName() );
 	m_iModel = GetModelIndex();

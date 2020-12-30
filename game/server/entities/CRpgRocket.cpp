@@ -82,8 +82,8 @@ void CRpgRocket::RocketTouch( CBaseEntity *pOther )
 //=========================================================
 void CRpgRocket::Precache( void )
 {
-	PRECACHE_MODEL( "models/rpgrocket.mdl" );
-	m_iTrail = PRECACHE_MODEL( "sprites/smoke.spr" );
+	PrecacheModel( "models/rpgrocket.mdl" );
+	m_iTrail = PrecacheModel( "sprites/smoke.spr" );
 	PRECACHE_SOUND( "weapons/rocket1.wav" );
 }
 

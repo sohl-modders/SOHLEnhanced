@@ -27,7 +27,7 @@ LINK_ENTITY_TO_CLASS( monster_barney_dead, CDeadBarney );
 //=========================================================
 void CDeadBarney::Spawn()
 {
-	PRECACHE_MODEL( "models/barney.mdl" );
+	PrecacheModel( "models/barney.mdl" );
 	SetModel( "models/barney.mdl" );
 
 	GetEffects().ClearAll();

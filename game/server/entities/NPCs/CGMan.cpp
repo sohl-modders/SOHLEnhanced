@@ -78,7 +78,7 @@ void CGMan :: Spawn()
 	SetMoveType( MOVETYPE_STEP );
 	SetBloodColor(DONT_BLEED);
 	SetHealth( 100 );
-	m_flFieldOfView		= 0.5;// indicates the width of this monster's forward view cone ( as a dotproduct result )
+	SetFieldOfView(0.5);// indicates the width of this monster's forward view cone ( as a dotproduct result )
 	m_MonsterState		= MONSTERSTATE_NONE;
 
 	MonsterInit();
@@ -86,7 +86,7 @@ void CGMan :: Spawn()
 
 void CGMan :: Precache()
 {
-	PRECACHE_MODEL( "models/gman.mdl" );
+	PrecacheModel( "models/gman.mdl" );
 }	
 
 

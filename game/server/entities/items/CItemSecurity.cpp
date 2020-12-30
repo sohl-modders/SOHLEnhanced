@@ -19,7 +19,7 @@ void CItemSecurity::Spawn( void )
 
 void CItemSecurity::Precache( void )
 {
-	PRECACHE_MODEL( "models/w_security.mdl" );
+	PrecacheModel( "models/w_security.mdl" );
 }
 
 bool CItemSecurity::MyTouch( CBasePlayer *pPlayer )

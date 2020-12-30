@@ -461,7 +461,7 @@ void CAGrunt::Spawn()
 	SetBloodColor(BLOOD_COLOR_GREEN);
 	GetEffects().ClearAll();
 	SetHealth(gSkillData.GetAGruntHealth());
-	m_flFieldOfView = 0.2; // indicates the width of this monster's forward view cone ( as a dotproduct result )
+	SetFieldOfView(0.2); // indicates the width of this monster's forward view cone ( as a dotproduct result )
 	m_MonsterState = MONSTERSTATE_NONE;
 	m_afCapability = 0;
 	m_afCapability |= bits_CAP_SQUAD;

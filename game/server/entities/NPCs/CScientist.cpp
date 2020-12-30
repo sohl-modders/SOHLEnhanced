@@ -579,7 +579,7 @@ void CScientist :: Spawn( void )
 	SetBloodColor(BLOOD_COLOR_RED);
 	SetHealth( gSkillData.GetScientistHealth() );
 	SetViewOffset( Vector ( 0, 0, 50 ) );// position of the eyes relative to monster's origin.
-	m_flFieldOfView		= VIEW_FIELD_WIDE; // NOTE: we need a wide field of view so scientists will notice player and say hello
+	SetFieldOfView(VIEW_FIELD_WIDE); // NOTE: we need a wide field of view so scientists will notice player and say hello
 	m_MonsterState		= MONSTERSTATE_NONE;
 
 //	m_flDistTooFar		= 256.0;
@@ -604,7 +604,7 @@ void CScientist :: Spawn( void )
 
 void CScientist :: Precache( void )
 {
-	PRECACHE_MODEL("models/scientist.mdl");
+	PrecacheModel("models/scientist.mdl");
 	PRECACHE_SOUND("scientist/sci_pain1.wav");
 	PRECACHE_SOUND("scientist/sci_pain2.wav");
 	PRECACHE_SOUND("scientist/sci_pain3.wav");

@@ -37,7 +37,7 @@ void CWreckage::Spawn( void )
 
 	if( HasModel() )
 	{
-		PRECACHE_MODEL( GetModelName() );
+		PrecacheModel( GetModelName() );
 		SetModel( GetModelName() );
 	}
 	// SetScale( 5.0 );
@@ -48,7 +48,7 @@ void CWreckage::Spawn( void )
 void CWreckage::Precache()
 {
 	if( HasModel() )
-		PRECACHE_MODEL( GetModelName() );
+		PrecacheModel( GetModelName() );
 }
 
 void CWreckage::Think( void )

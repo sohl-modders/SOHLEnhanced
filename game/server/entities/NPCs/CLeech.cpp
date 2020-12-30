@@ -96,7 +96,7 @@ void CLeech::Spawn( void )
 	GetFlags() |= FL_SWIM;
 	SetHealth( gSkillData.GetLeechHealth() );
 
-	m_flFieldOfView		= -0.5;	// 180 degree FOV
+	SetFieldOfView(-0.5);	// 180 degree FOV
 	m_flDistLook		= 750;
 	MonsterInit();
 	SetThink( &CLeech::SwimThink );
@@ -188,8 +188,8 @@ void CLeech::Precache( void )
 {
 	size_t i;
 
-	//PRECACHE_MODEL("models/icky.mdl");
-	PRECACHE_MODEL("models/leech.mdl");
+	//PrecacheModel("models/icky.mdl");
+	PrecacheModel("models/leech.mdl");
 
 	for ( i = 0; i < ARRAYSIZE( pAttackSounds ); i++ )
 		PRECACHE_SOUND((char *)pAttackSounds[i]);

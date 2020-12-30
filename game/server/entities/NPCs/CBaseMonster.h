@@ -423,7 +423,7 @@ public:
 	bool MoveToEnemy(Activity movementAct, float waitTime);
 
 	// Returns the time when the door will be open
-	float	OpenDoorAndWait(CBaseEntity* pDoor);
+	float OpenDoorAndWait(CBaseEntity* pDoor);
 
 	/**
 	*	@brief returns a bit mask indicating which types of sounds this monster regards.
@@ -467,6 +467,9 @@ public:
 
 	virtual int BloodColor() const override { return m_bloodColor; }
 	virtual void SetBloodColor(const int bloodColor) { m_bloodColor = bloodColor; }
+
+	virtual float FieldOfView() const { return m_flFieldOfView; }
+	virtual void SetFieldOfView(const float FieldOfView) { m_flFieldOfView = FieldOfView; }
 
 	// combat functions
 	virtual Activity GetDeathActivity(void);

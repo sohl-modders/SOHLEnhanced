@@ -746,24 +746,17 @@ CBaseEntity* CBaseMonster :: CheckTraceHullAttack( float flDist, int iDamage, in
 //=========================================================
 bool CBaseMonster::FInViewCone( const CBaseEntity *pEntity ) const
 {
-	Vector2D	vec2LOS;
-	float	flDot;
-
 	UTIL_MakeVectors ( GetAbsAngles() );
 	
-	vec2LOS = ( pEntity->GetAbsOrigin() - GetAbsOrigin() ).Make2D();
+	Vector2D vec2LOS = (pEntity->GetAbsOrigin() - GetAbsOrigin()).Make2D();
 	vec2LOS = vec2LOS.Normalize();
 
-	flDot = DotProduct (vec2LOS , gpGlobals->v_forward.Make2D() );
+	float flDot = DotProduct(vec2LOS, gpGlobals->v_forward.Make2D());
 
-	if ( flDot > m_flFieldOfView )
-	{
+	if ( flDot > FieldOfView() )
 		return true;
-	}
-	else
-	{
-		return false;
-	}
+
+	return false;
 }
 
 //=========================================================
@@ -773,24 +766,17 @@ bool CBaseMonster::FInViewCone( const CBaseEntity *pEntity ) const
 //=========================================================
 bool CBaseMonster::FInViewCone( const Vector& vecOrigin ) const
 {
-	Vector2D	vec2LOS;
-	float		flDot;
-
 	UTIL_MakeVectors ( GetAbsAngles() );
 	
-	vec2LOS = ( vecOrigin - GetAbsOrigin() ).Make2D();
+	Vector2D vec2LOS = (vecOrigin - GetAbsOrigin()).Make2D();
 	vec2LOS = vec2LOS.Normalize();
 
-	flDot = DotProduct (vec2LOS , gpGlobals->v_forward.Make2D() );
+	float flDot = DotProduct(vec2LOS, gpGlobals->v_forward.Make2D());
 
-	if ( flDot > m_flFieldOfView )
-	{
+	if ( flDot > FieldOfView() )
 		return true;
-	}
-	else
-	{
-		return false;
-	}
+
+	return false;
 }
 
 /*

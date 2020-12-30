@@ -236,7 +236,7 @@ void CHeadCrab :: Spawn()
 	SetHealth( gSkillData.GetHeadcrabHealth() );
 	SetViewOffset( Vector ( 0, 0, 20 ) );// position of the eyes relative to monster's origin.
 	SetYawSpeed( 5 );//!!! should we put this in the monster's changeanim function since turn rates may vary with state/anim?
-	m_flFieldOfView		= 0.5;// indicates the width of this monster's forward view cone ( as a dotproduct result )
+	SetFieldOfView(0.5);// indicates the width of this monster's forward view cone ( as a dotproduct result )
 	m_MonsterState		= MONSTERSTATE_NONE;
 
 	MonsterInit();
@@ -251,7 +251,7 @@ void CHeadCrab :: Precache()
 	PRECACHE_SOUND_ARRAY(pDeathSounds);
 	PRECACHE_SOUND_ARRAY(pBiteSounds);
 
-	PRECACHE_MODEL("models/headcrab.mdl");
+	PrecacheModel("models/headcrab.mdl");
 }	
 
 void CHeadCrab :: RunTask ( const Task_t& task )

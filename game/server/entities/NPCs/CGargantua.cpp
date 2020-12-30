@@ -509,7 +509,7 @@ void CGargantua :: Spawn()
 	SetBloodColor(BLOOD_COLOR_GREEN);
 	SetHealth( gSkillData.GetGargantuaHealth() );
 	//SetViewOffset( Vector ( 0, 0, 96 ) );// taken from mdl file
-	m_flFieldOfView		= -0.2;// width of forward view cone ( as a dotproduct result )
+	SetFieldOfView(-0.2);// width of forward view cone ( as a dotproduct result )
 	m_MonsterState		= MONSTERSTATE_NONE;
 
 	MonsterInit();
@@ -526,12 +526,12 @@ void CGargantua :: Precache()
 {
 	size_t i;
 
-	PRECACHE_MODEL("models/garg.mdl");
-	PRECACHE_MODEL( GARG_EYE_SPRITE_NAME );
-	PRECACHE_MODEL( GARG_BEAM_SPRITE_NAME );
-	PRECACHE_MODEL( GARG_BEAM_SPRITE2 );
-	gStompSprite = PRECACHE_MODEL( GARG_STOMP_SPRITE_NAME );
-	gGargGibModel = PRECACHE_MODEL( GARG_GIB_MODEL );
+	PrecacheModel("models/garg.mdl");
+	PrecacheModel( GARG_EYE_SPRITE_NAME );
+	PrecacheModel( GARG_BEAM_SPRITE_NAME );
+	PrecacheModel( GARG_BEAM_SPRITE2 );
+	gStompSprite = PrecacheModel( GARG_STOMP_SPRITE_NAME );
+	gGargGibModel = PrecacheModel( GARG_GIB_MODEL );
 	PRECACHE_SOUND( GARG_STOMP_BUZZ_SOUND );
 
 	for ( i = 0; i < ARRAYSIZE( pAttackHitSounds ); i++ )

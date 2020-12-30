@@ -30,5 +30,5 @@ void CTentacleMaw::Spawn()
 
 void CTentacleMaw::Precache()
 {
-	PRECACHE_MODEL( "models/maw.mdl" );
+	PrecacheModel( "models/maw.mdl" );
 }

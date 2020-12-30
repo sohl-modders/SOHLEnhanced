@@ -88,7 +88,7 @@ void CSqueakGrenade::Spawn( void )
 
 	m_flDie = gpGlobals->time + SQUEEK_DETONATE_DELAY;
 
-	m_flFieldOfView = 0; // 180 degrees
+	SetFieldOfView(0); // 180 degrees
 
 	if( GetOwner() )
 		m_hOwner = GetOwner();
@@ -101,7 +101,7 @@ void CSqueakGrenade::Spawn( void )
 
 void CSqueakGrenade::Precache( void )
 {
-	PRECACHE_MODEL( "models/w_squeak.mdl" );
+	PrecacheModel( "models/w_squeak.mdl" );
 	PRECACHE_SOUND( "squeek/sqk_blast1.wav" );
 	PRECACHE_SOUND( "common/bodysplat.wav" );
 	PRECACHE_SOUND( "squeek/sqk_die1.wav" );

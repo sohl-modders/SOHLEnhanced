@@ -21,7 +21,7 @@ void CHealthKit::Spawn( void )
 
 void CHealthKit::Precache( void )
 {
-	PRECACHE_MODEL( "models/w_medkit.mdl" );
+	PrecacheModel( "models/w_medkit.mdl" );
 	PRECACHE_SOUND( "items/smallmedkit1.wav" );
 }
 

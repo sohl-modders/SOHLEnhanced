@@ -81,7 +81,7 @@ void CFuncMortarField :: Precache( void )
 {
 	PRECACHE_SOUND ("weapons/mortar.wav");
 	PRECACHE_SOUND ("weapons/mortarhit.wav");
-	PRECACHE_MODEL( "sprites/lgtning.spr" );
+	PrecacheModel( "sprites/lgtning.spr" );
 }
 
 

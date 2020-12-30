@@ -53,7 +53,7 @@ void CControllerZapBall::Spawn( void )
 
 void CControllerZapBall::Precache( void )
 {
-	PRECACHE_MODEL( "sprites/xspark4.spr" );
+	PrecacheModel( "sprites/xspark4.spr" );
 	// PRECACHE_SOUND("debris/zap4.wav");
 	// PRECACHE_SOUND("weapons/electro4.wav");
 }

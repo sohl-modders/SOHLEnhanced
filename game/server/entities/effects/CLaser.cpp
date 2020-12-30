@@ -47,9 +47,9 @@ void CLaser::Spawn( void )
 
 void CLaser::Precache( void )
 {
-	SetModelIndex( PRECACHE_MODEL( GetModelName() ) );
+	SetModelIndex(PrecacheModel( GetModelName() ) );
 	if( m_iszSpriteName )
-		PRECACHE_MODEL( ( char * ) STRING( m_iszSpriteName ) );
+		PrecacheModel( ( char * ) STRING( m_iszSpriteName ) );
 }
 
 void CLaser::KeyValue( KeyValueData *pkvd )

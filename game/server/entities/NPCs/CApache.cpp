@@ -66,7 +66,7 @@ void CApache :: Spawn( void )
 	SetTakeDamageMode( DAMAGE_AIM );
 	SetHealth( gSkillData.GetApacheHealth() );
 
-	m_flFieldOfView = -0.707; // 270 degrees
+	SetFieldOfView(-0.707); // 270 degrees
 
 	SetSequence( 0 );
 	ResetSequenceInfo( );
@@ -91,7 +91,7 @@ void CApache :: Spawn( void )
 
 void CApache::Precache( void )
 {
-	PRECACHE_MODEL("models/apache.mdl");
+	PrecacheModel("models/apache.mdl");
 
 	PRECACHE_SOUND("apache/ap_rotor1.wav");
 	PRECACHE_SOUND("apache/ap_rotor2.wav");
@@ -100,14 +100,14 @@ void CApache::Precache( void )
 
 	PRECACHE_SOUND("weapons/mortarhit.wav");
 
-	m_iSpriteTexture = PRECACHE_MODEL( "sprites/white.spr" );
+	m_iSpriteTexture = PrecacheModel( "sprites/white.spr" );
 
 	PRECACHE_SOUND("turret/tu_fire1.wav");
 
-	PRECACHE_MODEL("sprites/lgtning.spr");
+	PrecacheModel("sprites/lgtning.spr");
 
-	m_iExplode	= PRECACHE_MODEL( "sprites/fexplo.spr" );
-	m_iBodyGibs = PRECACHE_MODEL( "models/metalplategibs_green.mdl" );
+	m_iExplode	= PrecacheModel( "sprites/fexplo.spr" );
+	m_iBodyGibs = PrecacheModel( "models/metalplategibs_green.mdl" );
 
 	UTIL_PrecacheOther( "hvr_rocket" );
 }

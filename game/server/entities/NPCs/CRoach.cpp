@@ -85,7 +85,7 @@ void CRoach :: Spawn()
 	SetBloodColor(BLOOD_COLOR_YELLOW);
 	GetEffects().ClearAll();
 	SetHealth( 1 );
-	m_flFieldOfView		= 0.5;// indicates the width of this monster's forward view cone ( as a dotproduct result )
+	SetFieldOfView(0.5);// indicates the width of this monster's forward view cone ( as a dotproduct result )
 	m_MonsterState		= MONSTERSTATE_NONE;
 
 	MonsterInit();
@@ -101,7 +101,7 @@ void CRoach :: Spawn()
 
 void CRoach :: Precache()
 {
-	PRECACHE_MODEL("models/roach.mdl");
+	PrecacheModel("models/roach.mdl");
 
 	PRECACHE_SOUND("roach/rch_die.wav");
 	PRECACHE_SOUND("roach/rch_walk.wav");

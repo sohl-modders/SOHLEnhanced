@@ -235,7 +235,7 @@ void CZombie :: Spawn()
 	SetBloodColor(BLOOD_COLOR_GREEN);
 	SetHealth( gSkillData.GetZombieHealth() );
 	SetViewOffset( VEC_VIEW );// position of the eyes relative to monster's origin.
-	m_flFieldOfView		= 0.5;// indicates the width of this monster's forward view cone ( as a dotproduct result )
+	SetFieldOfView(0.5);// indicates the width of this monster's forward view cone ( as a dotproduct result )
 	m_MonsterState		= MONSTERSTATE_NONE;
 	m_afCapability		= bits_CAP_DOORS_GROUP;
 
@@ -246,7 +246,7 @@ void CZombie :: Precache()
 {
 	size_t i;
 
-	PRECACHE_MODEL("models/zombie.mdl");
+	PrecacheModel("models/zombie.mdl");
 
 	for ( i = 0; i < ARRAYSIZE( pAttackHitSounds ); i++ )
 		PRECACHE_SOUND((char *)pAttackHitSounds[i]);

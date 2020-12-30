@@ -172,7 +172,7 @@ bool CBaseEntity::Restore(CRestore& restore)
 		Vector maxs = GetRelMax();
 
 
-		PRECACHE_MODEL(GetModelName());
+		PrecacheModel(GetModelName());
 		SetModel(GetModelName());
 		SetSize(mins, maxs);	// Reset them
 	}
@@ -300,6 +300,9 @@ void CBaseEntity::SetModel(const char* pszModelName)
 
 int CBaseEntity::PrecacheModel(const char* pszModelName)
 {
+	if (!FStringNull(pev->model)) //LRC
+		pszModelName = (const char*)STRING(pev->model);
+	
 	if (!pszModelName || !*pszModelName) {
 		ALERT(at_console, "Warning: modelname not specified\n");
 		return g_sModelIndexNullModel; //set null model

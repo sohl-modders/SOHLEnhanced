@@ -37,7 +37,7 @@ void CHGruntRepel::Spawn( void )
 void CHGruntRepel::Precache( void )
 {
 	UTIL_PrecacheOther( "monster_human_grunt" );
-	m_iSpriteTexture = PRECACHE_MODEL( "sprites/rope.spr" );
+	m_iSpriteTexture = PrecacheModel( "sprites/rope.spr" );
 }
 
 void CHGruntRepel::RepelUse( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value )

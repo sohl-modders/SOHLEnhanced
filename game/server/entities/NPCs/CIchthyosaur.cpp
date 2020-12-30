@@ -377,7 +377,7 @@ void CIchthyosaur :: Spawn()
 	SetBloodColor(BLOOD_COLOR_GREEN);
 	SetHealth( gSkillData.GetIchthyosaurHealth() );
 	SetViewOffset( Vector ( 0, 0, 16 ) );
-	m_flFieldOfView		= VIEW_FIELD_WIDE;
+	SetFieldOfView(VIEW_FIELD_WIDE);
 	m_MonsterState		= MONSTERSTATE_NONE;
 	GetFlags() |= FL_SWIM;
 	SetFlyingSpeed( ICHTHYOSAUR_SPEED );
@@ -403,7 +403,7 @@ void CIchthyosaur :: Spawn()
 
 void CIchthyosaur :: Precache()
 {
-	PRECACHE_MODEL("models/icky.mdl");
+	PrecacheModel("models/icky.mdl");
 
 	PRECACHE_SOUND_ARRAY( pIdleSounds );
 	PRECACHE_SOUND_ARRAY( pAlertSounds );

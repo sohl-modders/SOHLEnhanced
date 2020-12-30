@@ -53,7 +53,7 @@ void CSentry::Spawn()
 void CSentry::Precache()
 {
 	CBaseTurret::Precache();
-	PRECACHE_MODEL( "models/sentry.mdl" );
+	PrecacheModel( "models/sentry.mdl" );
 }
 
 void CSentry::Shoot( Vector &vecSrc, Vector &vecDirToEnemy )

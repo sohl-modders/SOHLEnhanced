@@ -44,7 +44,7 @@ LINK_ENTITY_TO_CLASS( monster_penguin, CPenguinGrenade );
 
 void CPenguinGrenade::Precache()
 {
-	PRECACHE_MODEL( "models/w_penguin.mdl" );
+	PrecacheModel( "models/w_penguin.mdl" );
 	PRECACHE_SOUND( "squeek/sqk_blast1.wav" );
 	PRECACHE_SOUND( "common/bodysplat.wav" );
 	PRECACHE_SOUND( "squeek/sqk_die1.wav" );
@@ -80,7 +80,7 @@ void CPenguinGrenade::Spawn()
 
 	m_flDie = gpGlobals->time + PENGUIN_DETONATE_DELAY;
 
-	m_flFieldOfView = 0; // 180 degrees
+	SetFieldOfView(0); // 180 degrees
 
 	if( CBaseEntity* pOwner = GetOwner() )
 		m_hOwner = pOwner;

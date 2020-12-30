@@ -15,7 +15,7 @@ void CEnvFunnel::Spawn( void )
 
 void CEnvFunnel::Precache( void )
 {
-	m_iSprite = PRECACHE_MODEL( "sprites/flare6.spr" );
+	m_iSprite = PrecacheModel( "sprites/flare6.spr" );
 }
 
 void CEnvFunnel::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value )

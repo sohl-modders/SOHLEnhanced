@@ -91,7 +91,7 @@ void CTripmineGrenade::Spawn()
 
 void CTripmineGrenade::Precache()
 {
-	PRECACHE_MODEL( "models/v_tripmine.mdl" );
+	PrecacheModel( "models/v_tripmine.mdl" );
 	PRECACHE_SOUND( "weapons/mine_deploy.wav" );
 	PRECACHE_SOUND( "weapons/mine_activate.wav" );
 	PRECACHE_SOUND( "weapons/mine_charge.wav" );

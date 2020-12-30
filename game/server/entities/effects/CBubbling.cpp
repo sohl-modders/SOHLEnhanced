@@ -41,7 +41,7 @@ void CBubbling::Spawn( void )
 
 void CBubbling::Precache( void )
 {
-	m_bubbleModel = PRECACHE_MODEL( "sprites/bubble.spr" );			// Precache bubble sprite
+	m_bubbleModel = PrecacheModel( "sprites/bubble.spr" );			// Precache bubble sprite
 }
 
 void CBubbling::KeyValue( KeyValueData *pkvd )

@@ -58,7 +58,7 @@ void CRat :: Spawn()
 	SetBloodColor(BLOOD_COLOR_RED);
 	SetHealth( 8 );
 	SetViewOffset( Vector ( 0, 0, 6 ) );// position of the eyes relative to monster's origin.
-	m_flFieldOfView		= 0.5;// indicates the width of this monster's forward view cone ( as a dotproduct result )
+	SetFieldOfView(0.5);// indicates the width of this monster's forward view cone ( as a dotproduct result )
 	m_MonsterState		= MONSTERSTATE_NONE;
 
 	MonsterInit();
@@ -66,7 +66,7 @@ void CRat :: Spawn()
 
 void CRat :: Precache()
 {
-	PRECACHE_MODEL("models/bigrat.mdl");
+	PrecacheModel("models/bigrat.mdl");
 }	
 
 //=========================================================

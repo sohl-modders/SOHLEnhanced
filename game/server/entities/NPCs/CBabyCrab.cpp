@@ -34,7 +34,7 @@ void CBabyCrab::Spawn( void )
 
 void CBabyCrab::Precache( void )
 {
-	PRECACHE_MODEL( "models/baby_headcrab.mdl" );
+	PrecacheModel( "models/baby_headcrab.mdl" );
 	CHeadCrab::Precache();
 }
 

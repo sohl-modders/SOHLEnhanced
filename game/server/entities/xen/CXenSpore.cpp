@@ -59,7 +59,7 @@ void CXenSpore::Spawn( void )
 
 void CXenSpore::Precache( void )
 {
-	PRECACHE_MODEL( ( char * ) pModelNames[ GetSkin() ] );
+	PrecacheModel( ( char * ) pModelNames[ GetSkin() ] );
 }
 
 void CXenSpore::Touch( CBaseEntity *pOther )

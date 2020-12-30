@@ -42,7 +42,7 @@ void CSprite::Spawn( void )
 
 void CSprite::Precache( void )
 {
-	PRECACHE_MODEL( GetModelName() );
+	PrecacheModel( GetModelName() );
 
 	// Reset attachment after save/restore
 	if( auto pAimEnt = GetAimEntity() )

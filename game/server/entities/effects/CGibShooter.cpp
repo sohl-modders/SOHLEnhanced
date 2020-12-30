@@ -43,11 +43,11 @@ void CGibShooter::Precache( void )
 {
 	if( g_Language == LANGUAGE_GERMAN )
 	{
-		m_iGibModelIndex = PRECACHE_MODEL( "models/germanygibs.mdl" );
+		m_iGibModelIndex = PrecacheModel( "models/germanygibs.mdl" );
 	}
 	else
 	{
-		m_iGibModelIndex = PRECACHE_MODEL( "models/hgibs.mdl" );
+		m_iGibModelIndex = PrecacheModel( "models/hgibs.mdl" );
 	}
 }
 

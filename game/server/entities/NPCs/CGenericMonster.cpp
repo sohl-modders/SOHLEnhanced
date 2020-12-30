@@ -83,7 +83,7 @@ void CGenericMonster :: Spawn()
 	SetMoveType( MOVETYPE_STEP );
 	SetBloodColor(BLOOD_COLOR_RED);
 	SetHealth( 8 );
-	m_flFieldOfView		= 0.5;// indicates the width of this monster's forward view cone ( as a dotproduct result )
+	SetFieldOfView(0.5);// indicates the width of this monster's forward view cone ( as a dotproduct result )
 	m_MonsterState		= MONSTERSTATE_NONE;
 
 	MonsterInit();
@@ -97,7 +97,7 @@ void CGenericMonster :: Spawn()
 
 void CGenericMonster :: Precache()
 {
-	PRECACHE_MODEL( GetModelName() );
+	PrecacheModel( GetModelName() );
 }	
 
 //=========================================================

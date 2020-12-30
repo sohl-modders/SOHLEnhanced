@@ -58,8 +58,8 @@ void CTurret::Spawn()
 void CTurret::Precache()
 {
 	CBaseTurret::Precache();
-	PRECACHE_MODEL( "models/turret.mdl" );
-	PRECACHE_MODEL( TURRET_GLOW_SPRITE );
+	PrecacheModel( "models/turret.mdl" );
+	PrecacheModel( TURRET_GLOW_SPRITE );
 }
 
 void CTurret::SpinUpCall( void )

@@ -20,7 +20,7 @@ void CGlow::Spawn( void )
 	GetEffects().ClearAll();
 	SetFrame( 0 );
 
-	PRECACHE_MODEL( GetModelName() );
+	PrecacheModel( GetModelName() );
 	SetModel( GetModelName() );
 
 	m_maxFrame = ( float ) MODEL_FRAMES( GetModelIndex() ) - 1;

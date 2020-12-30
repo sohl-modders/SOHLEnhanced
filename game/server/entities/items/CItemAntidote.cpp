@@ -19,7 +19,7 @@ void CItemAntidote::Spawn( void )
 
 void CItemAntidote::Precache( void )
 {
-	PRECACHE_MODEL( "models/w_antidote.mdl" );
+	PrecacheModel( "models/w_antidote.mdl" );
 }
 
 bool CItemAntidote::MyTouch( CBasePlayer *pPlayer )

@@ -10,7 +10,7 @@ LINK_ENTITY_TO_CLASS( env_shooter, CEnvShooter );
 
 void CEnvShooter::Precache( void )
 {
-	m_iGibModelIndex = PRECACHE_MODEL( GetModelName() );
+	m_iGibModelIndex = PrecacheModel( GetModelName() );
 	CBreakable::MaterialSoundPrecache( ( Materials ) m_iGibMaterial );
 }
 

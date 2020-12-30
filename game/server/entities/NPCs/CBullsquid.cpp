@@ -448,7 +448,7 @@ void CBullsquid :: Spawn()
 	SetBloodColor(BLOOD_COLOR_GREEN);
 	GetEffects().ClearAll();
 	SetHealth( gSkillData.GetBullsquidHealth() );
-	m_flFieldOfView		= 0.2;// indicates the width of this monster's forward view cone ( as a dotproduct result )
+	SetFieldOfView(0.2);// indicates the width of this monster's forward view cone ( as a dotproduct result )
 	m_MonsterState		= MONSTERSTATE_NONE;
 
 	m_fCanThreatDisplay	= true;
@@ -459,11 +459,11 @@ void CBullsquid :: Spawn()
 
 void CBullsquid :: Precache()
 {
-	PRECACHE_MODEL("models/bullsquid.mdl");
+	PrecacheModel("models/bullsquid.mdl");
 	
-	PRECACHE_MODEL("sprites/bigspit.spr");// spit projectile.
+	PrecacheModel("sprites/bigspit.spr");// spit projectile.
 	
-	iSquidSpitSprite = PRECACHE_MODEL("sprites/tinyspit.spr");// client side spittle.
+	iSquidSpitSprite = PrecacheModel("sprites/tinyspit.spr");// client side spittle.
 
 	PRECACHE_SOUND("zombie/claw_miss2.wav");// because we use the basemonster SWIPE animation event
 

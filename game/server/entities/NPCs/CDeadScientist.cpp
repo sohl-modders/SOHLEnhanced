@@ -30,7 +30,7 @@ LINK_ENTITY_TO_CLASS( monster_scientist_dead, CDeadScientist );
 //
 void CDeadScientist::Spawn()
 {
-	PRECACHE_MODEL( "models/scientist.mdl" );
+	PrecacheModel( "models/scientist.mdl" );
 	SetModel( "models/scientist.mdl" );
 
 	GetEffects().ClearAll();

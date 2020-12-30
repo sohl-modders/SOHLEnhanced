@@ -240,7 +240,7 @@ void CHoundeye :: Spawn()
 	GetEffects().ClearAll();
 	SetHealth( gSkillData.GetHoundeyeHealth() );
 	SetYawSpeed( 5 );//!!! should we put this in the monster's changeanim function since turn rates may vary with state/anim?
-	m_flFieldOfView		= 0.5;// indicates the width of this monster's forward view cone ( as a dotproduct result )
+	SetFieldOfView(0.5);// indicates the width of this monster's forward view cone ( as a dotproduct result )
 	m_MonsterState		= MONSTERSTATE_NONE;
 	m_fAsleep			= false; // everyone spawns awake
 	m_fDontBlink		= false;
@@ -251,7 +251,7 @@ void CHoundeye :: Spawn()
 
 void CHoundeye :: Precache()
 {
-	PRECACHE_MODEL("models/houndeye.mdl");
+	PrecacheModel("models/houndeye.mdl");
 
 	PRECACHE_SOUND("houndeye/he_alert1.wav");
 	PRECACHE_SOUND("houndeye/he_alert2.wav");
@@ -281,7 +281,7 @@ void CHoundeye :: Precache()
 	PRECACHE_SOUND("houndeye/he_blast2.wav");
 	PRECACHE_SOUND("houndeye/he_blast3.wav");
 
-	m_iSpriteTexture = PRECACHE_MODEL( "sprites/shockwave.spr" );
+	m_iSpriteTexture = PrecacheModel( "sprites/shockwave.spr" );
 }	
 
 //=========================================================

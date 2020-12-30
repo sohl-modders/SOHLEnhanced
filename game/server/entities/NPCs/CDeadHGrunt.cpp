@@ -31,7 +31,7 @@ LINK_ENTITY_TO_CLASS( monster_hgrunt_dead, CDeadHGrunt );
 //=========================================================
 void CDeadHGrunt::Spawn( void )
 {
-	PRECACHE_MODEL( "models/hgrunt.mdl" );
+	PrecacheModel( "models/hgrunt.mdl" );
 	SetModel( "models/hgrunt.mdl" );
 
 	GetEffects().ClearAll();

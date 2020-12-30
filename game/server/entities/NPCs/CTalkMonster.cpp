@@ -529,7 +529,7 @@ void CTalkMonster :: RunTask( const Task_t& task )
 					}
 
 					UTIL_MakeVectors( pPlayer->v.angles );
-					if( UTIL_DotPoints( pPlayer->v.origin, GetAbsOrigin(), gpGlobals->v_forward ) < m_flFieldOfView )
+					if( UTIL_DotPoints( pPlayer->v.origin, GetAbsOrigin(), gpGlobals->v_forward ) < FieldOfView() )
 					{
 						// player looked away
 						TaskFail();
@@ -1284,7 +1284,7 @@ Schedule_t* CTalkMonster :: GetScheduleOfType ( int Type )
 					// watch the client.
 					UTIL_MakeVectors ( pPlayer->v.angles );
 					if ( ( pPlayer->v.origin - GetAbsOrigin() ).Length2D() < TLK_STARE_DIST	&& 
-						 UTIL_DotPoints( pPlayer->v.origin, GetAbsOrigin(), gpGlobals->v_forward ) >= m_flFieldOfView )
+						 UTIL_DotPoints( pPlayer->v.origin, GetAbsOrigin(), gpGlobals->v_forward ) >= FieldOfView())
 					{
 						// go into the special STARE schedule if the player is close, and looking at me too.
 						return &slTlkIdleWatchClient[ 1 ];

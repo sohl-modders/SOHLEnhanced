@@ -131,7 +131,7 @@ void CNihilanth::Spawn()
 	SetHealth(gSkillData.GetNihilanthHealth());
 	SetViewOffset(Vector(0, 0, 300));
 
-	m_flFieldOfView = -1; // 360 degrees
+	SetFieldOfView(-1); // 360 degrees
 
 	SetSequence(0);
 	ResetSequenceInfo();

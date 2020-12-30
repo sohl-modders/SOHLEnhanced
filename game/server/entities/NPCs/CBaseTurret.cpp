@@ -133,7 +133,7 @@ void CBaseTurret::Spawn()
 	ResetSequenceInfo( );
 	SetBoneController( 0, 0 );
 	SetBoneController( 1, 0 );
-	m_flFieldOfView = VIEW_FIELD_FULL;
+	SetFieldOfView(VIEW_FIELD_FULL);
 	// m_flSightRange = TURRET_RANGE;
 }
 

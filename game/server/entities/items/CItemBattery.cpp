@@ -20,7 +20,7 @@ void CItemBattery::Spawn( void )
 
 void CItemBattery::Precache( void )
 {
-	PRECACHE_MODEL( "models/w_battery.mdl" );
+	PrecacheModel( "models/w_battery.mdl" );
 	PRECACHE_SOUND( "items/gunpickup2.wav" );
 }
 

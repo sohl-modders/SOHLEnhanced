@@ -75,9 +75,10 @@ void CFuncTank::Spawn( void )
 void CFuncTank::Precache( void )
 {
 	if( m_iszSpriteSmoke )
-		PRECACHE_MODEL( ( char * ) STRING( m_iszSpriteSmoke ) );
+		PrecacheModel( ( char * ) STRING( m_iszSpriteSmoke ) );
+	
 	if( m_iszSpriteFlash )
-		PRECACHE_MODEL( ( char * ) STRING( m_iszSpriteFlash ) );
+		PrecacheModel( ( char * ) STRING( m_iszSpriteFlash ) );
 
 	if( pev->noise )
 		PRECACHE_SOUND( ( char * ) STRING( pev->noise ) );

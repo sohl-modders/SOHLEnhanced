@@ -342,7 +342,7 @@ void CBreakable::Precache( void )
 	if ( m_iszGibModel )
 		pGibName = STRING(m_iszGibModel);
 
-	m_idShard = PRECACHE_MODEL( (char *)pGibName );
+	m_idShard = PrecacheModel( (char *)pGibName );
 
 	// Precache the spawn item's data
 	if ( m_iszSpawnObject )

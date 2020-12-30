@@ -43,7 +43,7 @@ void CCycler :: GenericCyclerSpawn(const char* szModel, Vector vecMin, Vector ve
 
 	//TODO: needed? Only the "cycler" entity ever calls this method anyway. - Solokiller
 	SetClassname( "cycler" );
-	PRECACHE_MODEL( szModel );
+	PrecacheModel( szModel );
 	SetModel( szModel );
 
 	CCycler::Spawn( );

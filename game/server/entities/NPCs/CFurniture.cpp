@@ -12,7 +12,7 @@ LINK_ENTITY_TO_CLASS( monster_furniture, CFurniture );
 //=========================================================
 void CFurniture::Spawn()
 {
-	PRECACHE_MODEL( GetModelName() );
+	PrecacheModel( GetModelName() );
 	SetModel( GetModelName() );
 
 	SetMoveType( MOVETYPE_NONE );

@@ -45,8 +45,8 @@ void CXenPLight::Spawn( void )
 
 void CXenPLight::Precache( void )
 {
-	PRECACHE_MODEL( "models/light.mdl" );
-	PRECACHE_MODEL( XEN_PLANT_GLOW_SPRITE );
+	PrecacheModel( "models/light.mdl" );
+	PrecacheModel( XEN_PLANT_GLOW_SPRITE );
 }
 
 void CXenPLight::Touch( CBaseEntity *pOther )

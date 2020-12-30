@@ -69,7 +69,7 @@ void CBarnacle :: Spawn()
 	SetBloodColor(BLOOD_COLOR_RED);
 	GetEffects() = EF_INVLIGHT; // take light from the ceiling 
 	SetHealth( 25 );
-	m_flFieldOfView		= 0.5;// indicates the width of this monster's forward view cone ( as a dotproduct result )
+	SetFieldOfView(0.5); // indicates the width of this monster's forward view cone ( as a dotproduct result )
 	m_MonsterState		= MONSTERSTATE_NONE;
 	m_flKillVictimTime	= 0;
 	m_cGibs				= 0;
@@ -331,7 +331,7 @@ void CBarnacle :: WaitTillDead ( void )
 
 void CBarnacle :: Precache()
 {
-	PRECACHE_MODEL("models/barnacle.mdl");
+	PrecacheModel("models/barnacle.mdl");
 
 	PRECACHE_SOUND("barnacle/bcl_alert2.wav");//happy, lifting food up
 	PRECACHE_SOUND("barnacle/bcl_bite3.wav");//just got food to mouth

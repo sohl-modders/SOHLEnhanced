@@ -59,5 +59,5 @@ void CLaserSpot::Revive()
 
 void CLaserSpot::Precache()
 {
-	PRECACHE_MODEL( "sprites/laserdot.spr" );
+	PrecacheModel( "sprites/laserdot.spr" );
 }
