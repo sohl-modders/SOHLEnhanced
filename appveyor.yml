@@ -7,12 +7,6 @@ platform: Win32
 # Build in Release configuration only
 configuration:
   - Release
-  
-cache:
-  # Cache dependencies so we don't rebuild them all the time. The cache should only need to be invalidated if we change versions, which is done in this file as well
-  - dependencies/xercesc/install/cmake -> appveyor.yml
-  - dependencies/xercesc/install/include -> appveyor.yml
-  - dependencies/xercesc/install/lib -> appveyor.yml
 
 # Build with all those possible configurations
 environment:

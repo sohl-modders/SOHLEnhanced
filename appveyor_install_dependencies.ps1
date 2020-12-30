@@ -9,7 +9,6 @@ Set-Variable ROOT_DIR -option Constant -value ( [string] ( ( Get-Item -Path ".\"
 Set-Variable CONFIGURATION -option Constant -value ( [string] $Env:CONFIGURATION )
 
 # Dependency configuration
-Set-Variable XERCESC_VERSION -option Constant -value ( [string] "3.2.0" )
 
 <#
 	.SYNOPSIS
@@ -67,30 +66,6 @@ if( !( Test-Path dependencies -pathType container ) )
 	# dependencies/dependency_name/src
 	# dependencies/dependency_name/build
 	# dependencies/dependency_name/install
-
-	# XercesC begin
-	New-Item xercesc -type directory
-	cd xercesc
-	
-	Write-Host "[Dependency] Building XercesC" -foregroundcolor green
-	
-	# Acquire files
-	# 3.2.0 has been archived, so use the correct download link
-	wget "http://archive.apache.org/dist/xerces/c/3/sources/xerces-c-$XERCESC_VERSION.zip" -OutFile xercesc.zip
-	cmd /c 7z x xercesc.zip -o"." -y
-	Rename-Item "xerces-c-$XERCESC_VERSION" src
-  
-	# Override the compiler settings to use a static runtime, so linking with HLE doesn't cause problems
-	CMake_GenerateBuildAndInstall( @( "-DBUILD_SHARED_LIBS=OFF", "-DCMAKE_USER_MAKE_RULES_OVERRIDE='$ROOT_DIR/cmake/c_flags_overrides.cmake'", "-DCMAKE_USER_MAKE_RULES_OVERRIDE_CXX='$ROOT_DIR/cmake/cxx_flags_overrides.cmake'" ) )
-	
-	cd install
-	
-	# We don't need these files, and it reduces cache size
-	Remove-Item bin/*
-	Remove-Item share/* -recurse
-	
-	cd $dependencies_dir
-	# XercesC End
 	
 	# Restore to old path
 	cd $ROOT_DIR
