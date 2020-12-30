@@ -1,5 +1,5 @@
-# Use a VM with VS 2015
-os: Visual Studio 2015
+# Use a VM with VS 2019
+os: Visual Studio 2019
 
 # Only target Windows 32 bits
 platform: Win32
@@ -16,13 +16,10 @@ cache:
 
 # Build with all those possible configurations
 environment:
-  COMPILER_VERSION: Visual Studio 14 2015
-  COMPILER_TOOLSET: v140_xp
+  COMPILER_VERSION: Visual Studio 2019 version 16.1
   matrix:
-    - BUILD_RULES: -DUSE_OPFOR=0 -DUSE_ANGELSCRIPT=0 -DUSE_AS_SQL=0
-    - BUILD_RULES: -DUSE_OPFOR=1 -DUSE_ANGELSCRIPT=0 -DUSE_AS_SQL=0
-    - BUILD_RULES: -DUSE_OPFOR=1 -DUSE_ANGELSCRIPT=1 -DUSE_AS_SQL=0
-    - BUILD_RULES: -DUSE_OPFOR=1 -DUSE_ANGELSCRIPT=1 -DUSE_AS_SQL=1
+    - BUILD_RULES: -DUSE_OPFOR=0
+    - BUILD_RULES: -DUSE_OPFOR=1
 
 before_build:
   # Use the latest version of CMake
