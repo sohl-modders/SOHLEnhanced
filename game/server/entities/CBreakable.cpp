@@ -465,7 +465,7 @@ void CBreakable::BreakTouch( CBaseEntity *pOther )
 			m_flDelay = 0.1;
 		}
 
-		SetNextThink( GetLastThink() + m_flDelay );
+		SetNextThink( m_flDelay );
 
 	}
 
@@ -753,9 +753,9 @@ void CBreakable::Die( void )
 	SUB_UseTargets( NULL, USE_TOGGLE, 0 );
 
 	SetThink( &CBreakable::SUB_Remove );
-	SetNextThink( GetLastThink() + 0.1 );
+	SetNextThink( 0.1 );
 	if ( m_iszSpawnObject )
-		CBaseEntity::Create( (char *)STRING(m_iszSpawnObject), VecBModelOrigin( this ), GetAbsAngles(), edict() );
+		Create( (char *)STRING(m_iszSpawnObject), VecBModelOrigin( this ), GetAbsAngles(), edict() );
 
 
 	if ( Explodable() )

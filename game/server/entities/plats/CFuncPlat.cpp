@@ -169,7 +169,7 @@ void CFuncPlat::HitTop( void )
 	{
 		// After a delay, the platform will automatically start going down again.
 		SetThink( &CFuncPlat::CallGoDown );
-		SetNextThink( GetLastThink() + 3 );
+		SetNextThink( 3 );
 	}
 }
 

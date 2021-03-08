@@ -2,6 +2,8 @@ add_sources(
 	AnimationEvent.h
 	CActAnimating.h
 	CActAnimating.cpp
+	CBaseAlias.h
+	CBaseAlias.cpp
 	CBaseAnimating.h
 	CBaseAnimating.cpp
 	CBaseButton.h
@@ -46,6 +48,8 @@ add_sources(
 	CMomentaryRotButton.cpp
 	CMortar.h
 	CMortar.cpp
+	CMultiAlias.h
+	CMultiAlias.cpp
 	CMultiManager.h
 	CMultiManager.cpp
 	CMultiSource.h

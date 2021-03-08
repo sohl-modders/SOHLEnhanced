@@ -21,11 +21,27 @@
 // Global Savedata for Delay
 BEGIN_DATADESC_NOBASE( CBaseEntity )
 	DEFINE_FIELD( m_hGoalEnt, FIELD_EHANDLE ),
-	
+
+	DEFINE_FIELD( m_MoveWith, FIELD_STRING),
+	DEFINE_FIELD( m_pMoveWith, FIELD_CLASSPTR),
+	DEFINE_FIELD( m_pChildMoveWith, FIELD_CLASSPTR),
+	DEFINE_FIELD( m_pSiblingMoveWith, FIELD_CLASSPTR),
+
+	DEFINE_FIELD( m_iLFlags, FIELD_INTEGER),
+	DEFINE_FIELD( m_iStyle, FIELD_INTEGER),
+	DEFINE_FIELD( m_vecMoveWithOffset, FIELD_VECTOR),
+	DEFINE_FIELD( m_vecRotWithOffset, FIELD_VECTOR),
+	DEFINE_FIELD( m_activated, FIELD_BOOLEAN),
+	DEFINE_FIELD( m_fNextThink, FIELD_TIME),
+	DEFINE_FIELD( m_fPevNextThink, FIELD_TIME),
+	DEFINE_FIELD( m_vecPostAssistVel, FIELD_VECTOR),
+	DEFINE_FIELD( m_vecPostAssistAVel, FIELD_VECTOR),
+
 	DEFINE_FIELD( m_pfnThink, FIELD_FUNCPTR ),		// UNDONE: Build table of these!!!
 	DEFINE_FIELD( m_pfnTouch, FIELD_FUNCPTR ),
 	DEFINE_FIELD( m_pfnUse, FIELD_FUNCPTR ),
 	DEFINE_FIELD( m_pfnBlocked, FIELD_FUNCPTR ),
+
 	DEFINE_THINKFUNC( SUB_Remove ),
 	DEFINE_THINKFUNC( SUB_DoNothing ),
 	DEFINE_THINKFUNC( SUB_StartFadeOut ),
@@ -256,6 +272,21 @@ void CBaseEntity::KeyValue( KeyValueData* pkvd )
 	if( FStrEq( "classificationOverride", pkvd->szKeyName ) )
 	{
 		SetClassificationOverride( EntityClassifications().GetClassificationId( pkvd->szValue ) );
+		pkvd->fHandled = true;
+	}
+	else if (FStrEq("movewith", pkvd->szKeyName))
+	{
+		m_MoveWith = ALLOC_STRING(pkvd->szValue);
+		pkvd->fHandled = true;
+	}
+	else if (FStrEq("skill", pkvd->szKeyName))
+	{
+		m_iLFlags = atoi(pkvd->szValue);
+		pkvd->fHandled = true;
+	}
+	else if (FStrEq("style", pkvd->szKeyName))
+	{
+		m_iStyle = atoi(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
 	else

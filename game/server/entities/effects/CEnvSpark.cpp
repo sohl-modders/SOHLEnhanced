@@ -32,7 +32,7 @@ void CEnvSpark::Spawn( void )
 	else
 		SetThink( &CEnvSpark::SparkThink );
 
-	SetNextThink( gpGlobals->time + ( 0.1 + RANDOM_FLOAT( 0, 1.5 ) ) );
+	SetNextThink( 0.1 + RANDOM_FLOAT( 0, 1.5 ) );
 
 	if( m_flDelay <= 0 )
 		m_flDelay = 1.5;
@@ -52,7 +52,7 @@ void CEnvSpark::Precache( void )
 
 void CEnvSpark::SparkThink( void )
 {
-	SetNextThink( gpGlobals->time + 0.1 + RANDOM_FLOAT( 0, m_flDelay ) );
+	SetNextThink( RANDOM_FLOAT( 0, m_flDelay ) );
 	DoSpark( this, GetAbsOrigin() );
 }
 
@@ -60,7 +60,7 @@ void CEnvSpark::SparkStart( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_T
 {
 	SetUse( &CEnvSpark::SparkStop );
 	SetThink( &CEnvSpark::SparkThink );
-	SetNextThink( gpGlobals->time + ( 0.1 + RANDOM_FLOAT( 0, m_flDelay ) ) );
+	SetNextThink( 0.1 + RANDOM_FLOAT( 0, m_flDelay ) );
 }
 
 void CEnvSpark::SparkStop( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value )

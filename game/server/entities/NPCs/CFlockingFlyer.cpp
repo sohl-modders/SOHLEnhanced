@@ -35,7 +35,7 @@ void CFlockingFlyer::Spawn()
 	SpawnCommonCode();
 
 	SetFrame( 0 );
-	SetNextThink( gpGlobals->time + 0.1 );
+	SetNextThink( 0.1 );
 	SetThink( &CFlockingFlyer::IdleThink );
 }
 
@@ -66,13 +66,13 @@ void CFlockingFlyer::SpawnCommonCode()
 
 void CFlockingFlyer::IdleThink( void )
 {
-	SetNextThink( gpGlobals->time + 0.2 );
+	SetNextThink( 0.2 );
 
 	// see if there's a client in the same pvs as the monster
 	if( UTIL_FindClientInPVS( this ) )
 	{
 		SetThink( &CFlockingFlyer::Start );
-		SetNextThink( gpGlobals->time + 0.1 );
+		SetNextThink( 0.1 );
 	}
 }
 
@@ -130,7 +130,7 @@ void CFlockingFlyer::FormFlock( void )
 	}
 
 	SetThink( &CFlockingFlyer::IdleThink );// now that flock is formed, go to idle and wait for a player to come along.
-	SetNextThink( gpGlobals->time );
+	SetNextThink( 0 );
 }
 
 //=========================================================
@@ -138,7 +138,7 @@ void CFlockingFlyer::FormFlock( void )
 //=========================================================
 void CFlockingFlyer::Start( void )
 {
-	SetNextThink( gpGlobals->time + 0.1 );
+	SetNextThink( 0.1 );
 
 	if( IsLeader() )
 	{
@@ -183,7 +183,7 @@ void CFlockingFlyer::FlockLeaderThink( void )
 	float			flRightSide;
 
 
-	SetNextThink( gpGlobals->time + 0.1 );
+	SetNextThink( 0.1 );
 
 	UTIL_MakeVectors( GetAbsAngles() );
 
@@ -298,7 +298,7 @@ void CFlockingFlyer::FlockFollowerThink( void )
 	Vector			vecDirToLeader;
 	float			flDistToLeader;
 
-	SetNextThink( gpGlobals->time + 0.1 );
+	SetNextThink( 0.1 );
 
 	if( IsLeader() || !InSquad() )
 	{
@@ -423,7 +423,7 @@ void CFlockingFlyer::FallHack( void )
 		if( !GetGroundEntity()->ClassnameIs( "worldspawn" ) )
 		{
 			GetFlags().ClearFlags( FL_ONGROUND );
-			SetNextThink( gpGlobals->time + 0.1 );
+			SetNextThink( 0.1 );
 		}
 		else
 		{
@@ -536,7 +536,7 @@ void CFlockingFlyer::Killed( const CTakeDamageInfo& info, GibAction gibAction )
 	SetMoveType( MOVETYPE_TOSS );
 
 	SetThink( &CFlockingFlyer::FallHack );
-	SetNextThink( gpGlobals->time + 0.1 );
+	SetNextThink( 0.1 );
 }
 
 //=========================================================

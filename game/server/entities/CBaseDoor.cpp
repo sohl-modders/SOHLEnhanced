@@ -352,12 +352,12 @@ void CBaseDoor::DoorHitTop( void )
 	else
 	{
 		// In flWait seconds, DoorGoDown will fire, unless wait is -1, then door stays open
-		SetNextThink( GetLastThink() + m_flWait );
+		SetNextThink( m_flWait );
 		SetThink( &CBaseDoor::DoorGoDown );
 
 		if( m_flWait == -1 )
 		{
-			SetNextThink( -1 );
+			DontThink();
 		}
 	}
 

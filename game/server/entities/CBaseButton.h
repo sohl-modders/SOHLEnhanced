@@ -17,9 +17,14 @@
 
 #define SF_BUTTON_DONTMOVE		1
 #define SF_ROTBUTTON_NOTSOLID	1
+#define SF_BUTTON_ONLYDIRECT	16  //LRC - button can't be used through walls.
 #define	SF_BUTTON_TOGGLE		32	// button stays pushed until reactivated
 #define	SF_BUTTON_SPARK_IF_OFF	64	// button sparks in OFF state
+#define SF_BUTTON_NOT_SOLID		128	// button isn't solid
 #define SF_BUTTON_TOUCH_ONLY	256	// button only fires as a result of USE key.
+#define SF_BUTTON_USEKEY		512 // change the reaction of the button to the USE key.
+// (i.e. if it's meant to be ignored, don't ignore it; otherwise ignore it.)
+
 
 /*QUAKED func_button (0 .5 .8) ?
 When a button is touched, it moves some distance in the direction of it's angle,
@@ -45,6 +50,7 @@ public:
 	DECLARE_DATADESC();
 
 	void Spawn( void ) override;
+	virtual void PostSpawn(void) override; //LRC
 	virtual void Precache( void ) override;
 	virtual void KeyValue( KeyValueData* pkvd ) override;
 
@@ -54,6 +60,7 @@ public:
 	void TriggerAndWait( void );
 	void ButtonReturn( void );
 	void ButtonBackHome( void );
+	void ButtonUse_IgnorePlayer(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value);
 	void ButtonUse( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value );
 	virtual void OnTakeDamage( const CTakeDamageInfo& info ) override;
 
@@ -61,7 +68,7 @@ public:
 	BUTTON_CODE	ButtonResponseToTouch( void );
 
 	// Buttons that don't take damage can be IMPULSE used
-	virtual int	ObjectCaps() const override { return ( CBaseToggle::ObjectCaps() & ~FCAP_ACROSS_TRANSITION ) | ( ( GetTakeDamageMode() != DAMAGE_NO ) ? 0 : FCAP_IMPULSE_USE ); }
+	virtual int	ObjectCaps() const override;
 
 	bool	m_fStayPushed;	// button stays pushed in until touched again?
 	bool	m_fRotating;		// a rotating button?  default is a sliding button.

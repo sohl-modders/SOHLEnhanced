@@ -1334,5 +1334,46 @@ enum EngineLimit
 	MAX_LIGHTSTYLES	= 64,
 };
 
+/**
+*	Desired System.
+*/
+enum DesiredLink
+{
+	LF_POSTASSISTVEL = (1<<3),
+	LF_POSTASSISTAVEL = (1<<4),
+
+	LF_DOASSIST = (1<<5),
+	LF_CORRECTSPEED = (1<<6),
+
+	LF_DODESIRED = (1<<7),
+	LF_DESIRED_THINK = (1<<8),
+	LF_DESIRED_POSTASSIST = (1<<9),
+
+	LF_DESIRED_INFO = (1<<10),
+	LF_DESIRED_ACTION = (1<<11),
+
+	LF_MOVENONE = (1<<12),
+	LF_MERGEPOS = (1<<13),
+	LF_PARENTMOVE = (1<<14),
+	LF_ANGULAR = (1<<15),
+	LF_POSTORG = (1<<16),
+	LF_POINTENTITY = (1<<17),
+
+	LF_ALIASLIST = (1<<18)
+};
+
+// an entity must have one of these flags set in order to be in the AssistList
+#define LF_ASSISTLIST (LF_DOASSIST|LF_DODESIRED|LF_MERGEPOS|LF_POSTORG)
+
+/**
+*	Skill System.
+*/
+enum SkillOptions
+{
+	LF_NOTEASY = (1 << 0),
+	LF_NOTMEDIUM = (1 << 1),
+	LF_NOTHARD = (1 << 2),
+};
+
 #endif
 

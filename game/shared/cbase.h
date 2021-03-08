@@ -21,6 +21,8 @@ class CSquadMonster;
 class CCineMonster;
 class CBasePlayerWeapon;
 class CSound;
+class CBaseAlias;
+class CInfoGroup;
 
 #include "entities/CBaseEntity.shared.h"
 
@@ -39,6 +41,10 @@ class CSound;
 #include "entities/CBaseButton.h"
 
 #include "entities/CWorld.h"
+
+#include "entities/CBaseAlias.h"
+
+#include "entities/CInfoGroup.h"
 
 #include "UserMessages.h"
 

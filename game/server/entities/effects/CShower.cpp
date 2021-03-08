@@ -34,7 +34,7 @@ void CShower::Spawn( void )
 
 	SetMoveType( MOVETYPE_BOUNCE );
 	SetGravity( 0.5 );
-	SetNextThink( gpGlobals->time + 0.1 );
+	SetNextThink( 0.1 );
 	SetSolidType( SOLID_NOT );
 	SetModel( "models/grenade.mdl" );	// Need a model, just use the grenade, we don't draw it anyway
 	SetSize( g_vecZero, g_vecZero );
@@ -50,7 +50,7 @@ void CShower::Think( void )
 
 	SetSpeed( GetSpeed() - 0.1 );
 	if( GetSpeed() > 0 )
-		SetNextThink( gpGlobals->time + 0.1 );
+		SetNextThink( 0.1 );
 	else
 		UTIL_Remove( this );
 	GetFlags().ClearFlags( FL_ONGROUND );

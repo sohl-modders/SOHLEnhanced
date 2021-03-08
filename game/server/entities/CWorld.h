@@ -33,8 +33,8 @@ public:
 	*	The world always has model index 1.
 	*/
 	static const int WORLD_MODELINDEX = 1;
+	CBaseAlias* m_pFirstAlias;
 
-public:
 	DECLARE_CLASS( CWorld, CBaseEntity );
 	DECLARE_DATADESC();
 
@@ -61,7 +61,6 @@ public:
 private:
 	void LoadGMR();
 
-private:
 	static CWorld* m_pInstance;
 
 	string_t m_iszMapScript = iStringNull;

@@ -59,7 +59,7 @@ void CRpgRocket::Spawn( void )
 	SetAbsVelocity( gpGlobals->v_forward * 250 );
 	SetGravity( 0.5 );
 
-	SetNextThink( gpGlobals->time + 0.4 );
+	SetNextThink( 0.4 );
 
 	SetDamage( gSkillData.GetPlrDmgRPG() );
 }
@@ -117,7 +117,7 @@ void CRpgRocket::IgniteThink( void )
 
 	// set to follow laser spot
 	SetThink( &CRpgRocket::FollowThink );
-	SetNextThink( gpGlobals->time + 0.1 );
+	SetNextThink( 0.1 );
 }
 
 
@@ -193,5 +193,5 @@ void CRpgRocket::FollowThink( void )
 	}
 	// ALERT( at_console, "%.0f\n", flSpeed );
 
-	SetNextThink( gpGlobals->time + 0.1 );
+	SetNextThink( 0.1 );
 }

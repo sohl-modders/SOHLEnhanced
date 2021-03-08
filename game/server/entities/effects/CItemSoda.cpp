@@ -21,7 +21,7 @@ void CItemSoda::Spawn( void )
 	SetSize( Vector( 0, 0, 0 ), Vector( 0, 0, 0 ) );
 
 	SetThink( &CItemSoda::CanThink );
-	SetNextThink( gpGlobals->time + 0.5 );
+	SetNextThink( 0.5 );
 }
 
 void CItemSoda::Precache( void )
@@ -60,5 +60,5 @@ void CItemSoda::CanTouch( CBaseEntity *pOther )
 	GetEffects() = EF_NODRAW;
 	SetTouch( NULL );
 	SetThink( &CItemSoda::SUB_Remove );
-	SetNextThink( gpGlobals->time );
+	SetNextThink( 0 );
 }

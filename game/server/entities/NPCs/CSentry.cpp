@@ -47,7 +47,7 @@ void CSentry::Spawn()
 
 	SetTouch( &CSentry::SentryTouch );
 	SetThink( &CSentry::Initialize );
-	SetNextThink( gpGlobals->time + 0.3 );
+	SetNextThink( 0.3 );
 }
 
 void CSentry::Precache()
@@ -78,7 +78,7 @@ void CSentry::OnTakeDamage( const CTakeDamageInfo& info )
 	{
 		SetThink( &CSentry::Deploy );
 		SetUse( NULL );
-		SetNextThink( gpGlobals->time + 0.1 );
+		SetNextThink( 0.1 );
 	}
 
 	SetHealth( GetHealth() - info.GetDamage() );
@@ -93,7 +93,7 @@ void CSentry::OnTakeDamage( const CTakeDamageInfo& info )
 		SetUse( NULL );
 		SetThink( &CSentry::SentryDeath );
 		SUB_UseTargets( this, USE_ON, 0 ); // wake up others
-		SetNextThink( gpGlobals->time + 0.1 );
+		SetNextThink( 0.1 );
 	}
 }
 
@@ -108,7 +108,7 @@ void CSentry::SentryTouch( CBaseEntity *pOther )
 void CSentry::SentryDeath( void )
 {
 	StudioFrameAdvance();
-	SetNextThink( gpGlobals->time + 0.1 );
+	SetNextThink( 0.1 );
 
 	if( GetDeadFlag() != DEAD_DEAD )
 	{

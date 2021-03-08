@@ -26,10 +26,11 @@ public:
 
 	float		m_flDelay;
 	string_t	m_iszKillTarget;
+	EHANDLE		m_hActivator; //LRC - moved here from CBaseToggle
 
-	EHANDLE m_hOriginalCaller;
+	EHANDLE		m_hOriginalCaller;
 
-	virtual void	KeyValue( KeyValueData* pkvd ) override;
+	virtual void KeyValue( KeyValueData* pkvd ) override;
 	// common member functions
 	void SUB_UseTargets( CBaseEntity *pActivator, USE_TYPE useType, float value );
 	void DelayThink( void );

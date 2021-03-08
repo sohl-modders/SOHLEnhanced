@@ -428,7 +428,7 @@ CSound* CBaseMonster::PBestScent(void)
 //=========================================================
 void CBaseMonster::MonsterThink(void)
 {
-	SetNextThink(gpGlobals->time + 0.1); // keep monster thinking.
+	SetNextThink(0.1); // keep monster thinking.
 	
 	RunAI();
 	
@@ -1906,7 +1906,7 @@ void CBaseMonster::MonsterInit(void)
 	SetEyePosition();
 
 	SetThink(&CBaseMonster::MonsterInitThink);
-	SetNextThink(gpGlobals->time + 0.1);
+	SetNextThink(0.1);
 	SetUse(&CBaseMonster::MonsterUse);
 }
 
@@ -2010,7 +2010,7 @@ void CBaseMonster::StartMonster(void)
 	// Delay drop to floor to make sure each door in the level has had its chance to spawn
 	// Spread think times so that they don't all happen at the same time (Carmack)
 	SetThink(&CBaseMonster::CallMonsterThink);
-	SetNextThink(GetNextThink() + RANDOM_FLOAT(0.1, 0.4)); // spread think times.
+	SetNextThink(RANDOM_FLOAT(0.1, 0.4)); // spread think times.
 
 	if (HasTargetname()) // wait until triggered
 	{
@@ -3112,7 +3112,7 @@ void CBaseMonster::CorpseFallThink(void)
 		SetAbsOrigin(GetAbsOrigin()); // link into world.
 	}
 	else
-		SetNextThink(gpGlobals->time + 0.1);
+		SetNextThink(0.1);
 }
 
 // Call after animation/pose is set up
@@ -3137,7 +3137,7 @@ void CBaseMonster::MonsterInitDead(void)
 	// Setup health counters, etc.
 	BecomeDead();
 	SetThink(&CBaseMonster::CorpseFallThink);
-	SetNextThink(gpGlobals->time + 0.5);
+	SetNextThink(0.5);
 }
 
 //=========================================================

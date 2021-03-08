@@ -25,7 +25,7 @@ LINK_ENTITY_TO_CLASS( streak_spiral, CSpiral );
 void CSpiral::Spawn( void )
 {
 	SetMoveType( MOVETYPE_NONE );
-	SetNextThink( gpGlobals->time );
+	SetNextThink( 0 );
 	SetSolidType( SOLID_NOT );
 	SetSize( g_vecZero, g_vecZero );
 	GetEffects() |= EF_NODRAW;
@@ -61,7 +61,7 @@ void CSpiral::Think( void )
 		time -= SPIRAL_INTERVAL;
 	}
 
-	SetNextThink( gpGlobals->time );
+	SetNextThink( 0 );
 
 	if( GetHealth() >= GetSpeed() )
 		UTIL_Remove( this );

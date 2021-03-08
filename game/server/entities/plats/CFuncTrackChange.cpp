@@ -49,7 +49,7 @@ void CFuncTrackChange::Spawn( void )
 	}
 
 	EnableUse();
-	SetNextThink( GetLastThink() + 2.0 );
+	SetNextThink( 2.0 );
 	SetThink( &CFuncTrackChange::Find );
 	Precache();
 }
@@ -286,7 +286,7 @@ void CFuncTrackChange::HitBottom( void )
 		m_train->SetTrack( m_trackBottom );
 	}
 	SetThink( NULL );
-	SetNextThink( -1 );
+	DontThink();
 
 	UpdateAutoTargets( m_toggle_state );
 
@@ -307,7 +307,7 @@ void CFuncTrackChange::HitTop( void )
 
 	// Don't let the plat go back down
 	SetThink( NULL );
-	SetNextThink( -1 );
+	DontThink();
 	UpdateAutoTargets( m_toggle_state );
 	EnableUse();
 }
@@ -339,6 +339,6 @@ void CFuncTrackChange::UpdateAutoTargets( int toggleState )
 
 void CFuncTrackChange::OverrideReset( void )
 {
-	SetNextThink( GetLastThink() + 1.0 );
+	SetNextThink( 1.0 );
 	SetThink( &CFuncTrackChange::Find );
 }

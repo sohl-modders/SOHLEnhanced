@@ -49,7 +49,7 @@ void CLightning::Spawn( void )
 		if( GetDamage() > 0 )
 		{
 			SetThink( &CLightning::DamageThink );
-			SetNextThink( gpGlobals->time + 0.1 );
+			SetNextThink( 0.1 );
 		}
 		if( HasTargetname() )
 		{
@@ -57,7 +57,7 @@ void CLightning::Spawn( void )
 			{
 				GetEffects() = EF_NODRAW;
 				m_active = false;
-				SetNextThink( 0 );
+				DontThink();
 			}
 			else
 				m_active = true;
@@ -75,7 +75,7 @@ void CLightning::Spawn( void )
 		if( !HasTargetname() || GetSpawnFlags().Any( SF_BEAM_STARTON ) )
 		{
 			SetThink( &CLightning::StrikeThink );
-			SetNextThink( gpGlobals->time + 1.0 );
+			SetNextThink( 1.0 );
 		}
 	}
 }
@@ -158,9 +158,9 @@ void CLightning::StrikeThink( void )
 	if( m_life != 0 )
 	{
 		if( GetSpawnFlags().Any( SF_BEAM_RANDOM ) )
-			SetNextThink( gpGlobals->time + m_life + RANDOM_FLOAT( 0, m_restrike ) );
+			SetNextThink( m_life + RANDOM_FLOAT( 0, m_restrike ) );
 		else
-			SetNextThink( gpGlobals->time + m_life + m_restrike );
+			SetNextThink( m_life + m_restrike );
 	}
 	m_active = true;
 
@@ -260,7 +260,7 @@ void CLightning::StrikeThink( void )
 
 void CLightning::DamageThink( void )
 {
-	SetNextThink( gpGlobals->time + 0.1 );
+	SetNextThink( 0.1 );
 	TraceResult tr;
 	UTIL_TraceLine( GetStartPos(), GetEndPos(), dont_ignore_monsters, NULL, &tr );
 	BeamDamage( &tr );
@@ -384,7 +384,7 @@ void CLightning::StrikeUse( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_T
 	else
 	{
 		SetThink( &CLightning::StrikeThink );
-		SetNextThink( gpGlobals->time + 0.1 );
+		SetNextThink( 0.1 );
 	}
 
 	if( !GetSpawnFlags().Any( SF_BEAM_TOGGLE ) )
@@ -399,7 +399,7 @@ void CLightning::ToggleUse( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_T
 	{
 		m_active = false;
 		GetEffects() |= EF_NODRAW;
-		SetNextThink( 0 );
+		DontThink();
 	}
 	else
 	{
@@ -408,7 +408,7 @@ void CLightning::ToggleUse( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_T
 		DoSparks( GetStartPos(), GetEndPos() );
 		if( GetDamage() > 0 )
 		{
-			SetNextThink( gpGlobals->time );
+			SetNextThink( 0 );
 			SetDamageTime( gpGlobals->time );
 		}
 	}

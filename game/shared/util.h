@@ -95,6 +95,7 @@ inline void MESSAGE_BEGIN( int iMsgType, int iMsgID, const float *pOrigin, entva
 }
 
 void MESSAGE_BEGIN( int iMsgType, int iMsgID, const float* pVecOrigin, CBaseEntity* pPlayer );
+int GetStdLightStyle(int iStyle);
 
 // Testing the three types of "entity" for nullity
 #define eoNullEntity 0
@@ -111,6 +112,8 @@ struct TYPEDESCRIPTION;
 class CBaseEntity;
 class CBasePlayerWeapon;
 class CBasePlayer;
+class CBaseAlias;
+class CInfoGroup;
 
 // Misc. Prototypes
 void UTIL_SetSize( CBaseEntity* pEntity, const Vector& vecMin, const Vector& vecMax );
@@ -119,6 +122,7 @@ extern CBaseEntity	*UTIL_FindEntityInSphere(CBaseEntity *pStartEntity, const Vec
 extern CBaseEntity	*UTIL_FindEntityByString(CBaseEntity *pStartEntity, const char *szKeyword, const char *szValue );
 extern CBaseEntity	*UTIL_FindEntityByClassname(CBaseEntity *pStartEntity, const char *szName );
 extern CBaseEntity	*UTIL_FindEntityByTargetname(CBaseEntity *pStartEntity, const char *szName );
+extern CBaseEntity  *UTIL_FindEntityByTargetname(CBaseEntity* pStartEntity, const char* szName, CBaseEntity* pActivator);
 extern CBaseEntity	*UTIL_FindEntityGeneric(const char *szName, const Vector &vecSrc, float flRadius );
 
 /**
@@ -253,6 +257,8 @@ extern void			UTIL_LogPrintf( const char* const pszFormat, ... );
 *	@param ... Arguments.
 */
 void UTIL_ServerPrintf( const char* const pszFormat, ... );
+
+void UTIL_Log(const char* fmt, ...);
 
 #if !defined( _WIN32 ) && !defined( _rotr )
 extern "C" {
@@ -394,7 +400,51 @@ void Cvar_DirectSet( cvar_t* pCvar, const float flValue );
 *	Determine the current # of active players on the server for map cycling logic
 */
 int UTIL_CountPlayers();
+int TryAssistEntity(CBaseEntity* pEnt);
 
 char* COM_FileExtension(const char* in);
+
+void UTIL_AddToAssistList(CBaseEntity* pEnt);
+void UTIL_MarkForAssist(CBaseEntity* pEnt, bool correctSpeed);
+
+void UTIL_SetMoveWithVelocity(CBaseEntity* pEnt, const Vector vecSet, int loopbreaker);
+void UTIL_SetMoveWithAvelocity(CBaseEntity* pEnt, const Vector vecSet, int loopbreaker);
+
+void UTIL_AssignOrigin(CBaseEntity* pEntity, const Vector vecOrigin, bool bInitiator);
+void UTIL_AssignOrigin(CBaseEntity* pEntity, const Vector vecOrigin);
+
+void HandlePostAssist(CBaseEntity* pEnt);
+int ApplyDesiredSettings(CBaseEntity* pListMember);
+void AssistChildren(CBaseEntity* pEnt, Vector vecAdjustVel, Vector vecAdjustAVel);
+bool NeedUpdate(CBaseEntity* pEnt);
+
+void UTIL_MarkForDesired(CBaseEntity* pEnt);
+void UTIL_DesiredAction(CBaseEntity* pEnt);
+void UTIL_DesiredThink(CBaseEntity* pEnt);
+void UTIL_DesiredInfo(CBaseEntity* pEnt);
+void UTIL_DesiredPostAssist(CBaseEntity* pEnt);
+
+void UTIL_SetVelocity(CBaseEntity* pEnt, const Vector vecSet);
+void UTIL_SetAvelocity(CBaseEntity* pEnt, const Vector vecSet);
+void UTIL_SetAngles(CBaseEntity* pEntity, const Vector vecAngles);
+void UTIL_SetAngles(CBaseEntity* pEntity, const Vector vecAngles, bool bInitiator);
+void UTIL_MergePos(CBaseEntity* pEnt, const int loopbreaker = 100);
+
+void CheckDesiredList();
+void CheckAssistList();
+
+void UTIL_AddToAliasList(CBaseAlias* pAlias);
+CBaseEntity* UTIL_FollowReference(CBaseEntity* pStartEntity, const char* szName);
+CBaseEntity* UTIL_FollowGroupReference(CBaseEntity* pStartEntity, char* szGroupName, char* szMemberName);
+CBaseEntity* UTIL_FollowAliasReference(CBaseEntity* pStartEntity, const char* szValue);
+
+void UTIL_MuzzleLight(Vector vecSrc, float flRadius, byte r, byte g, byte b, float flTime, float flDecay);
+void UTIL_StripToken(const char* pKey, char* pDest);
+float UTIL_DotPoints(const Vector& vecSrc, const Vector& vecCheck, const Vector& vecDir);
+void UTIL_StringToVector(float* pVector, const char* pString);
+void UTIL_StringToRandomVector(float* pVector, const char* pString);
+char* UTIL_dtos(const int iValue);
+void UTIL_SetEdictOrigin(edict_t* pEdict, const Vector& vecOrigin);
+Vector UTIL_AxisRotationToVec(const Vector& vecAxis, float flDegs);
 
 #endif //GAME_SHARED_UTIL_H

@@ -52,10 +52,11 @@ public:
 
 	int					m_cTriggersLeft;		// trigger_counter only, # of activations remaining
 	float				m_flHeight;
-	EHANDLE				m_hActivator;
 	void ( CBaseToggle::*m_pfnCallWhenMoveDone )( void );
 	Vector				m_vecFinalDest;
 	Vector				m_vecFinalAngle;
+	float				m_flLinearMoveSpeed;	// LRC- allows a LinearMove to be delayed until a think.
+	float				m_flAngularMoveSpeed;	// LRC
 
 	int					m_bitsDamageInflict;	// DMG_ damage type that the door or tigger does
 
@@ -79,6 +80,7 @@ public:
 							// the button will be allowed to operate. Otherwise, it will be
 							// deactivated.
 };
+
 #define SetMoveDone( a ) m_pfnCallWhenMoveDone = static_cast <void (CBaseToggle::*)(void)> (a)
 
 #endif //GAME_SERVER_CBASETOGGLE_H

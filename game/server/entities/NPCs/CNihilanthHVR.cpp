@@ -83,7 +83,7 @@ void CNihilanthHVR::CircleInit( CBaseEntity *pTarget )
 
 	SetThink( &CNihilanthHVR::HoverThink );
 	SetTouch( &CNihilanthHVR::BounceTouch );
-	SetNextThink( gpGlobals->time + 0.1 );
+	SetNextThink( 0.1 );
 
 	m_hTargetEnt = pTarget;
 }
@@ -130,7 +130,7 @@ void CNihilanthHVR::TeleportInit( CNihilanth *pOwner, CBaseEntity *pEnemy, CBase
 
 	SetThink( &CNihilanthHVR::TeleportThink );
 	SetTouch( &CNihilanthHVR::TeleportTouch );
-	SetNextThink( gpGlobals->time + 0.1 );
+	SetNextThink( 0.1 );
 
 	EMIT_SOUND_DYN( this, CHAN_WEAPON, "x/x_teleattack1.wav", 1, 0.2, 0, 100 );
 }
@@ -163,14 +163,14 @@ void CNihilanthHVR::ZapInit( CBaseEntity *pEnemy )
 	m_hEnemy = pEnemy;
 	SetThink( &CNihilanthHVR::ZapThink );
 	SetTouch( &CNihilanthHVR::ZapTouch );
-	SetNextThink( gpGlobals->time + 0.1 );
+	SetNextThink( 0.1 );
 
 	EMIT_SOUND_DYN( this, CHAN_WEAPON, "debris/zap4.wav", 1, ATTN_NORM, 0, 100 );
 }
 
 void CNihilanthHVR::HoverThink( void )
 {
-	SetNextThink( gpGlobals->time + 0.1 );
+	SetNextThink( 0.1 );
 
 	if( m_hTargetEnt != NULL )
 	{
@@ -289,7 +289,7 @@ bool CNihilanthHVR::CircleTarget( Vector vecTarget )
 
 void CNihilanthHVR::DissipateThink( void )
 {
-	SetNextThink( gpGlobals->time + 0.1 );
+	SetNextThink( 0.1 );
 
 	if( GetScale() > 5.0 )
 		UTIL_Remove( this );
@@ -323,7 +323,7 @@ void CNihilanthHVR::DissipateThink( void )
 
 void CNihilanthHVR::ZapThink( void )
 {
-	SetNextThink( gpGlobals->time + 0.05 );
+	SetNextThink( 0.05 );
 
 	// check world boundaries
 	if( m_hEnemy == NULL || GetAbsOrigin().x < -4096 || GetAbsOrigin().x > 4096 || GetAbsOrigin().y < -4096 || GetAbsOrigin().y > 4096 || GetAbsOrigin().z < -4096 || GetAbsOrigin().z > 4096 )
@@ -378,7 +378,7 @@ void CNihilanthHVR::ZapThink( void )
 
 		SetTouch( NULL );
 		UTIL_Remove( this );
-		SetNextThink( gpGlobals->time + 0.2 );
+		SetNextThink( 0.2 );
 		return;
 	}
 
@@ -403,7 +403,7 @@ void CNihilanthHVR::ZapThink( void )
 
 void CNihilanthHVR::TeleportThink( void )
 {
-	SetNextThink( gpGlobals->time + 0.1 );
+	SetNextThink( 0.1 );
 
 	// check world boundaries
 	if( m_hEnemy == NULL || !m_hEnemy->IsAlive() || !IsInWorld() )
@@ -503,7 +503,7 @@ void CNihilanthHVR::ZapTouch( CBaseEntity *pOther )
 
 	SetTouch( NULL );
 	UTIL_Remove( this );
-	SetNextThink( gpGlobals->time + 0.2 );
+	SetNextThink( 0.2 );
 }
 
 void CNihilanthHVR::MovetoTarget( Vector vecTarget )

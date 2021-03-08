@@ -34,7 +34,7 @@ void CCyclerSprite::Spawn( void )
 	GetEffects().ClearAll();
 
 	SetFrame( 0 );
-	SetNextThink( gpGlobals->time + 0.1 );
+	SetNextThink( 0.1 );
 	m_animate = 1;
 	m_lastTime = gpGlobals->time;
 
@@ -49,7 +49,7 @@ void CCyclerSprite::Think( void )
 	if( ShouldAnimate() )
 		Animate( GetFrameRate() * ( gpGlobals->time - m_lastTime ) );
 
-	SetNextThink( gpGlobals->time + 0.1 );
+	SetNextThink( 0.1 );
 	m_lastTime = gpGlobals->time;
 }
 

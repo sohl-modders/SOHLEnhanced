@@ -68,7 +68,7 @@ void CBaseDelay::SUB_UseTargets( CBaseEntity *pActivator, USE_TYPE useType, floa
 		// create a temp object to fire at a later time
 		auto pTemp = static_cast<CBaseDelay*>( UTIL_CreateNamedEntity( "DelayedUse" ) );
 
-		pTemp->SetNextThink( gpGlobals->time + m_flDelay );
+		pTemp->SetNextThink( m_flDelay );
 
 		pTemp->SetThink( &CBaseDelay::DelayThink );
 
@@ -80,18 +80,10 @@ void CBaseDelay::SUB_UseTargets( CBaseEntity *pActivator, USE_TYPE useType, floa
 		//Store off the original caller so we can pass it along later (Thanks Xalalau)
 		pTemp->m_hOriginalCaller = this;
 
-		// HACKHACK
-		// This wasn't in the release build of Half-Life.  We should have moved m_hActivator into this class
-		// but changing member variable hierarchy would break save/restore without some ugly code.
-		// This code is not as ugly as that code
-		if( pActivator && pActivator->IsPlayer() )		// If a player activates, then save it
-		{
-			pTemp->SetOwner( pActivator );
-		}
-		else
-		{
-			pTemp->SetOwner( NULL );
-		}
+		//LRC - Valve had a hacked thing here to avoid breaking
+		// save/restore. In Spirit that's not a problem.
+		// I've moved m_hActivator into this class, for the "elegant" fix.
+		pTemp->m_hActivator = pActivator;
 
 		return;
 	}

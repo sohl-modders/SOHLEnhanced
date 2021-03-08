@@ -19,6 +19,7 @@
 #include "Decals.h"
 
 #include "cbase.h"
+#include "CServerGameInterface.h"
 #include "Weapons.h"
 
 extern DLL_GLOBAL Vector		g_vecAttackDir;
@@ -81,6 +82,7 @@ void CBaseEntity::OnTakeDamage(const CTakeDamageInfo& info)
 
 		if (flForce > 1000.0)
 			flForce = 1000.0;
+		
 		SetAbsVelocity(GetAbsVelocity() + vecDir * flForce);
 	}
 
@@ -89,10 +91,7 @@ void CBaseEntity::OnTakeDamage(const CTakeDamageInfo& info)
 	if (GetHealth() <= 0)
 	{
 		Killed(info, GIB_NORMAL);
-		return;
 	}
-
-	return;
 }
 
 void CBaseEntity::Killed(const CTakeDamageInfo& info, GibAction gibAction)
@@ -101,7 +100,6 @@ void CBaseEntity::Killed(const CTakeDamageInfo& info, GibAction gibAction)
 	SetDeadFlag(DEAD_DEAD);
 	UTIL_Remove(this);
 }
-
 
 CBaseEntity* CBaseEntity::GetNextTarget()
 {
@@ -113,6 +111,8 @@ CBaseEntity* CBaseEntity::GetNextTarget()
 
 bool CBaseEntity::Save(CSave& save)
 {
+	ThinkCorrection();
+	
 	if (save.WriteEntVars("ENTVARS", pev))
 	{
 		const DataMap_t* pInstanceDataMap = GetDataMap();
@@ -180,7 +180,7 @@ bool CBaseEntity::Restore(CRestore& restore)
 	return bResult;
 }
 
-void CBaseEntity::SetObjectCollisionBox(void)
+void CBaseEntity::SetObjectCollisionBox()
 {
 	::SetObjectCollisionBox(pev);
 }
@@ -194,10 +194,11 @@ bool CBaseEntity::Intersects(const CBaseEntity* const pOther) const
 		pOther->GetAbsMax().y < GetAbsMin().y ||
 		pOther->GetAbsMax().z < GetAbsMin().z)
 		return false;
+	
 	return true;
 }
 
-void CBaseEntity::MakeDormant(void)
+void CBaseEntity::MakeDormant()
 {
 	GetFlags() |= FL_DORMANT;
 
@@ -208,7 +209,7 @@ void CBaseEntity::MakeDormant(void)
 	// Don't draw
 	GetEffects() |= EF_NODRAW;
 	// Don't think
-	SetNextThink(0);
+	DontThink();
 	// Relink
 	SetAbsOrigin(GetAbsOrigin());
 }
@@ -216,6 +217,7 @@ void CBaseEntity::MakeDormant(void)
 bool CBaseEntity::IsDormant() const
 {
 	return GetFlags().Any(FL_DORMANT);
+	//return FBitSet( pev->flags, FL_DORMANT );
 }
 
 bool CBaseEntity::IsInWorld() const
@@ -245,6 +247,31 @@ bool CBaseEntity::ShouldToggle(USE_TYPE useType, const bool currentState) const
 		if ((currentState && useType == USE_ON) || (!currentState && useType == USE_OFF))
 			return false;
 	}
+	
+	return true;
+}
+
+bool CBaseEntity::ShouldToggle(USE_TYPE useType) const
+{
+	if (useType != USE_TOGGLE && useType != USE_SET)
+	{
+		switch(GetState())
+		{
+		case STATE_ON:
+		case STATE_TURN_ON:
+			if (useType == USE_ON) 
+				return false;
+			break;
+		case STATE_OFF:
+		case STATE_TURN_OFF:
+			if (useType == USE_OFF) 
+				return false;
+			break;
+		default:
+			return false;
+		}
+	}
+	
 	return true;
 }
 
@@ -276,7 +303,7 @@ void CBaseEntity::SetModel(const char* pszModelName)
 	}
 
 	//verify file exists
-	byte* data = LOAD_FILE_FOR_ME(pszModelName, NULL);
+	byte* data = LOAD_FILE_FOR_ME(pszModelName, nullptr);
 	if (data) {
 		FREE_FILE(data);
 		g_engfuncs.pfnSetModel(edict(), pszModelName);
@@ -309,7 +336,7 @@ int CBaseEntity::PrecacheModel(const char* pszModelName)
 	if (pszModelName[0] == '*') return 0;
 
 	//verify file exists
-	byte* data = LOAD_FILE_FOR_ME(pszModelName, NULL);
+	byte* data = LOAD_FILE_FOR_ME(pszModelName, nullptr);
 	if (data)
 	{
 		FREE_FILE(data);
@@ -351,7 +378,7 @@ int CBaseEntity::PrecacheSound(const char* pszSoundName)
 	sprintf(path, "sound/%s", sound);
 
 	//verify file exists
-	byte* data = LOAD_FILE_FOR_ME(path, NULL);
+	byte* data = LOAD_FILE_FOR_ME(path, nullptr);
 	if (data)
 	{
 		FREE_FILE(data);
@@ -375,7 +402,7 @@ int CBaseEntity::PrecacheSound(const char* pszSoundName)
 
 unsigned short CBaseEntity::PrecacheEvent(int type, const char* psz)
 {
-	byte* data = LOAD_FILE_FOR_ME((char*)psz, NULL);
+	byte* data = LOAD_FILE_FOR_ME((char*)psz, nullptr);
 	if (data) {
 		FREE_FILE(data);
 		return g_engfuncs.pfnPrecacheEvent(type, psz);
@@ -385,19 +412,330 @@ unsigned short CBaseEntity::PrecacheEvent(int type, const char* psz)
 	return g_engfuncs.pfnPrecacheEvent(type, "events/null.sc");
 }
 
+void CBaseEntity::Activate()
+{
+	if (GetDesiredFlags() & LF_ASSISTLIST)
+	{
+		UTIL_AddToAssistList(this);
+	}
+
+	if (GetDesiredFlags() & LF_ALIASLIST)
+	{
+//		UTIL_AddToAliasList((CBaseAlias*)this); //TODO
+	}
+
+	if (m_activated) 
+		return;
+	
+	m_activated = true;
+	
+	SetParent(m_MoveWith);
+	PostSpawn();
+}
+
+//g-cont. upgrade system to xashParentSystem 0.3 beta
+void CBaseEntity::SetParent(int m_iNewParent, int m_iAttachment)
+{
+	if (!m_iNewParent) //unlink entity from chain
+	{
+		ResetParent();
+		return;
+	}
+
+	CBaseEntity* pParent;
+
+	if (!m_iAttachment) //try to extract aiment from name
+	{
+		char* name = (char*)STRING(m_iNewParent);
+		for (char* c = name; *c; c++)
+		{
+			if (*c == '.')
+			{
+				m_iAttachment = atoi(c + 1);
+				name[strlen(name) - 2] = 0;
+				pParent = UTIL_FindEntityByTargetname(nullptr, name);
+				SetParent(pParent, m_iAttachment);
+				return;
+			}
+		}
+	}
+
+	pParent = UTIL_FindEntityByTargetname(nullptr, STRING(m_iNewParent));
+	SetParent(pParent, m_iAttachment);//check pointer to valid later
+}
+
+void CBaseEntity::SetParent(CBaseEntity* pParent, int m_iAttachment)
+{
+	m_pMoveWith = pParent;
+
+	if (!m_pMoveWith)
+	{
+		ALERT(at_console, "Missing movewith entity %s\n", STRING(m_MoveWith));
+		return;
+	}
+
+	if(pev->targetname)
+		ALERT(at_console,"Init: %s %s moves with %s\n", STRING(pev->classname), STRING(pev->targetname), STRING(m_MoveWith));
+	else
+		ALERT(at_console,"Init: %s moves with %s\n", STRING(pev->classname), STRING(m_MoveWith));
+
+		//check for himself parent
+	if (m_pMoveWith == this)
+	{
+		ALERT(at_console, "%s has himself parent!\n", STRING(pev->classname));
+		return;
+	}
+
+	CBaseEntity* pSibling = m_pMoveWith->m_pChildMoveWith;
+	while (pSibling) // check that this entity isn't already in the list of children
+	{
+		if (pSibling == this) break;
+		pSibling = pSibling->m_pSiblingMoveWith;
+	}
+	
+	if (!pSibling) // if movewith is being set up for the first time...
+	{
+		m_pSiblingMoveWith = m_pMoveWith->m_pChildMoveWith; // may be null: that's fine by me.
+		m_pMoveWith->m_pChildMoveWith = this;
+
+		if (m_iAttachment)//parent has attcahment
+		{
+			if (m_iLFlags & LF_POINTENTITY || pev->flags & FL_MONSTER)
+			{
+				pev->skin = ENTINDEX(m_pMoveWith->edict());
+				pev->body = m_iAttachment;
+				pev->aiment = m_pMoveWith->edict();
+				pev->movetype = MOVETYPE_FOLLOW;
+			}
+			else //error
+			{
+				ALERT(at_console, "%s not following with aiment %d!(yet)\n", STRING(pev->classname), m_iAttachment);
+			}
+			return;
+		}
+		else//appllayed to origin
+		{
+			if (pev->movetype == MOVETYPE_NONE)
+			{
+				if (pev->solid == SOLID_BSP)
+					pev->movetype = MOVETYPE_PUSH;
+				else pev->movetype = MOVETYPE_NOCLIP; // or _FLY, perhaps?
+				SetBits(m_iLFlags, LF_MOVENONE); //member movetype
+			}
+
+			if (m_pMoveWith->pev->movetype == MOVETYPE_WALK)//parent is walking monster?
+			{
+				SetBits(m_iLFlags, LF_POSTORG);//copy pos from parent every frame
+				pev->solid = SOLID_NOT;//set non solid
+			}
+			m_vecParentOrigin = m_pMoveWith->pev->origin;
+			m_vecParentAngles = m_pMoveWith->pev->angles;
+		}
+
+		// was the parent shifted at spawn-time?
+		if (m_pMoveWith->m_vecSpawnOffset != g_vecZero)
+		{
+			UTIL_AssignOrigin(this, pev->origin + m_pMoveWith->m_vecSpawnOffset);
+			m_vecSpawnOffset = m_vecSpawnOffset + m_pMoveWith->m_vecSpawnOffset;
+		}
+
+		m_vecOffsetOrigin = pev->origin - m_vecParentOrigin;
+		m_vecOffsetAngles = pev->angles - m_vecParentAngles;
+
+		if ((m_pMoveWith->m_iLFlags & LF_ANGULAR && m_vecOffsetOrigin != g_vecZero) || m_pMoveWith->m_iLFlags & LF_POINTENTITY)
+		{
+			SetBits(m_iLFlags, LF_POSTORG);//magic stuff
+			//GetPInfo( this );
+		}
+
+		if (g_Server.IsActive())
+		{
+			pev->velocity = pev->velocity + m_pMoveWith->pev->velocity;
+			pev->avelocity = pev->avelocity + m_pMoveWith->pev->avelocity;
+		}
+	}
+}
+
+void CBaseEntity::ResetParent()
+{
+	CBaseEntity* pTemp;
+
+	if (m_iLFlags & LF_MOVENONE)//this entity was static e.g. func_wall
+	{
+		ClearBits(m_iLFlags, LF_MOVENONE);
+		pev->movetype = MOVETYPE_NONE;
+	}
+
+	if (!CWorld::GetInstance())
+	{
+		ALERT(at_console, "ResetParent has no AssistList!\n");
+		return;
+	}
+
+	//LRC - remove this from the AssistList.
+	for (pTemp = CWorld::GetInstance(); pTemp->m_pAssistLink != nullptr; pTemp = pTemp->m_pAssistLink)
+	{
+		if (this == pTemp->m_pAssistLink)
+		{
+			//			ALERT(at_console,"REMOVE: %s removed from the Assist List.\n", STRING(pev->classname));
+			pTemp->m_pAssistLink = this->m_pAssistLink;
+			this->m_pAssistLink = nullptr;
+			break;
+		}
+	}
+
+	//LRC
+	if (m_pMoveWith)
+	{
+		// if I'm moving with another entity, take me out of the list. (otherwise things crash!)
+		pTemp = m_pMoveWith->m_pChildMoveWith;
+		if (pTemp == this)
+		{
+			m_pMoveWith->m_pChildMoveWith = this->m_pSiblingMoveWith;
+		}
+		else
+		{
+			while (pTemp->m_pSiblingMoveWith)
+			{
+				if (pTemp->m_pSiblingMoveWith == this)
+				{
+					pTemp->m_pSiblingMoveWith = this->m_pSiblingMoveWith;
+					break;
+				}
+				pTemp = pTemp->m_pSiblingMoveWith;
+			}
+
+		}
+
+		ALERT(at_console,"REMOVE: %s removed from the %s ChildMoveWith list.\n", 
+			STRING(pev->classname), STRING(m_pMoveWith->pev->targetname));
+	}
+
+	if (m_pChildMoveWith)
+	{
+		CBaseEntity* pCur = m_pChildMoveWith;
+		while (pCur != nullptr)
+		{
+			CBaseEntity* pNext = pCur->m_pSiblingMoveWith;
+			UTIL_SetMoveWithVelocity(pCur, g_vecZero, 100);
+			UTIL_SetMoveWithAvelocity(pCur, g_vecZero, 100);
+			pCur->m_pMoveWith = nullptr;
+			pCur->m_pSiblingMoveWith = nullptr;
+			pCur = pNext;
+		}
+	}
+}
+
+void CBaseEntity::ClearPointers()
+{
+	m_pChildMoveWith = nullptr;
+	m_pSiblingMoveWith = nullptr;
+	m_pAssistLink = nullptr;
+}
+
+void CBaseEntity::DontThink()
+{
+	m_fNextThink = 0;
+	if (m_pMoveWith == nullptr && m_pChildMoveWith == nullptr)
+	{
+		pev->nextthink = 0;
+		m_fPevNextThink = 0;
+	}
+
+	ALERT(at_console, "DontThink for %s\n", GetTargetname());
+}
+
+void CBaseEntity::SetEternalThink()
+{
+	if (pev->movetype == MOVETYPE_PUSH)
+	{
+		pev->nextthink = pev->ltime + 1E6;
+		m_fPevNextThink = pev->nextthink;
+	}
+
+	for (CBaseEntity* pChild = m_pChildMoveWith; pChild != nullptr; pChild = pChild->m_pSiblingMoveWith)
+		pChild->SetEternalThink();
+}
+
+void CBaseEntity::SetNextThink(const float delay, const bool correctSpeed)
+{
+	// now monsters use this method, too.
+	if (m_pMoveWith || m_pChildMoveWith || pev->flags & FL_MONSTER)
+	{
+		// use the Assist system, so that thinking doesn't mess up movement.
+		if (pev->movetype == MOVETYPE_PUSH)
+			m_fNextThink = pev->ltime + delay;
+		else
+			m_fNextThink = gpGlobals->time + delay;
+		
+		SetEternalThink();
+		
+		UTIL_MarkForAssist(this, correctSpeed);
+
+		ALERT(at_console, "SetAssistedThink for %s: %f\n", GetTargetname(), m_fNextThink);
+	}
+	else
+	{
+		if (pev->movetype == MOVETYPE_PUSH)
+			pev->nextthink = pev->ltime + delay;
+		else
+			pev->nextthink = gpGlobals->time + delay;
+
+		m_fPevNextThink = m_fNextThink = pev->nextthink;
+
+		if(pev->classname)
+			ALERT(at_console, "SetNormThink for %s: %f\n", GetTargetname(), m_fNextThink);
+	}
+}
+
+void CBaseEntity::AbsoluteNextThink(const float time, const bool correctSpeed)
+{
+	if (m_pMoveWith || m_pChildMoveWith)
+	{
+		m_fNextThink = time;
+		SetEternalThink();
+		UTIL_MarkForAssist(this, correctSpeed);
+	}
+	else
+	{
+		pev->nextthink = time;
+		m_fPevNextThink = m_fNextThink = pev->nextthink;
+	}
+}
+
+void CBaseEntity::ThinkCorrection()
+{
+	if (pev->nextthink != m_fPevNextThink)
+	{
+		ALERT(at_console, "StoredThink corrected for %s \"%s\": %f -> %f\n", 
+			GetClassname(), GetTargetname(), m_fNextThink, 
+			m_fNextThink + pev->nextthink - m_fPevNextThink);
+		m_fNextThink += pev->nextthink - m_fPevNextThink;
+		m_fPevNextThink = pev->nextthink;
+	}
+}
+
 // NOTE: szName must be a pointer to constant memory, e.g. "monster_class" because the entity
 // will keep a pointer to it after this call.
 CBaseEntity* CBaseEntity::Create(const char* const pszName, const Vector& vecOrigin, const Vector& vecAngles, edict_t* pentOwner, const bool bSpawnEntity)
 {
-	//TODO: alloc for custom ents - Solokiller
+	if (!pszName)
+	{
+		ALERT(at_console, "Create() - No item name!\n");
+		UTIL_LogPrintf("Create() - No item name!\n");
+		return nullptr;
+	}
+	
 	edict_t* pent = CREATE_NAMED_ENTITY(MAKE_STRING(pszName));
 	if (FNullEnt(pent))
 	{
-		ALERT(at_console, "NULL Ent in Create!\n");
+		ALERT(at_console, "NULL Ent in Create! (%s)\n", pszName);
+		UTIL_LogPrintf("NULL Ent in Create! \"%s\"\n", STRING(pszName));
 		return nullptr;
 	}
+	
 	CBaseEntity* pEntity = Instance(pent);
-	pEntity->pev->owner = pentOwner;
+	pEntity->SetOwner(pentOwner);
 	pEntity->SetAbsOrigin(vecOrigin);
 	pEntity->SetAbsAngles(vecAngles);
 

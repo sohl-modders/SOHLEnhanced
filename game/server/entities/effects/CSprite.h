@@ -71,7 +71,7 @@ public:
 		SetThink( &CSprite::AnimateUntilDead );
 		SetFrameRate( framerate );
 		SetDamageTime( gpGlobals->time + ( m_maxFrame / framerate ) );
-		SetNextThink( gpGlobals->time );
+		SetNextThink( 0 );
 	}
 
 	void AnimateUntilDead( void );

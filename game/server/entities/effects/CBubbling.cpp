@@ -32,7 +32,7 @@ void CBubbling::Spawn( void )
 	if( !GetSpawnFlags().Any( SF_BUBBLES_STARTOFF ) )
 	{
 		SetThink( &CBubbling::FizzThink );
-		SetNextThink( gpGlobals->time + 2.0 );
+		SetNextThink( 2.0 );
 		m_state = true;
 	}
 	else
@@ -75,9 +75,9 @@ void CBubbling::FizzThink( void )
 	MESSAGE_END();
 
 	if( m_frequency > 19 )
-		SetNextThink( gpGlobals->time + 0.5 );
+		SetNextThink( 0.5 );
 	else
-		SetNextThink( gpGlobals->time + 2.5 - ( 0.1 * m_frequency ) );
+		SetNextThink( 2.5 - ( 0.1 * m_frequency ) );
 }
 
 void CBubbling::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value )
@@ -88,11 +88,11 @@ void CBubbling::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE use
 	if( m_state )
 	{
 		SetThink( &CBubbling::FizzThink );
-		SetNextThink( gpGlobals->time + 0.1 );
+		SetNextThink( 0.1 );
 	}
 	else
 	{
 		SetThink( NULL );
-		SetNextThink( 0 );
+		DontThink();
 	}
 }

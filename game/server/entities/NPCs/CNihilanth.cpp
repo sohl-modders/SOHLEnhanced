@@ -139,7 +139,7 @@ void CNihilanth::Spawn()
 	InitBoneControllers();
 
 	SetThink(&CNihilanth::StartupThink);
-	SetNextThink(gpGlobals->time + 0.1);
+	SetNextThink(0.1);
 
 	m_vecDesired = Vector(1, 0, 0);
 	m_posDesired = Vector(GetAbsOrigin().x, GetAbsOrigin().y, 512);
@@ -228,13 +228,13 @@ void CNihilanth::DeathSound()
 void CNihilanth::NullThink()
 {
 	StudioFrameAdvance();
-	SetNextThink(gpGlobals->time + 0.5);
+	SetNextThink(0.5);
 }
 
 void CNihilanth::StartupUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
 {
 	SetThink(&CNihilanth::HuntThink);
-	SetNextThink(gpGlobals->time + 0.1);
+	SetNextThink(0.1);
 	SetUse(&CNihilanth::CommandUse);
 }
 
@@ -266,7 +266,7 @@ void CNihilanth::StartupThink()
 
 	SetThink(&CNihilanth::HuntThink);
 	SetUse(&CNihilanth::CommandUse);
-	SetNextThink(gpGlobals->time + 0.1);
+	SetNextThink(0.1);
 }
 
 void CNihilanth::Killed(const CTakeDamageInfo& info, GibAction gibAction)
@@ -276,7 +276,7 @@ void CNihilanth::Killed(const CTakeDamageInfo& info, GibAction gibAction)
 
 void CNihilanth::DyingThink()
 {
-	SetNextThink(gpGlobals->time + 0.1);
+	SetNextThink(0.1);
 	DispatchAnimEvents();
 	StudioFrameAdvance();
 
@@ -403,7 +403,7 @@ void CNihilanth::CrashTouch(CBaseEntity* pOther)
 	if (pOther->GetSolidType() == SOLID_BSP)
 	{
 		SetTouch(NULL);
-		SetNextThink(gpGlobals->time);
+		SetNextThink(0);
 	}
 }
 
@@ -689,7 +689,7 @@ void CNihilanth::NextActivity()
 
 void CNihilanth::HuntThink()
 {
-	SetNextThink(gpGlobals->time + 0.1);
+	SetNextThink(0.1);
 	DispatchAnimEvents();
 	StudioFrameAdvance();
 

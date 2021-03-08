@@ -142,9 +142,9 @@ void CRoach::Killed( const CTakeDamageInfo& info, GibAction gibAction )
 void CRoach :: MonsterThink( void  )
 {
 	if ( !UTIL_FindClientInPVS( this ) )
-		SetNextThink( gpGlobals->time + RANDOM_FLOAT(1,1.5) );
+		SetNextThink( RANDOM_FLOAT(1,1.5) );
 	else
-		SetNextThink( gpGlobals->time + 0.1 );// keep monster thinking
+		SetNextThink( 0.1 );// keep monster thinking
 
 	float flInterval = StudioFrameAdvance( ); // animate
 
@@ -152,7 +152,7 @@ void CRoach :: MonsterThink( void  )
 	{
 		// if light value hasn't been collection for the first time yet, 
 		// suspend the creature for a second so the world finishes spawning, then we'll collect the light level.
-		SetNextThink( gpGlobals->time + 1 );
+		SetNextThink( 1 );
 		m_fLightHacked = true;
 		return;
 	}

@@ -28,7 +28,7 @@ void CPathTrack::Spawn( void )
 	// DEBUGGING CODE
 #if PATH_SPARKLE_DEBUG
 	SetThink( Sparkle );
-	SetNextThink( gpGlobals->time + 0.5 );
+	SetNextThink( 0.5 );
 #endif
 }
 
@@ -295,7 +295,7 @@ CPathTrack *CPathTrack::GetPrevious( void )
 void CPathTrack::Sparkle( void )
 {
 
-	SetNextThink( gpGlobals->time + 0.2 );
+	SetNextThink( 0.2 );
 	if( GetSpawnFlags().Any( SF_PATH_DISABLED ) )
 		UTIL_ParticleEffect( GetAbsOrigin(), Vector( 0, 0, 100 ), 210, 10 );
 	else

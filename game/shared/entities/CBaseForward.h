@@ -104,6 +104,11 @@ enum FCapability
 	*	ALWAYS goes across transitions.
 	*/
 	FCAP_FORCE_TRANSITION	= 0x00000080,
+
+	/**
+	* LRC - can't use this entity through a wall.
+	*/
+	FCAP_ONLYDIRECT_USE		= 0x00000100,
 };
 
 enum USE_TYPE
@@ -112,6 +117,16 @@ enum USE_TYPE
 	USE_ON		= 1,
 	USE_SET		= 2,
 	USE_TOGGLE	= 3
+};
+
+enum STATE
+{
+	STATE_OFF,		// disabled, inactive, invisible, closed, or stateless. Or non-alert monster.
+	STATE_TURN_ON,  // door opening, env_fade fading in, etc.
+	STATE_ON,		// enabled, active, visisble, or open. Or alert monster.
+	STATE_TURN_OFF, // door closing, monster dying (?).
+	STATE_IN_USE	// player is in control (train/tank/barney/scientist).
+					// In_Use isn't very useful, I'll probably remove it.
 };
 
 /**

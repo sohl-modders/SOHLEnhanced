@@ -109,12 +109,12 @@ void CBaseEntity::SUB_FadeOut( void )
 	if( GetRenderAmount() > 7 )
 	{
 		SetRenderAmount( GetRenderAmount() - 7 );
-		SetNextThink( gpGlobals->time + 0.1 );
+		SetNextThink( 0.1 );
 	}
 	else
 	{
 		SetRenderAmount( 0 );
-		SetNextThink( gpGlobals->time + 0.2 );
+		SetNextThink( 0.2 );
 		SetThink( &CBaseEntity::SUB_Remove );
 	}
 }
@@ -135,7 +135,7 @@ void CBaseEntity::SUB_StartFadeOut( void )
 	SetSolidType( SOLID_NOT );
 	SetAngularVelocity( g_vecZero );
 
-	SetNextThink( gpGlobals->time + 0.1 );
+	SetNextThink( 0.1 );
 	SetThink( &CBaseEntity::SUB_FadeOut );
 }
 

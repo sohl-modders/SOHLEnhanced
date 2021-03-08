@@ -62,7 +62,7 @@ void CSporeAmmo::Spawn()
 
 	SetAnimTime( gpGlobals->time );
 
-	SetNextThink( gpGlobals->time + 4 );
+	SetNextThink( 4 );
 
 	SetFrame( 0 );
 
@@ -93,7 +93,7 @@ void CSporeAmmo::OnTakeDamage( const CTakeDamageInfo& info )
 
 	SetAnimTime( gpGlobals->time );
 	SetFrame( 0 );
-	SetNextThink( gpGlobals->time + 0.66 );
+	SetNextThink( 0.66 );
 
 	Vector vecAngles = GetAbsAngles();
 
@@ -136,7 +136,7 @@ void CSporeAmmo::Idling()
 			SetSequence( SPOREAMMO_IDLE );
 			SetAnimTime( gpGlobals->time );
 			SetFrame( 0 );
-			SetNextThink( gpGlobals->time + 10 );
+			SetNextThink( 10 );
 			break;
 		}
 
@@ -146,7 +146,7 @@ void CSporeAmmo::Idling()
 			SetSequence( SPOREAMMO_SPAWNDN );
 			SetAnimTime( gpGlobals->time );
 			SetFrame( 0 );
-			SetNextThink( gpGlobals->time + 4 );
+			SetNextThink( 4 );
 			break;
 		}
 
@@ -167,7 +167,7 @@ void CSporeAmmo::SporeTouch( CBaseEntity* pOther )
 
 		SetAnimTime( gpGlobals->time );
 		SetFrame( 0 );
-		SetNextThink( gpGlobals->time + 0.66 );
+		SetNextThink( 0.66 );
 	}
 }
 

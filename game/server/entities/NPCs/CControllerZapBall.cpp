@@ -48,7 +48,7 @@ void CControllerZapBall::Spawn( void )
 
 	m_hOwner = GetOwner();
 	SetDamageTime( gpGlobals->time ); // keep track of when ball spawned
-	SetNextThink( gpGlobals->time + 0.1 );
+	SetNextThink( 0.1 );
 }
 
 void CControllerZapBall::Precache( void )
@@ -60,7 +60,7 @@ void CControllerZapBall::Precache( void )
 
 void CControllerZapBall::AnimateThink( void )
 {
-	SetNextThink( gpGlobals->time + 0.1 );
+	SetNextThink( 0.1 );
 
 	//TODO: hardcoded sprite frame count? - Solokiller
 	SetFrame( ( ( int ) GetFrame() + 1 ) % 11 );

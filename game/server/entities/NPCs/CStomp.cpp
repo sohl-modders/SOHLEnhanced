@@ -24,7 +24,7 @@ LINK_ENTITY_TO_CLASS( garg_stomp, CStomp );
 
 void CStomp::Spawn( void )
 {
-	SetNextThink( gpGlobals->time );
+	SetNextThink( 0 );
 	SetDamageTime( gpGlobals->time );
 
 	SetFrameRate( 30 );
@@ -38,7 +38,7 @@ void CStomp::Think( void )
 {
 	TraceResult tr;
 
-	SetNextThink( gpGlobals->time + 0.1 );
+	SetNextThink( 0.1 );
 
 	// Do damage for this frame
 	Vector vecStart = GetAbsOrigin();
@@ -77,7 +77,7 @@ void CStomp::Think( void )
 				pSprite->SetAbsOrigin( tr.vecEndPos );
 				pSprite->SetAbsVelocity( Vector( RANDOM_FLOAT( -200, 200 ), RANDOM_FLOAT( -200, 200 ), 175 ) );
 				// pSprite->AnimateAndDie( RANDOM_FLOAT( 8.0, 12.0 ) );
-				pSprite->SetNextThink( gpGlobals->time + 0.3 );
+				pSprite->SetNextThink( 0.3 );
 				pSprite->SetThink( &CSprite::SUB_Remove );
 				pSprite->SetTransparency( kRenderTransAdd, 255, 255, 255, 255, kRenderFxFadeFast );
 			}

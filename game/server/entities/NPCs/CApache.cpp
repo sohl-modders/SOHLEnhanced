@@ -82,7 +82,7 @@ void CApache :: Spawn( void )
 	{
 		SetThink( &CApache::HuntThink );
 		SetTouch( &CApache::FlyTouch );
-		SetNextThink( gpGlobals->time + 1.0 );
+		SetNextThink( 1.0 );
 	}
 
 	m_iRockets = 10;
@@ -117,7 +117,7 @@ void CApache::Precache( void )
 void CApache::NullThink( void )
 {
 	StudioFrameAdvance( );
-	SetNextThink( gpGlobals->time + 0.5 );
+	SetNextThink( 0.5 );
 }
 
 
@@ -125,7 +125,7 @@ void CApache::StartupUse( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYP
 {
 	SetThink( &CApache::HuntThink );
 	SetTouch( &CApache::FlyTouch );
-	SetNextThink( gpGlobals->time + 0.1 );
+	SetNextThink( 0.1 );
 	SetUse( NULL );
 }
 
@@ -139,7 +139,7 @@ void CApache::Killed( const CTakeDamageInfo& info, GibAction gibAction )
 	SetSize( Vector( -32, -32, -64), Vector( 32, 32, 0) );
 	SetThink( &CApache::DyingThink );
 	SetTouch( &CApache::CrashTouch );
-	SetNextThink( gpGlobals->time + 0.1 );
+	SetNextThink( 0.1 );
 	SetHealth( 0 );
 	SetTakeDamageMode( DAMAGE_NO );
 
@@ -156,7 +156,7 @@ void CApache::Killed( const CTakeDamageInfo& info, GibAction gibAction )
 void CApache :: DyingThink( void )
 {
 	StudioFrameAdvance( );
-	SetNextThink( gpGlobals->time + 0.1 );
+	SetNextThink( 0.1 );
 
 	SetAngularVelocity( GetAngularVelocity() * 1.02 );
 
@@ -222,7 +222,7 @@ void CApache :: DyingThink( void )
 
 		// don't stop it we touch a entity
 		GetFlags().ClearFlags( FL_ONGROUND );
-		SetNextThink( gpGlobals->time + 0.2 );
+		SetNextThink( 0.2 );
 		return;
 	}
 	else
@@ -338,7 +338,7 @@ void CApache :: DyingThink( void )
 		MESSAGE_END();
 
 		SetThink( &CApache::SUB_Remove );
-		SetNextThink( gpGlobals->time + 0.1 );
+		SetNextThink( 0.1 );
 	}
 }
 
@@ -363,7 +363,7 @@ void CApache::CrashTouch( CBaseEntity *pOther )
 	{
 		SetTouch( NULL );
 		m_flNextRocket = gpGlobals->time;
-		SetNextThink( gpGlobals->time );
+		SetNextThink( 0 );
 	}
 }
 
@@ -378,7 +378,7 @@ void CApache :: GibMonster( void )
 void CApache :: HuntThink( void )
 {
 	StudioFrameAdvance( );
-	SetNextThink( gpGlobals->time + 0.1 );
+	SetNextThink( 0.1 );
 
 	ShowDamage( );
 

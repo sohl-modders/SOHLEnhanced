@@ -26,16 +26,29 @@ If targeted, it will toggle between on or off.
 class CLight : public CPointEntity
 {
 public:
-	DECLARE_CLASS( CLight, CPointEntity );
+	DECLARE_CLASS(CLight, CPointEntity);
 	DECLARE_DATADESC();
 
-	virtual void	KeyValue( KeyValueData* pkvd ) override;
-	virtual void	Spawn( void ) override;
-	void	Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value ) override;
+	virtual void KeyValue(KeyValueData* pkvd) override;
+	virtual void Spawn() override;
+	void Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value) override;
+	void Think() override;
 
+	virtual STATE GetState() { return m_iState; };
+	int	GetStyle() { return m_iszCurrentStyle; };
+	void SetStyle(int iszPattern);
+
+	void SetCorrectStyle();
 private:
-	int		m_iStyle;
-	int		m_iszPattern;
+	STATE	m_iState; // current state
+	int		m_iOnStyle; // style to use while on
+	int		m_iOffStyle; // style to use while off
+	int		m_iTurnOnStyle; // style to use while turning on
+	int		m_iTurnOffStyle; // style to use while turning off
+	int		m_iTurnOnTime; // time taken to turn on
+	int		m_iTurnOffTime; // time taken to turn off
+	int		m_iszPattern; // custom style to use while on
+	int		m_iszCurrentStyle; // current style string
 };
 
 #endif //GAME_SERVER_ENTITIES_LIGHTS_CLIGHT_H

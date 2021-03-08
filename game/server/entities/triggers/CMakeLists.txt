@@ -29,6 +29,8 @@ add_sources(
 	CTriggerGravity.cpp
 	CTriggerHurt.h
 	CTriggerHurt.cpp
+	CTriggerLightstyle.h
+	CTriggerLightstyle.cpp
 	CTriggerMonsterJump.h
 	CTriggerMonsterJump.cpp
 	CTriggerMultiple.h

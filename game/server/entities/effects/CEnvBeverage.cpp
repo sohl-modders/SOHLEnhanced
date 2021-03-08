@@ -49,5 +49,5 @@ void CEnvBeverage::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE 
 	SetHealth( GetHealth() - 1 );
 
 	//SetThink (SUB_Remove);
-	//SetNextThink( gpGlobals->time );
+	//SetNextThink( 0 );
 }

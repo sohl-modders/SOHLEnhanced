@@ -99,7 +99,7 @@ public:
 
 	static CBeam *BeamCreate( const char *pSpriteName, int width );
 
-	inline void LiveForTime( float time ) { SetThink( &CBeam::SUB_Remove ); SetNextThink( gpGlobals->time + time ); }
+	inline void LiveForTime( float time ) { SetThink( &CBeam::SUB_Remove ); SetNextThink( time ); }
 	inline void	BeamDamageInstant( TraceResult *ptr, float damage )
 	{
 		SetDamage( damage );

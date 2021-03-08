@@ -70,9 +70,33 @@ public:
 	// pointers to engine data
 	entvars_t* pev;		// Don't need to save/restore this pointer, the engine resets it
 
-						// path corners
-	EHANDLE				m_hGoalEnt;// path corner we are heading towards
-	CBaseEntity* m_pLink;// used for temporary link-list operations. 
+	// path corners
+	EHANDLE	m_hGoalEnt;// path corner we are heading towards
+	
+	CBaseEntity* m_pLink;// used for temporary link-list operations.
+	CBaseEntity* m_pMoveWith; // the entity I move with.
+	CBaseEntity* m_pChildMoveWith;	// one of the entities that's moving with me.
+	CBaseEntity* m_pSiblingMoveWith; // another entity that's Moving With the same ent as me.
+	CBaseEntity* m_pAssistLink; // link to the next entity which needs to be Assisted before physics are applied.
+
+	Vector	m_vecMoveWithOffset;
+	Vector	m_vecRotWithOffset;
+	Vector	m_vecOffsetOrigin;
+	Vector	m_vecOffsetAngles;
+	Vector	m_vecParentAngles;
+	Vector	m_vecParentOrigin;
+	Vector	m_vecSpawnOffset;
+	Vector	m_vecPostAssistVel;
+	Vector	m_vecPostAssistAVel;
+	Vector	m_vecPostAssistOrg;
+	Vector	m_vecPostAssistAng;
+	
+	float m_fNextThink;
+	float m_fPevNextThink;
+	int	m_MoveWith;
+	int	m_iLFlags;
+	int	m_iStyle;
+	bool m_activated;
 
 	/*
 	*	Getters and setters for entvars_t.
@@ -904,7 +928,45 @@ public:
 	*/
 	void SetNextThink(const float flNextThink)
 	{
-		pev->nextthink = flNextThink;
+		SetNextThink(flNextThink, false);
+	}
+
+	void SetNextThink(const float delay, const bool correctSpeed);
+	
+	void AbsoluteNextThink(float time)
+	{
+		AbsoluteNextThink(time, false);
+	}
+	
+	void AbsoluteNextThink(const float time, const bool correctSpeed);
+
+	void SetEternalThink();
+
+	void DontThink();
+	
+	void ThinkCorrection();
+
+	void ClearPointers();
+
+	virtual Vector	CalcPosition(CBaseEntity* pLocus)
+	{
+		return pev->origin;
+	}
+	
+	virtual Vector	CalcVelocity(CBaseEntity* pLocus)
+	{
+		return pev->velocity;
+	}
+	
+	virtual float	CalcRatio(CBaseEntity* pLocus)
+	{
+		return 0;
+	}
+
+	//LRC - aliases
+	virtual bool IsAlias()
+	{
+		return false;
 	}
 
 	/**
@@ -1387,6 +1449,22 @@ public:
 	}
 
 	/**
+*	@return The desired system entity's flags.
+*/
+	const CBitSet<int>& GetDesiredFlags() const
+	{
+		return *reinterpret_cast<const CBitSet<int>*>(&m_iLFlags);
+	}
+
+	/**
+	*	@copydoc GetDesiredFlags() const
+	*/
+	CBitSet<int>& GetDesiredFlags()
+	{
+		return *reinterpret_cast<CBitSet<int>*>(&m_iLFlags);
+	}
+
+	/**
 	*	@return The color map.
 	*/
 	int GetColorMap() const { return pev->colormap; }
@@ -1663,9 +1741,14 @@ public:
 	*	Sets this entity's owner.
 	*	@param pOwner Owner to set. Can be null.
 	*/
+	void SetOwner(edict_t* pOwner)
+	{
+		pev->owner = pOwner;
+	}
+	
 	void SetOwner(CBaseEntity* pOwner)
 	{
-		pev->owner = pOwner ? pOwner->edict() : nullptr;
+		SetOwner(pOwner ? pOwner->edict() : nullptr);
 	}
 
 	/**
@@ -1924,7 +2007,7 @@ public:
 	*	Is not called if the entity is created at runtime.
 	*	If the entity has the FL_DORMANT set, this will not be called.
 	*/
-	virtual void Activate() {}
+	virtual void Activate();
 
 	/**
 	*	Called when the entity is being saved to a save game file.
@@ -1947,7 +2030,7 @@ public:
 	*	@return A bit vector of FCapability values.
 	*	@see FCapability
 	*/
-	virtual int ObjectCaps() const { return FCAP_ACROSS_TRANSITION; }
+	virtual int ObjectCaps() const { return m_pMoveWith ? m_pMoveWith->ObjectCaps() & FCAP_ACROSS_TRANSITION : FCAP_ACROSS_TRANSITION; }
 
 	/**
 	*	Setup the object->object collision box (GetRelMin() / GetRelMax() is the object->world collision box)
@@ -2318,6 +2401,7 @@ public:
 	*	@return Whether the entity should toggle.
 	*/
 	bool ShouldToggle(USE_TYPE useType, const bool currentState) const;
+	bool ShouldToggle(USE_TYPE useType) const;
 
 	/**
 	*	Fires a number of bullets of a given bullet type.
@@ -2425,7 +2509,7 @@ public:
 	virtual int Illumination() const { return GETENTITYILLUM(ENT(pev)); }
 
 	/**
-	*	@return Whether this entity is visible to the given entity.
+	*	@return Whether this entity is visible to ObjectCapsthe given entity.
 	*/
 	virtual	bool FVisible(const CBaseEntity* pEntity) const;
 
@@ -2433,6 +2517,22 @@ public:
 	*	@return Whether this entity is visible from the given position.
 	*/
 	virtual	bool FVisible(const Vector& vecOrigin) const;
+
+	/**
+	*	@return State of Entity
+	*/
+	virtual STATE GetState() const { return STATE_OFF; }
+	virtual STATE GetState(CBaseEntity* pEnt) { return GetState(); }
+	
+	void SetParent(int m_iNewParent, int m_iAttachment = 0);
+	
+	void SetParent(CBaseEntity* pParent, int m_iAttachment = 0);
+	
+	void ResetParent();
+
+	virtual void PostSpawn() {}
+
+	virtual void DesiredAction() {}
 
 	/**
 	*	A more accurate ( and slower ) version of FVisible. This will check if this entity can see the target's bounding box.

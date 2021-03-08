@@ -106,7 +106,7 @@ void CFuncRotating::Spawn()
 	if( GetSpawnFlags().Any( SF_BRUSH_ROTATE_INSTANT ) )
 	{
 		SetThink( &CFuncRotating::SUB_CallUseToggle );
-		SetNextThink( GetLastThink() + 1.5 );	// leave a magic delay for client to start up
+		SetNextThink( 1.5 );	// leave a magic delay for client to start up
 	}
 	// can this brush inflict pain?
 	if( GetSpawnFlags().Any( SF_BRUSH_HURT ) )
@@ -180,7 +180,7 @@ void CFuncRotating::Precache( void )
 		// make sure we restart the sound.  1.5 sec delay is magic number. KDB
 
 		SetThink( &CFuncRotating::SpinUp );
-		SetNextThink( GetLastThink() + 1.5 );
+		SetNextThink( 1.5 );
 	}
 }
 
@@ -191,7 +191,7 @@ void CFuncRotating::SpinUp( void )
 {
 	Vector	vecAVel;//rotational velocity
 
-	SetNextThink( GetLastThink() + 0.1 );
+	SetNextThink( 0.1 );
 	SetAngularVelocity( GetAngularVelocity() + ( GetMoveDir() * ( GetSpeed() * m_flFanFriction ) ) );
 
 	vecAVel = GetAngularVelocity();// cache entity's rotational velocity
@@ -222,7 +222,7 @@ void CFuncRotating::SpinDown( void )
 	Vector	vecAVel;//rotational velocity
 	vec_t vecdir;
 
-	SetNextThink( GetLastThink() + 0.1 );
+	SetNextThink( 0.1 );
 
 	SetAngularVelocity( GetAngularVelocity() - ( GetMoveDir() * ( GetSpeed() * m_flFanFriction ) ) );//spin down slower than spinup
 
@@ -320,7 +320,7 @@ void CFuncRotating::RotatingUse( CBaseEntity *pActivator, CBaseEntity *pCaller, 
 			//EMIT_SOUND_DYN( this, CHAN_WEAPON, (char *)STRING(pev->noiseStop), 
 			//	m_flVolume, m_flAttenuation, 0, m_pitch);
 
-			SetNextThink( GetLastThink() + 0.1 );
+			SetNextThink( 0.1 );
 		}
 		else// fan is not moving, so start it
 		{
@@ -328,7 +328,7 @@ void CFuncRotating::RotatingUse( CBaseEntity *pActivator, CBaseEntity *pCaller, 
 			EMIT_SOUND_DYN( this, CHAN_STATIC, ( char * ) STRING( pev->noiseRunning ),
 							0.01, m_flAttenuation, 0, FANPITCHMIN );
 
-			SetNextThink( GetLastThink() + 0.1 );
+			SetNextThink( 0.1 );
 		}
 	}
 	else if( !GetSpawnFlags().Any( SF_BRUSH_ACCDCC ) )//this is a normal start/stop brush.
@@ -341,7 +341,7 @@ void CFuncRotating::RotatingUse( CBaseEntity *pActivator, CBaseEntity *pCaller, 
 			// EMIT_SOUND_DYN( this, CHAN_WEAPON, (char *)STRING(pev->noiseStop), 
 			//	m_flVolume, m_flAttenuation, 0, m_pitch);
 
-			SetNextThink( GetLastThink() + 0.1 );
+			SetNextThink( 0.1 );
 			// SetAngularVelocity( g_vecZero );
 		}
 		else
@@ -358,7 +358,7 @@ void CFuncRotating::RotatingUse( CBaseEntity *pActivator, CBaseEntity *pCaller, 
 
 void CFuncRotating::Rotate( void )
 {
-	SetNextThink( GetLastThink() + 10 );
+	SetNextThink( 10 );
 }
 
 //

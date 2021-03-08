@@ -107,7 +107,7 @@ void CMomentaryRotButton::Off( void )
 	if( GetSpawnFlags().Any( SF_PENDULUM_AUTO_RETURN ) && m_returnSpeed > 0 )
 	{
 		SetThink( &CMomentaryRotButton::Return );
-		SetNextThink( GetLastThink() + 0.1 );
+		SetNextThink( 0.1 );
 		m_direction = -1;
 	}
 	else
@@ -134,7 +134,7 @@ void CMomentaryRotButton::UpdateSelf( float value )
 	}
 	m_lastUsed = 1;
 
-	SetNextThink( GetLastThink() + 0.1 );
+	SetNextThink( 0.1 );
 	if( m_direction > 0 && value >= 1.0 )
 	{
 		SetAngularVelocity( g_vecZero );
@@ -153,9 +153,9 @@ void CMomentaryRotButton::UpdateSelf( float value )
 
 	// HACKHACK -- If we're going slow, we'll get multiple player packets per frame, bump nexthink on each one to avoid stalling
 	if( GetNextThink() < GetLastThink() )
-		SetNextThink( GetLastThink() + 0.1 );
+		SetNextThink( 0.1 );
 	else
-		SetNextThink( GetNextThink() + 0.1 );
+		SetNextThink( 0.1 );
 
 	SetAngularVelocity( ( m_direction * GetSpeed() ) * GetMoveDir() );
 	SetThink( &CMomentaryRotButton::Off );
@@ -167,13 +167,13 @@ void CMomentaryRotButton::UpdateSelfReturn( float value )
 	{
 		SetAngularVelocity( g_vecZero );
 		SetAbsAngles( m_start );
-		SetNextThink( -1 );
+		DontThink();
 		SetThink( NULL );
 	}
 	else
 	{
 		SetAngularVelocity( -m_returnSpeed * GetMoveDir() );
-		SetNextThink( GetLastThink() + 0.1 );
+		SetNextThink( 0.1 );
 	}
 }
 

@@ -201,6 +201,12 @@ int DispatchSpawn( edict_t *pent )
 				return -1;	// return that this entity should be deleted
 			if( pEntity->GetFlags().Any(FL_KILLME ) )
 				return -1;
+			if (gSkillData.GetSkillLevel() == SKILL_EASY && pEntity->GetDesiredFlags() & LF_NOTEASY)
+				return -1;
+			if (gSkillData.GetSkillLevel() == SKILL_MEDIUM && pEntity->GetDesiredFlags() & LF_NOTMEDIUM)
+				return -1;
+			if (gSkillData.GetSkillLevel() == SKILL_HARD && pEntity->GetDesiredFlags() & LF_NOTHARD)
+				return -1;
 		}
 
 
@@ -213,7 +219,8 @@ int DispatchSpawn( edict_t *pent )
 				// Already dead? delete
 				if( pGlobal->state == GLOBAL_DEAD )
 					return -1;
-				else if( !FStrEq( STRING( gpGlobals->mapname ), pGlobal->levelName ) )
+				
+				if( !FStrEq( STRING( gpGlobals->mapname ), pGlobal->levelName ) )
 					pEntity->MakeDormant();	// Hasn't been moved to this level yet, wait but stay alive
 											// In this level & not dead, continue on as normal
 			}
@@ -327,8 +334,10 @@ void DispatchSave( edict_t *pent, SAVERESTOREDATA *pSaveData )
 		if( pEntity->GetMoveType() == MOVETYPE_PUSH )
 		{
 			float delta = pEntity->GetNextThink() - pEntity->GetLastThink();
-			pEntity->SetLastThink( gpGlobals->time );
-			pEntity->SetNextThink( pEntity->GetLastThink() + delta );
+			pEntity->SetLastThink(pEntity->GetLastThink() + delta);
+			pEntity->SetNextThink(pEntity->GetLastThink() + delta);
+			pEntity->m_fPevNextThink = pEntity->GetLastThink();
+			pEntity->m_fNextThink += delta;
 		}
 
 		pTable->location = pSaveData->size;		// Remember entity position for file I/O
@@ -346,7 +355,6 @@ void DispatchSave( edict_t *pent, SAVERESTOREDATA *pSaveData )
 CBaseEntity *FindGlobalEntity( string_t classname, string_t globalname )
 {
 	CBaseEntity* pReturn = UTIL_FindEntityByString( nullptr, "globalname", STRING( globalname ) );
-
 	if( pReturn )
 	{
 		if( !pReturn->ClassnameIs( STRING( classname ) ) )
@@ -380,7 +388,6 @@ int DispatchRestore( edict_t *pent, SAVERESTOREDATA *pSaveData, int globalEntity
 			pSaveData->pCurrentData = pSaveData->pBaseData + pSaveData->size;
 			// -------------------
 
-
 			const globalentity_t *pGlobal = gGlobalState.EntityFromTable( tmpVars.globalname );
 
 			// Don't overlay any instance of the global that isn't the latest
@@ -410,7 +417,6 @@ int DispatchRestore( edict_t *pent, SAVERESTOREDATA *pSaveData, int globalEntity
 				// or call EntityUpdate() to move it to this level, we haven't changed global state at all.
 				return 0;
 			}
-
 		}
 
 		if( pEntity->ObjectCaps() & FCAP_MUST_SPAWN )
@@ -425,7 +431,7 @@ int DispatchRestore( edict_t *pent, SAVERESTOREDATA *pSaveData, int globalEntity
 		}
 
 		// Again, could be deleted, get the pointer again.
-		pEntity = ( CBaseEntity * ) GET_PRIVATE( pent );
+		pEntity = (CBaseEntity*)GET_PRIVATE(pent);
 
 #if 0
 		if( pEntity && pEntity->HasGlobalName() && globalEntity )
@@ -453,7 +459,8 @@ int DispatchRestore( edict_t *pent, SAVERESTOREDATA *pSaveData, int globalEntity
 				// Already dead? delete
 				if( pGlobal->state == GLOBAL_DEAD )
 					return -1;
-				else if( !FStrEq( STRING( gpGlobals->mapname ), pGlobal->levelName ) )
+				
+				if( !FStrEq( STRING( gpGlobals->mapname ), pGlobal->levelName ) )
 				{
 					pEntity->MakeDormant();	// Hasn't been moved to this level yet, wait but stay alive
 				}

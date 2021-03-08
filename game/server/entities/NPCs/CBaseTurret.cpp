@@ -114,7 +114,7 @@ void CBaseTurret::KeyValue( KeyValueData *pkvd )
 void CBaseTurret::Spawn()
 { 
 	Precache( );
-	SetNextThink( gpGlobals->time + 1 );
+	SetNextThink( 1 );
 	SetMoveType( MOVETYPE_FLY );
 	SetSequence( 0 );
 	SetFrame( 0 );
@@ -198,7 +198,7 @@ void CBaseTurret::Initialize(void)
 	{
 		m_flLastSight = gpGlobals->time + m_flMaxWait;
 		SetThink(&CBaseTurret::AutoSearchThink);		
-		SetNextThink( gpGlobals->time + .1 );
+		SetNextThink( 0.1 );
 	}
 	else
 		SetThink(&CBaseTurret::SUB_DoNothing);
@@ -212,14 +212,14 @@ void CBaseTurret::TurretUse( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_
 	if ( m_bOn )
 	{
 		m_hEnemy = NULL;
-		SetNextThink( gpGlobals->time + 0.1 );
+		SetNextThink( 0.1 );
 		m_bAutoStart = false;// switching off a turret disables autostart
 		//!!!! this should spin down first!!BUGBUG
 		SetThink(&CBaseTurret::Retire);
 	}
 	else 
 	{
-		SetNextThink( gpGlobals->time + 0.1 ); // turn on delay
+		SetNextThink( 0.1 ); // turn on delay
 
 		// if the turret is flagged as an autoactivate turret, re-enable it's ability open self.
 		if ( GetSpawnFlags().Any( SF_MONSTER_TURRET_AUTOACTIVATE ) )
@@ -281,7 +281,7 @@ void CBaseTurret::ActiveThink(void)
 	bool fAttack = false;
 	Vector vecDirToEnemy;
 
-	SetNextThink( gpGlobals->time + 0.1 );
+	SetNextThink( 0.1 );
 	StudioFrameAdvance( );
 
 	if ((!m_bOn ) || (m_hEnemy == NULL))
@@ -433,7 +433,7 @@ void CBaseTurret::ActiveThink(void)
 
 void CBaseTurret::Deploy(void)
 {
-	SetNextThink( gpGlobals->time + 0.1 );
+	SetNextThink( 0.1 );
 	StudioFrameAdvance( );
 
 	if ( GetSequence() != TURRET_ANIM_DEPLOY)
@@ -477,7 +477,7 @@ void CBaseTurret::Retire(void)
 	m_vecGoalAngles.x = 0;
 	m_vecGoalAngles.y = m_flStartYaw;
 
-	SetNextThink( gpGlobals->time + 0.1 );
+	SetNextThink( 0.1 );
 
 	StudioFrameAdvance( );
 
@@ -508,7 +508,7 @@ void CBaseTurret::Retire(void)
 			if ( m_bAutoStart )
 			{
 				SetThink(&CBaseTurret::AutoSearchThink);		
-				SetNextThink( gpGlobals->time + .1 );
+				SetNextThink( 0.1 );
 			}
 			else
 				SetThink(&CBaseTurret::SUB_DoNothing);
@@ -572,7 +572,7 @@ void CBaseTurret::SearchThink(void)
 	// ensure rethink
 	SetTurretAnim(TURRET_ANIM_SPIN);
 	StudioFrameAdvance( );
-	SetNextThink( gpGlobals->time + 0.1 );
+	SetNextThink( 0.1 );
 
 	if (m_flSpinUpTime == 0 && m_flMaxSpin)
 		m_flSpinUpTime = gpGlobals->time + m_flMaxSpin;
@@ -634,7 +634,7 @@ void CBaseTurret::AutoSearchThink(void)
 {
 	// ensure rethink
 	StudioFrameAdvance( );
-	SetNextThink( gpGlobals->time + 0.3 );
+	SetNextThink( 0.3 );
 
 	// If we have a target and we're still healthy
 
@@ -663,7 +663,7 @@ void CBaseTurret::AutoSearchThink(void)
 void CBaseTurret ::	TurretDeath( void )
 {
 	StudioFrameAdvance( );
-	SetNextThink( gpGlobals->time + 0.1 );
+	SetNextThink( 0.1 );
 
 	if ( GetDeadFlag() != DEAD_DEAD)
 	{
@@ -772,7 +772,7 @@ void CBaseTurret::OnTakeDamage( const CTakeDamageInfo& info )
 		SetUse(NULL);
 		SetThink(&CBaseTurret::TurretDeath);
 		SUB_UseTargets( this, USE_ON, 0 ); // wake up others
-		SetNextThink( gpGlobals->time + 0.1 );
+		SetNextThink( 0.1 );
 
 		return;
 	}

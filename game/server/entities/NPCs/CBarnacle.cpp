@@ -81,7 +81,7 @@ void CBarnacle :: Spawn()
 	SetActivity ( ACT_IDLE );
 
 	SetThink ( &CBarnacle::BarnacleThink );
-	SetNextThink( gpGlobals->time + 0.5 );
+	SetNextThink( 0.5 );
 
 	SetAbsOrigin( GetAbsOrigin() );
 }
@@ -106,7 +106,7 @@ void CBarnacle :: BarnacleThink ( void )
 	CBaseMonster *pVictim;
 	float flLength;
 
-	SetNextThink( gpGlobals->time + 0.1 );
+	SetNextThink( 0.1 );
 
 	if ( m_hEnemy != NULL )
 	{
@@ -201,7 +201,7 @@ void CBarnacle :: BarnacleThink ( void )
 
 		// If idle and no nearby client, don't think so often
 		if ( !UTIL_FindClientInPVS( this ) )
-			SetNextThink( gpGlobals->time + RANDOM_FLOAT(1,1.5) );	// Stagger a bit to keep barnacles from thinking on the same frame
+			SetNextThink( RANDOM_FLOAT(1,1.5) );	// Stagger a bit to keep barnacles from thinking on the same frame
 
 		if ( m_fSequenceFinished )
 		{// this is done so barnacle will fidget.
@@ -308,7 +308,7 @@ void CBarnacle::Killed( const CTakeDamageInfo& info, GibAction gibAction )
 
 	StudioFrameAdvance( 0.1 );
 
-	SetNextThink( gpGlobals->time + 0.1 );
+	SetNextThink( 0.1 );
 	SetThink ( &CBarnacle::WaitTillDead );
 }
 
@@ -316,7 +316,7 @@ void CBarnacle::Killed( const CTakeDamageInfo& info, GibAction gibAction )
 //=========================================================
 void CBarnacle :: WaitTillDead ( void )
 {
-	SetNextThink( gpGlobals->time + 0.1 );
+	SetNextThink( 0.1 );
 
 	float flInterval = StudioFrameAdvance( 0.1 );
 	DispatchAnimEvents ( flInterval );

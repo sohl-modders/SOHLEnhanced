@@ -72,7 +72,7 @@ void CCineMonster::Spawn( void )
 	if( !HasTargetname() || !FStringNull( m_iszIdle ) )
 	{
 		SetThink( &CCineMonster::CineThink );
-		SetNextThink( gpGlobals->time + 1.0 );
+		SetNextThink( 1.0 );
 		// Wait to be used?
 		if( HasTargetname() )
 			m_startTime = gpGlobals->time + 1E6;
@@ -153,7 +153,7 @@ void CCineMonster::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE 
 	{
 		// if not, try finding them
 		SetThink( &CCineMonster::CineThink );
-		SetNextThink( gpGlobals->time );
+		SetNextThink( 0 );
 	}
 }
 
@@ -255,7 +255,7 @@ void CCineMonster::CineThink( void )
 	{
 		CancelScript();
 		ALERT( at_aiconsole, "script \"%s\" can't find monster \"%s\"\n", GetTargetname(), STRING( m_iszEntity ) );
-		SetNextThink( gpGlobals->time + 1.0 );
+		SetNextThink( 1.0 );
 	}
 }
 
@@ -497,7 +497,7 @@ void CCineMonster::SequenceDone( CBaseMonster *pMonster )
 	if( !GetSpawnFlags().Any( SF_SCRIPT_REPEATABLE ) )
 	{
 		SetThink( &CCineMonster::SUB_Remove );
-		SetNextThink( gpGlobals->time + 0.1 );
+		SetNextThink( 0.1 );
 	}
 
 	// This is done so that another sequence can take over the monster when triggered by the first

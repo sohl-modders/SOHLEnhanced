@@ -3,4 +3,10 @@ add_sources(
 	CEnvLight.cpp
 	CLight.h
 	CLight.cpp
+	CLightDynamic.h
+	CLightDynamic.cpp
+	CLightFader.h
+	CLightFader.cpp
+	CLightFading.h
+	CLightFading.cpp
 )

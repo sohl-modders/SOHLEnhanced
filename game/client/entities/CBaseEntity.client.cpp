@@ -178,3 +178,35 @@ unsigned short CBaseEntity::PrecacheEvent(int type, const char* psz)
 {
 	return PRECACHE_EVENT(type, psz);
 }
+
+void CBaseEntity::DontThink()
+{
+	m_fNextThink = 0;
+	if (m_pMoveWith == nullptr && m_pChildMoveWith == nullptr)
+	{
+		pev->nextthink = 0;
+		m_fPevNextThink = 0;
+	}
+
+	ALERT(at_console, "DontThink for %s\n", GetTargetname());
+}
+
+void CBaseEntity::SetEternalThink()
+{
+	if (pev->movetype == MOVETYPE_PUSH)
+	{
+		pev->nextthink = pev->ltime + 1E6;
+		m_fPevNextThink = pev->nextthink;
+	}
+
+	for (CBaseEntity* pChild = m_pChildMoveWith; pChild != nullptr; pChild = pChild->m_pSiblingMoveWith)
+		pChild->SetEternalThink();
+}
+
+void CBaseEntity::SetNextThink(const float delay, const bool correctSpeed) {}
+
+void CBaseEntity::AbsoluteNextThink(const float time, const bool correctSpeed) {}
+
+void CBaseEntity::ThinkCorrection() {}
+
+void CBaseEntity::Activate() {}

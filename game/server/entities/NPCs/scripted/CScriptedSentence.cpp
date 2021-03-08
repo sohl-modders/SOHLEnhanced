@@ -29,7 +29,7 @@ void CScriptedSentence::Spawn( void )
 	if( !HasTargetname() )
 	{
 		SetThink( &CScriptedSentence::FindThink );
-		SetNextThink( gpGlobals->time + 1.0 );
+		SetNextThink( 1.0 );
 	}
 
 	switch( static_cast<SoundRadius>( GetImpulse() ) )
@@ -110,7 +110,7 @@ void CScriptedSentence::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_
 		return;
 	//	ALERT( at_console, "Firing sentence: %s\n", STRING(m_iszSentence) );
 	SetThink( &CScriptedSentence::FindThink );
-	SetNextThink( gpGlobals->time );
+	SetNextThink( 0 );
 }
 
 void CScriptedSentence::FindThink( void )
@@ -122,22 +122,24 @@ void CScriptedSentence::FindThink( void )
 		if( GetSpawnFlags().Any( SF_SENTENCE_ONCE ) )
 			UTIL_Remove( this );
 		SetThink( &CScriptedSentence::DelayThink );
-		SetNextThink( gpGlobals->time + m_flDuration + m_flRepeat );
+		SetNextThink( m_flDuration + m_flRepeat );
 		m_active = false;
 		//		ALERT( at_console, "%s: found monster %s\n", STRING(m_iszSentence), STRING(m_iszEntity) );
 	}
 	else
 	{
 		//		ALERT( at_console, "%s: can't find monster %s\n", STRING(m_iszSentence), STRING(m_iszEntity) );
-		SetNextThink( gpGlobals->time + m_flRepeat + 0.5 );
+		SetNextThink( m_flRepeat + 0.5 );
 	}
 }
 
 void CScriptedSentence::DelayThink( void )
 {
 	m_active = true;
+	
 	if( !HasTargetname() )
-		SetNextThink( gpGlobals->time + 0.1 );
+		SetNextThink( 0.1 );
+	
 	SetThink( &CScriptedSentence::FindThink );
 }
 

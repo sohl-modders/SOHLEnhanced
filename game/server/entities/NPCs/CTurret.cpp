@@ -52,7 +52,7 @@ void CTurret::Spawn()
 	m_pEyeGlow->SetAttachment( this, 2 );
 	m_eyeBrightness = 0;
 
-	SetNextThink( gpGlobals->time + 0.3 );
+	SetNextThink( 0.3 );
 }
 
 void CTurret::Precache()
@@ -65,7 +65,7 @@ void CTurret::Precache()
 void CTurret::SpinUpCall( void )
 {
 	StudioFrameAdvance();
-	SetNextThink( gpGlobals->time + 0.1 );
+	SetNextThink( 0.1 );
 
 	// Are we already spun up? If not start the two stage process.
 	if( !m_iSpin )
@@ -74,7 +74,7 @@ void CTurret::SpinUpCall( void )
 		// for the first pass, spin up the the barrel
 		if( !m_iStartSpin )
 		{
-			SetNextThink( gpGlobals->time + 1.0 ); // spinup delay
+			SetNextThink( 1.0 ); // spinup delay
 			EMIT_SOUND( this, CHAN_BODY, "turret/tu_spinup.wav", TURRET_MACHINE_VOLUME, ATTN_NORM );
 			m_iStartSpin = 1;
 			SetFrameRate( 0.1 );
@@ -82,7 +82,7 @@ void CTurret::SpinUpCall( void )
 		// after the barrel is spun up, turn on the hum
 		else if( GetFrameRate() >= 1.0 )
 		{
-			SetNextThink( gpGlobals->time + 0.1 ); // retarget delay
+			SetNextThink( 0.1 ); // retarget delay
 			EMIT_SOUND( this, CHAN_STATIC, "turret/tu_active2.wav", TURRET_MACHINE_VOLUME, ATTN_NORM );
 			SetThink( &CTurret::ActiveThink );
 			m_iStartSpin = 0;

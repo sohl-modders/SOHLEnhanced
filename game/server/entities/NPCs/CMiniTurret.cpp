@@ -40,7 +40,7 @@ void CMiniTurret::Spawn()
 	SetSize( Vector( -16, -16, -m_iRetractHeight ), Vector( 16, 16, m_iRetractHeight ) );
 
 	SetThink( &CMiniTurret::Initialize );
-	SetNextThink( gpGlobals->time + 0.3 );
+	SetNextThink( 0.3 );
 }
 
 void CMiniTurret::Precache()

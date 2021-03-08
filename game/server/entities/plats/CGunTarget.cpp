@@ -36,7 +36,7 @@ void CGunTarget::Spawn()
 	if( ShouldStartOn() )
 	{
 		SetThink( &CGunTarget::Start );
-		SetNextThink( GetLastThink() + 0.3 );
+		SetNextThink( 0.3 );
 	}
 }
 
@@ -99,7 +99,7 @@ void CGunTarget::Wait()
 	if( m_flWait != 0 )
 	{
 		// -1 wait will wait forever!		
-		SetNextThink( GetLastThink() + m_flWait );
+		SetNextThink( m_flWait );
 	}
 	else
 	{
@@ -112,7 +112,7 @@ void CGunTarget::Stop()
 	m_bOn = false;
 
 	SetAbsVelocity( g_vecZero );
-	SetNextThink( 0 );
+	DontThink();
 	SetTakeDamageMode( DAMAGE_NO );
 }
 

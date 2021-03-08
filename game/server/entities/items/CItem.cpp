@@ -36,7 +36,7 @@ CBaseEntity* CItem::Respawn( void )
 	SetAbsOrigin( g_pGameRules->VecItemRespawnSpot( this ) );// blip to whereever you should respawn.
 
 	SetThink( &CItem::Materialize );
-	SetNextThink( g_pGameRules->FlItemRespawnTime( this ) );
+	AbsoluteNextThink( g_pGameRules->FlItemRespawnTime( this ) );
 	return this;
 }
 

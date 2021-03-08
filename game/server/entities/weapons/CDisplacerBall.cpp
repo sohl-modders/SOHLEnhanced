@@ -299,7 +299,7 @@ void CDisplacerBall::FizzleThink()
 
 	CBaseEntity* pOwner = GetOwner();
 
-	SetOwner( nullptr );
+//	SetOwner(pOwner);
 	
 	RadiusDamage( 
 		GetAbsOrigin(), 

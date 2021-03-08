@@ -65,7 +65,7 @@ void CSittingScientist::Spawn()
 	ResetSequenceInfo();
 
 	SetThink( &CSittingScientist::SittingThink );
-	SetNextThink( gpGlobals->time + 0.1 );
+	SetNextThink( 0.1 );
 
 	UTIL_DropToFloor( this );
 }
@@ -173,7 +173,7 @@ void CSittingScientist::SittingThink( void )
 		SetFrame( 0 );
 		SetBoneController( 0, m_headTurn );
 	}
-	SetNextThink( gpGlobals->time + 0.1 );
+	SetNextThink( 0.1 );
 }
 
 //=========================================================

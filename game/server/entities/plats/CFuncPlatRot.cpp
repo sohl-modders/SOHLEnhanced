@@ -82,6 +82,6 @@ void CFuncPlatRot::RotMove( Vector &destAngle, float time )
 	else
 	{
 		SetAngularVelocity( vecDestDelta );
-		SetNextThink( GetLastThink() + 1 );
+		SetNextThink( 1 );
 	}
 }

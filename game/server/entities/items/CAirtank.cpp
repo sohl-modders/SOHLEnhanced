@@ -134,7 +134,7 @@ void CAirtank::TankTouch( CBaseEntity *pOther )
 
 	ALERT( at_console, "giving %f more seconds of air\n", m_flAirTimeToGive );
 
-	SetNextThink( gpGlobals->time + flRechargeTime );
+	SetNextThink( flRechargeTime );
 	m_bState = false;
 	SUB_UseTargets( this, USE_TOGGLE, 1 );
 }

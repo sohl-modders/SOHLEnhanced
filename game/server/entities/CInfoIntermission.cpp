@@ -13,7 +13,7 @@ void CInfoIntermission::Spawn( void )
 	GetEffects() = EF_NODRAW;
 	SetViewAngle( g_vecZero );
 
-	SetNextThink( gpGlobals->time + 2 );// let targets spawn!
+	SetNextThink( 2 );// let targets spawn!
 
 }
 

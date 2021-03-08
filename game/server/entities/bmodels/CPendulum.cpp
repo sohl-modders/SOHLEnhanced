@@ -63,7 +63,7 @@ void CPendulum::Spawn( void )
 	if( GetSpawnFlags().Any( SF_BRUSH_ROTATE_INSTANT ) )
 	{
 		SetThink( &CPendulum::SUB_CallUseToggle );
-		SetNextThink( gpGlobals->time + 0.1 );
+		SetNextThink( 0.1 );
 	}
 	SetSpeed( 0 );
 	SetUse( &CPendulum::PendulumUse );
@@ -111,7 +111,7 @@ void CPendulum::Swing( void )
 	SetAngularVelocity( GetSpeed() * GetMoveDir() );
 
 	// Call this again
-	SetNextThink( GetLastThink() + 0.1 );
+	SetNextThink( 0.1 );
 
 	if( m_damp )
 	{
@@ -142,7 +142,7 @@ void CPendulum::PendulumUse( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_
 			delta = CBaseToggle::AxisDelta( GetSpawnFlags().Get(), GetAbsAngles(), m_start );
 
 			SetAngularVelocity( m_maxSpeed * GetMoveDir() );
-			SetNextThink( GetLastThink() + ( delta / m_maxSpeed ) );
+			SetNextThink( delta / m_maxSpeed );
 			SetThink( &CPendulum::Stop );
 		}
 		else
@@ -154,7 +154,7 @@ void CPendulum::PendulumUse( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_
 	}
 	else
 	{
-		SetNextThink( GetLastThink() + 0.1 );		// Start the pendulum moving
+		SetNextThink( 0.1 );		// Start the pendulum moving
 		m_time = gpGlobals->time;		// Save time to calculate dt
 		SetThink( &CPendulum::Swing );
 		m_dampSpeed = m_maxSpeed;

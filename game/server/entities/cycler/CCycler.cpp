@@ -94,7 +94,7 @@ void CCycler :: Spawn( )
 	m_flFrameRate		= 75;
 	m_flGroundSpeed		= 0;
 
-	SetNextThink( GetNextThink() + 1.0 );
+	SetNextThink( 1.0 );
 
 	ResetSequenceInfo( );
 
@@ -114,7 +114,7 @@ void CCycler :: Spawn( )
 //
 void CCycler :: Think( void )
 {
-	SetNextThink( gpGlobals->time + 0.1 );
+	SetNextThink( 0.1 );
 
 	if (m_animate)
 	{

@@ -31,6 +31,8 @@
 #include "Weapons.h"
 #include "gamerules/GameRules.h"
 
+#define MAX_MOVEWITH_DEPTH 100
+
 void UTIL_ParametricRocket( CBaseEntity* pEntity, Vector vecOrigin, Vector vecAngles, CBaseEntity* pOwner )
 {	
 	pEntity->pev->startpos = vecOrigin;
@@ -53,6 +55,8 @@ void UTIL_ParametricRocket( CBaseEntity* pEntity, Vector vecOrigin, Vector vecAn
 
 int g_groupmask = 0;
 int g_groupop = 0;
+
+bool g_doingDesired = false;
 
 // Normal overrides
 void UTIL_SetGroupTrace( int groupmask, int op )
@@ -124,11 +128,9 @@ bool UTIL_GetNextBestWeapon( CBasePlayer *pPlayer, CBasePlayerWeapon *pCurrentWe
 
 int UTIL_EntitiesInBox( CBaseEntity **pList, int listMax, const Vector &mins, const Vector &maxs, int flagMask )
 {
-	edict_t		*pEdict = g_engfuncs.pfnPEntityOfEntIndex( 1 );
-	CBaseEntity *pEntity;
-	int			count;
+	edict_t	*pEdict = g_engfuncs.pfnPEntityOfEntIndex( 1 );
 
-	count = 0;
+	int count = 0;
 
 	if ( !pEdict )
 		return count;
@@ -149,7 +151,7 @@ int UTIL_EntitiesInBox( CBaseEntity **pList, int listMax, const Vector &mins, co
 			 maxs.z < pEdict->v.absmin.z )
 			 continue;
 
-		pEntity = CBaseEntity::Instance(pEdict);
+		CBaseEntity* pEntity = CBaseEntity::Instance(pEdict);
 		if ( !pEntity )
 			continue;
 
@@ -166,12 +168,9 @@ int UTIL_EntitiesInBox( CBaseEntity **pList, int listMax, const Vector &mins, co
 
 int UTIL_MonstersInSphere( CBaseEntity **pList, int listMax, const Vector &center, float radius )
 {
-	edict_t		*pEdict = g_engfuncs.pfnPEntityOfEntIndex( 1 );
-	CBaseEntity *pEntity;
-	int			count;
-	float		distance, delta;
+	edict_t	*pEdict = g_engfuncs.pfnPEntityOfEntIndex( 1 );
 
-	count = 0;
+	int count = 0;
 	float radiusSquared = radius * radius;
 
 	if ( !pEdict )
@@ -187,12 +186,12 @@ int UTIL_MonstersInSphere( CBaseEntity **pList, int listMax, const Vector &cente
 
 		// Use origin for X & Y since they are centered for all monsters
 		// Now X
-		delta = center.x - pEdict->v.origin.x;//(pEdict->v.absmin.x + pEdict->v.absmax.x)*0.5;
+		float delta = center.x - pEdict->v.origin.x;//(pEdict->v.absmin.x + pEdict->v.absmax.x)*0.5;
 		delta *= delta;
 
 		if ( delta > radiusSquared )
 			continue;
-		distance = delta;
+		float distance = delta;
 		
 		// Now Y
 		delta = center.y - pEdict->v.origin.y;//(pEdict->v.absmin.y + pEdict->v.absmax.y)*0.5;
@@ -210,7 +209,7 @@ int UTIL_MonstersInSphere( CBaseEntity **pList, int listMax, const Vector &cente
 		if ( distance > radiusSquared )
 			continue;
 
-		pEntity = CBaseEntity::Instance(pEdict);
+		CBaseEntity* pEntity = CBaseEntity::Instance(pEdict);
 		if ( !pEntity )
 			continue;
 
@@ -225,7 +224,6 @@ int UTIL_MonstersInSphere( CBaseEntity **pList, int listMax, const Vector &cente
 	return count;
 }
 
-
 CBaseEntity *UTIL_FindEntityInSphere( CBaseEntity *pStartEntity, const Vector &vecCenter, float flRadius )
 {
 	edict_t	*pentEntity;
@@ -233,30 +231,39 @@ CBaseEntity *UTIL_FindEntityInSphere( CBaseEntity *pStartEntity, const Vector &v
 	if (pStartEntity)
 		pentEntity = pStartEntity->edict();
 	else
-		pentEntity = NULL;
+		pentEntity = nullptr;
 
 	pentEntity = FIND_ENTITY_IN_SPHERE( pentEntity, vecCenter, flRadius);
 
 	if (!FNullEnt(pentEntity))
 		return CBaseEntity::Instance(pentEntity);
-	return NULL;
+	return nullptr;
 }
 
 
 CBaseEntity *UTIL_FindEntityByString( CBaseEntity *pStartEntity, const char *szKeyword, const char *szValue )
 {
-	edict_t	*pentEntity;
+	edict_t* pentEntity;
 
 	if (pStartEntity)
 		pentEntity = pStartEntity->edict();
 	else
 		pentEntity = NULL;
 
-	pentEntity = FIND_ENTITY_BY_STRING( pentEntity, szKeyword, szValue );
+	for (;;)
+	{
+		// Don't change this to use UTIL_FindEntityByString!
+		pentEntity = FIND_ENTITY_BY_STRING(pentEntity, szKeyword, szValue);
 
-	if (!FNullEnt(pentEntity))
-		return CBaseEntity::Instance(pentEntity);
-	return NULL;
+		// if pentEntity (the edict) is null, we're at the end of the entities. Give up.
+		if (FNullEnt(pentEntity))
+			return NULL;
+
+		// ...but if only pEntity (the classptr) is null, we've just got one dud, so we try again.
+		CBaseEntity* pEntity = CBaseEntity::Instance(pentEntity);
+		if (pEntity)
+			return pEntity;
+	}
 }
 
 CBaseEntity *UTIL_FindEntityByClassname( CBaseEntity *pStartEntity, const char *szName )
@@ -264,17 +271,31 @@ CBaseEntity *UTIL_FindEntityByClassname( CBaseEntity *pStartEntity, const char *
 	return UTIL_FindEntityByString( pStartEntity, "classname", szName );
 }
 
-CBaseEntity *UTIL_FindEntityByTargetname( CBaseEntity *pStartEntity, const char *szName )
+CBaseEntity* UTIL_FindEntityByTargetname(CBaseEntity* pStartEntity, const char* szName, CBaseEntity* pActivator)
 {
-	return UTIL_FindEntityByString( pStartEntity, "targetname", szName );
+	if (FStrEq(szName, "*locus"))
+	{
+		if (pActivator && (pStartEntity == nullptr || pActivator->eoffset() > pStartEntity->eoffset()))
+			return pActivator;
+
+		return nullptr;
+	}
+
+	return UTIL_FindEntityByTargetname(pStartEntity, szName);
 }
 
+CBaseEntity* UTIL_FindEntityByTargetname(CBaseEntity* pStartEntity, const char* szName)
+{
+	CBaseEntity* pFound = UTIL_FollowReference(pStartEntity, szName);
+	if (pFound)
+		return pFound;
+
+	return UTIL_FindEntityByString(pStartEntity, "targetname", szName);
+}
 
 CBaseEntity *UTIL_FindEntityGeneric( const char *szWhatever, const Vector &vecSrc, float flRadius )
 {
-	CBaseEntity *pEntity = NULL;
-
-	pEntity = UTIL_FindEntityByTargetname( NULL, szWhatever );
+	CBaseEntity* pEntity = UTIL_FindEntityByTargetname(nullptr, szWhatever);
 	if (pEntity)
 		return pEntity;
 
@@ -580,6 +601,18 @@ void ClientPrint( CBaseEntity* pClient, int msg_dest, const char *msg_name, cons
 	MESSAGE_END();
 }
 
+char* UTIL_dtos(const int iValue)
+{
+	//This buffer size calculation determines the number of characters needed for an int, plus a null terminator.
+	//See http://stackoverflow.com/questions/3919995/determining-sprintf-buffer-size-whats-the-standard/3920025#3920025
+	//The old buffer size used by the SDK functions was 8.
+	static char szBuffers[NUM_STATIC_BUFFERS][(((sizeof(int) * CHAR_BIT) / 3) + 3) + 1];
+	static size_t uiBufferIndex = 0;
+	uiBufferIndex = (uiBufferIndex + 1) % NUM_STATIC_BUFFERS;
+	snprintf(szBuffers[uiBufferIndex], sizeof(szBuffers[uiBufferIndex]), "%d", iValue);
+	return szBuffers[uiBufferIndex];
+}
+
 void UTIL_SayText( const char *pText, CBaseEntity *pEntity )
 {
 	if ( !pEntity->IsNetClient() )
@@ -609,14 +642,10 @@ void UTIL_ShowMessage( const char *pString, CBaseEntity *pEntity )
 	MESSAGE_END();
 }
 
-
 void UTIL_ShowMessageAll( const char *pString )
 {
-	int		i;
-
 	// loop through all players
-
-	for ( i = 1; i <= gpGlobals->maxClients; i++ )
+	for ( int i = 1; i <= gpGlobals->maxClients; i++ )
 	{
 		CBaseEntity *pPlayer = UTIL_PlayerByIndex( i );
 		if ( pPlayer )
@@ -630,16 +659,15 @@ void UTIL_TraceLine( const Vector &vecStart, const Vector &vecEnd, IGNORE_MONSTE
 	TRACE_LINE( vecStart, vecEnd, ( igmon == ignore_monsters ? TRF_IGNORE_MONSTERS : TRF_NONE ) | ( ignoreGlass ? TRF_IGNORE_GLASS : 0 ), pentIgnore, ptr );
 }
 
-void UTIL_TraceMonsterHull( CBaseEntity* pEntity, const Vector& v1, const Vector& v2, IGNORE_MONSTERS igmon, CBaseEntity* pentToSkip, TraceResult& tr )
-{
-	TRACE_MONSTER_HULL( pEntity->edict(), v1, v2, ( igmon == ignore_monsters ? TRF_IGNORE_MONSTERS : TRF_NONE ), pentToSkip ? pentToSkip->edict() : nullptr, &tr );
-}
-
 void UTIL_TraceLine( const Vector &vecStart, const Vector &vecEnd, IGNORE_MONSTERS igmon, edict_t *pentIgnore, TraceResult *ptr )
 {
 	TRACE_LINE( vecStart, vecEnd, ( igmon == ignore_monsters ? TRF_IGNORE_MONSTERS : TRF_NONE ), pentIgnore, ptr );
 }
 
+void UTIL_TraceMonsterHull(CBaseEntity* pEntity, const Vector& v1, const Vector& v2, IGNORE_MONSTERS igmon, CBaseEntity* pentToSkip, TraceResult& tr)
+{
+	TRACE_MONSTER_HULL(pEntity->edict(), v1, v2, (igmon == ignore_monsters ? TRF_IGNORE_MONSTERS : TRF_NONE), pentToSkip ? pentToSkip->edict() : nullptr, &tr);
+}
 
 void UTIL_TraceHull( const Vector &vecStart, const Vector &vecEnd, IGNORE_MONSTERS igmon, const Hull::Hull hullNumber, edict_t *pentIgnore, TraceResult *ptr )
 {
@@ -667,6 +695,12 @@ TraceResult UTIL_GetGlobalTrace()
 	tr.iHitgroup = gpGlobals->trace_hitgroup;
 	return tr;
 }
+
+void UTIL_SetEdictOrigin(edict_t* pEdict, const Vector& vecOrigin)
+{
+	if (pEdict)
+		SET_ORIGIN(pEdict, vecOrigin);
+}
 	
 void UTIL_SetSize( CBaseEntity* pEntity, const Vector& vecMin, const Vector& vecMax )
 {
@@ -676,7 +710,7 @@ void UTIL_SetSize( CBaseEntity* pEntity, const Vector& vecMin, const Vector& vec
 void UTIL_SetOrigin( CBaseEntity* pEntity, const Vector& vecOrigin )
 {
 	if ( auto pEnt = pEntity->edict() )
-		SET_ORIGIN( pEnt, vecOrigin );
+		UTIL_SetEdictOrigin( pEnt, vecOrigin );
 }
 
 void UTIL_ParticleEffect( const Vector &vecOrigin, const Vector &vecDirection, const unsigned int ulColor, const unsigned int ulCount )
@@ -992,15 +1026,16 @@ CBaseEntity* UTIL_CreateNamedEntity( const char* const pszClassName )
 
 void UTIL_PrecacheOther( const char *szClassname )
 {
-	CBaseEntity* pEntity = UTIL_CreateNamedEntity( szClassname );
-
-	if( !pEntity )
+	edict_t* pent = CREATE_NAMED_ENTITY(MAKE_STRING(szClassname));
+	if (FNullEnt(pent))
 	{
-		ALERT( at_console, "NULL Ent in UTIL_PrecacheOther\n" );
+		ALERT(at_console, "NULL Ent in UTIL_PrecacheOther\n");
 		return;
 	}
 
-	pEntity->Precache();
+	CBaseEntity* pEntity = CBaseEntity::Instance(VARS(pent));
+	if (pEntity)
+		pEntity->Precache();
 
 	UTIL_RemoveNow( pEntity );
 }
@@ -1018,6 +1053,8 @@ void UTIL_LogPrintf( const char* const pszFormat, ... )
 	vsprintf ( string, pszFormat, argptr );
 	va_end   ( argptr );
 
+	UTIL_Log(pszFormat);
+
 	// Print to server console
 	ALERT( at_logged, "%s", string );
 }
@@ -1031,8 +1068,32 @@ void UTIL_ServerPrintf( const char* const pszFormat, ... )
 	vsprintf( string, pszFormat, argptr );
 	va_end( argptr );
 
+	UTIL_Log(pszFormat);
+	
 	// Print to server console
 	g_engfuncs.pfnServerPrint( string );
+}
+
+void UTIL_Log(const char* fmt, ...)
+{
+	va_list ap;
+	static char string[1024];
+
+	va_start(ap, fmt);
+	vsnprintf(string, sizeof(string), fmt, ap);
+	va_end(ap);
+
+	if (strlen(string) < sizeof(string) - 2)
+		strcat(string, "\n");
+	else
+		string[strlen(string) - 1] = '\n';
+
+	FILE* fp = fopen("spirit.log", "at");
+	if (fp)
+	{
+		fprintf(fp, "%s", string);
+		fclose(fp);
+	}
 }
 
 //Newer compilers might define _rotr as a macro. - Solokiller
@@ -1095,11 +1156,9 @@ bool UTIL_SetTypeDescValue( void* pEntity, const TYPEDESCRIPTION& desc, const ch
 
 void EntvarsKeyvalue( entvars_t *pev, KeyValueData *pkvd )
 {
-	const TYPEDESCRIPTION* pField;
-
 	for ( size_t i = 0; i < gEntvarsDataMap.uiNumDescriptors; i++ )
 	{
-		pField = &gEntvarsDataMap.pTypeDesc[i];
+		const TYPEDESCRIPTION* pField = &gEntvarsDataMap.pTypeDesc[i];
 
 		if ( !stricmp( pField->fieldName, pkvd->szKeyName ) )
 		{
@@ -1163,13 +1222,12 @@ void SetObjectCollisionBox( entvars_t *pev )
 	if( ( pev->solid == SOLID_BSP ) &&
 		( pev->angles.x || pev->angles.y || pev->angles.z ) )
 	{	// expand for rotation
-		float		max, v;
-		int			i;
+		int	i;
 
-		max = 0;
+		float max = 0;
 		for( i = 0; i<3; i++ )
 		{
-			v = fabs( pev->mins[ i ] );
+			float v = fabs(pev->mins[i]);
 			if( v > max )
 				max = v;
 			v = fabs( pev->maxs[ i ] );
@@ -1272,20 +1330,6 @@ const char* UTIL_GetPlayerAuthId( const CBaseEntity* pEntity )
 
 bool UTIL_IsBrushEntity( const CBaseEntity* const pEnt )
 {
-	//This entire function could be replaced with:
-	/*
-	if( !pEnt )
-		return false;
-
-	model_t* pModel = g_pEngineModel->GetModelOfEntity( pEnt->edict() );
-
-	if( !pModel )
-		return false;
-
-	return pModel->type == mod_brush;
-	*/
-	//Just need that extra function.
-
 	//worldspawn has index 1, not 0. 0 is used to indicate "no model", and is an empty string.
 	if( !pEnt || pEnt->GetModelIndex() == 0 )
 		return false;
@@ -1372,4 +1416,933 @@ int UTIL_CountPlayers()
 	}
 
 	return num;
+}
+
+void UTIL_AddToAssistList(CBaseEntity* pEnt)
+{
+	ALERT(at_console, "Add %s \"%s\" to AssistList\n", STRING(pEnt->pev->classname), STRING(pEnt->pev->targetname));
+
+	if (pEnt->m_pAssistLink)
+	{
+		ALERT(at_console, "Ignored AddToAssistList for %s \"%s\"\n", STRING(pEnt->pev->classname), STRING(pEnt->pev->targetname));
+		return;
+	}
+
+	if (!CWorld::GetInstance())
+	{
+		ALERT(at_console, "AddToAssistList %s \"%s\" has no AssistList!\n", STRING(pEnt->pev->classname), STRING(pEnt->pev->targetname));
+		return;
+	}
+
+	CBaseEntity* pListMember = CWorld::GetInstance();
+
+	// find the last entry in the list...
+	while (pListMember->m_pAssistLink != nullptr)
+		pListMember = pListMember->m_pAssistLink;
+
+	if (pListMember == pEnt)
+	{
+		ALERT(at_console, "(end)Ignored AddToAssistList for %s \"%s\"\n", STRING(pEnt->pev->classname), STRING(pEnt->pev->targetname));
+		return;
+	}
+
+	pListMember->m_pAssistLink = pEnt; // it's not in the list already, so add pEnt to the list.
+}
+
+void UTIL_MarkForAssist(CBaseEntity* pEnt, bool correctSpeed)
+{
+	pEnt->GetDesiredFlags() |= LF_DOASSIST;
+
+	if (correctSpeed)
+		pEnt->GetDesiredFlags() |= LF_CORRECTSPEED;
+	else
+		pEnt->GetDesiredFlags() &= ~LF_CORRECTSPEED;
+
+	UTIL_AddToAssistList(pEnt);
+}
+
+void UTIL_SetMoveWithVelocity(CBaseEntity* pEnt, const Vector vecSet, int loopbreaker)
+{
+	if (loopbreaker <= 0)
+	{
+		ALERT(at_error, "Infinite child list for MoveWith!");
+		return;
+	}
+
+	if (!pEnt->m_pMoveWith)
+	{
+		ALERT(at_error, "SetMoveWithVelocity: no MoveWith entity!?\n");
+		return;
+	}
+
+	Vector vecNew = (pEnt->pev->velocity - pEnt->m_pMoveWith->pev->velocity) + vecSet;
+
+	if (pEnt->m_pChildMoveWith)
+	{
+		CBaseEntity* pMoving = pEnt->m_pChildMoveWith;
+		int sloopbreaker = MAX_MOVEWITH_DEPTH;
+		while (pMoving)
+		{
+			UTIL_SetMoveWithVelocity(pMoving, vecNew, loopbreaker - 1);
+			pMoving = pMoving->m_pSiblingMoveWith;
+			sloopbreaker--;
+			if (sloopbreaker <= 0)
+			{
+				ALERT(at_error, "SetMoveWithVelocity: Infinite sibling list for MoveWith!");
+				break;
+			}
+		}
+	}
+
+	pEnt->pev->velocity = vecNew;
+}
+
+void UTIL_SetMoveWithAvelocity(CBaseEntity* pEnt, const Vector vecSet, int loopbreaker)
+{
+	if (loopbreaker <= 0)
+	{
+		ALERT(at_error, "Infinite child list for MoveWith!");
+		return;
+	}
+
+	if (!pEnt->m_pMoveWith)
+	{
+		ALERT(at_error, "SetMoveWithAvelocity: no MoveWith entity!?\n");
+		return;
+	}
+
+	Vector vecNew = (pEnt->pev->avelocity - pEnt->m_pMoveWith->pev->avelocity) + vecSet;
+
+	//	ALERT(at_console, "Setting Child AVelocity %f %f %f, was %f %f %f mw %f %f %f\n", vecNew.x, vecNew.y, vecNew.z, pEnt->pev->avelocity.x, pEnt->pev->avelocity.y, pEnt->pev->avelocity.z, pEnt->m_pMoveWith->pev->avelocity.x, pEnt->m_pMoveWith->pev->avelocity.y, pEnt->m_pMoveWith->pev->avelocity.z);
+
+	if (pEnt->m_pChildMoveWith)
+	{
+		CBaseEntity* pMoving = pEnt->m_pChildMoveWith;
+		int sloopbreaker = MAX_MOVEWITH_DEPTH; // to prevent the game hanging...
+		while (pMoving)
+		{
+			UTIL_SetMoveWithAvelocity(pMoving, vecNew, loopbreaker - 1);
+			pMoving = pMoving->m_pSiblingMoveWith;
+			sloopbreaker--;
+			if (sloopbreaker <= 0)
+			{
+				ALERT(at_error, "SetMoveWithVelocity: Infinite sibling list for MoveWith!");
+				break;
+			}
+		}
+	}
+
+	pEnt->pev->avelocity = vecNew;
+}
+
+void UTIL_AssignOrigin(CBaseEntity* pEntity, const Vector vecOrigin)
+{
+	UTIL_AssignOrigin(pEntity, vecOrigin, true);
+}
+
+void UTIL_AssignOrigin(CBaseEntity* pEntity, const Vector vecOrigin, bool bInitiator)
+{
+	Vector vecDiff = vecOrigin - pEntity->GetAbsOrigin();
+
+	UTIL_SetOrigin(pEntity, vecOrigin);
+
+	if (bInitiator && pEntity->m_pMoveWith)
+	{
+		pEntity->m_vecOffsetOrigin = pEntity->GetAbsOrigin() - pEntity->m_pMoveWith->GetAbsOrigin();
+	}
+	
+	if (pEntity->m_pChildMoveWith) // now I've moved pEntity, does anything else have to move with it?
+	{
+		CBaseEntity* pChild = pEntity->m_pChildMoveWith;
+
+		while (pChild)
+		{
+			if (pChild->pev->movetype != MOVETYPE_PUSH || pChild->pev->velocity == pEntity->pev->velocity) // if the child isn't moving under its own power
+			{
+				UTIL_AssignOrigin(pChild, vecOrigin + pChild->m_vecOffsetOrigin, FALSE);
+			}
+			else
+			{
+				Vector vecTemp = vecDiff + pChild->GetAbsOrigin();
+				UTIL_AssignOrigin(pChild, vecTemp, FALSE);
+			}
+			pChild = pChild->m_pSiblingMoveWith;
+		}
+	}
+}
+
+void HandlePostAssist(CBaseEntity* pEnt)
+{
+	if (pEnt->m_iLFlags & LF_POSTASSISTVEL)
+	{
+		//		ALERT(at_console, "RestoreVel %s: orign %f %f %f, velocity was %f %f %f, back to %f %f %f\n",
+		//			STRING(pEnt->pev->targetname),
+		//			pEnt->GetAbsOrigin().x, pEnt->GetAbsOrigin().y, pEnt->GetAbsOrigin().z,
+		//			pEnt->pev->velocity.x, pEnt->pev->velocity.y, pEnt->pev->velocity.z,
+		//			pEnt->m_vecPostAssistVel.x, pEnt->m_vecPostAssistVel.y, pEnt->m_vecPostAssistVel.z
+		//		);
+		pEnt->pev->velocity = pEnt->m_vecPostAssistVel;
+		pEnt->m_vecPostAssistVel = g_vecZero;
+		pEnt->m_iLFlags &= ~LF_POSTASSISTVEL;
+	}
+	if (pEnt->m_iLFlags & LF_POSTASSISTAVEL)
+	{
+		//		ALERT(at_console, "RestoreVel %s: orign %f %f %f, velocity was %f %f %f, back to %f %f %f\n",
+		//			STRING(pEnt->pev->targetname),
+		//			pEnt->GetAbsOrigin().x, pEnt->GetAbsOrigin().y, pEnt->GetAbsOrigin().z,
+		//			pEnt->pev->velocity.x, pEnt->pev->velocity.y, pEnt->pev->velocity.z,
+		//			pEnt->m_vecPostAssistVel.x, pEnt->m_vecPostAssistVel.y, pEnt->m_vecPostAssistVel.z
+		//		);
+		pEnt->pev->avelocity = pEnt->m_vecPostAssistAVel;
+		pEnt->m_vecPostAssistAVel = g_vecZero;
+		pEnt->m_iLFlags &= ~LF_POSTASSISTAVEL;
+	}
+	
+	CBaseEntity* pChild;
+	for (pChild = pEnt->m_pChildMoveWith; pChild != nullptr; pChild = pChild->m_pSiblingMoveWith)
+		HandlePostAssist(pChild);
+}
+
+int ApplyDesiredSettings(CBaseEntity* pListMember)
+{
+	if (pListMember->m_iLFlags & LF_DODESIRED)
+	{
+		pListMember->m_iLFlags &= ~LF_DODESIRED;
+	}
+	else
+	{
+		// don't need to apply any desired settings for this entity.
+		return 0;
+	}
+	//	ALERT(at_console, "ApplyDesiredSettings for %s \"%s\", pevnt %f, ltime %f, mfnt %f, mpevnt %f, %f\n", STRING(pListMember->pev->classname), STRING(pListMember->pev->targetname), pListMember->pev->nextthink, pListMember->pev->ltime, pListMember->m_fNextThink, pListMember->m_fPevNextThink, pListMember->GetAbsOrigin().x);
+
+	if (pListMember->m_iLFlags & LF_DESIRED_ACTION)
+	{
+		pListMember->m_iLFlags &= ~LF_DESIRED_ACTION;
+		pListMember->DesiredAction();
+		if (NeedUpdate(pListMember))
+			SetBits(pListMember->m_pChildMoveWith->GetDesiredFlags(), LF_MERGEPOS);
+	}
+
+	if (pListMember->m_iLFlags & LF_DESIRED_INFO)
+	{
+		pListMember->m_iLFlags &= ~LF_DESIRED_INFO;
+		ALERT(at_console, "DesiredInfo: pos %f %f %f, vel %f %f %f. Child pos %f %f %f, vel %f %f %f\n\n", pListMember->GetAbsOrigin().x, pListMember->GetAbsOrigin().y, pListMember->GetAbsOrigin().z, pListMember->pev->velocity.x, pListMember->pev->velocity.y, pListMember->pev->velocity.z, pListMember->m_pChildMoveWith->GetAbsOrigin().x, pListMember->m_pChildMoveWith->GetAbsOrigin().y, pListMember->m_pChildMoveWith->GetAbsOrigin().z, pListMember->m_pChildMoveWith->pev->velocity.x, pListMember->m_pChildMoveWith->pev->velocity.y, pListMember->m_pChildMoveWith->pev->velocity.z);
+	}
+
+	if (pListMember->m_iLFlags & LF_DESIRED_POSTASSIST)
+	{
+		pListMember->m_iLFlags &= ~LF_DESIRED_POSTASSIST;
+		HandlePostAssist(pListMember);
+	}
+
+	if (pListMember->m_iLFlags & LF_DESIRED_THINK)
+	{
+		pListMember->m_iLFlags &= ~LF_DESIRED_THINK;
+		//ALERT(at_console, "DesiredThink %s\n", STRING(pListMember->pev->targetname));
+		pListMember->Think();
+	}
+
+	return 1;
+}
+
+void AssistChildren(CBaseEntity* pEnt, Vector vecAdjustVel, Vector vecAdjustAVel)
+{
+	CBaseEntity* pChild;
+	for (pChild = pEnt->m_pChildMoveWith; pChild != NULL; pChild = pChild->m_pSiblingMoveWith)
+	{
+		if (!(pChild->m_iLFlags & LF_POSTASSISTVEL))
+		{
+			pChild->m_vecPostAssistVel = pChild->pev->velocity;
+			pChild->m_iLFlags |= LF_POSTASSISTVEL;
+		}
+		if (!(pChild->m_iLFlags & LF_POSTASSISTAVEL))
+		{
+			pChild->m_vecPostAssistAVel = pChild->pev->avelocity;
+			pChild->m_iLFlags |= LF_POSTASSISTAVEL;
+		}
+		pChild->pev->velocity = pChild->pev->velocity - vecAdjustVel;// (pChild->pev->velocity - pEnt->m_vecPostAssistVel) + pEnt->m_vecPostAssistVel*fFraction;
+		pChild->pev->avelocity = pChild->pev->avelocity - vecAdjustAVel;// (pChild->pev->avelocity - pEnt->m_vecPostAssistAVel) + pEnt->m_vecPostAssistAVel*fFraction;
+
+		//ALERT(at_console, "AssistChild %s: origin %f %f %f, old vel %f %f %f. fraction %f, new vel %f %f %f, dest %f %f %f\n", STRING(pChild->pev->targetname), pChild->GetAbsOrigin().x, pChild->GetAbsOrigin().y, pChild->GetAbsOrigin().z, pChild->m_vecPostAssistVel.x, pChild->m_vecPostAssistVel.y, pChild->m_vecPostAssistVel.z, fFraction, pChild->pev->velocity.x, pChild->pev->velocity.y, pChild->pev->velocity.z, pChild->GetAbsOrigin().x + pChild->pev->velocity.x*gpGlobals->frametime, pChild->GetAbsOrigin().y + pChild->pev->velocity.y*gpGlobals->frametime, pChild->GetAbsOrigin().z + pChild->pev->velocity.z*gpGlobals->frametime );
+		//ALERT(at_console, "AssistChild %s: origin %f %f %f. velocity was %f %f %f, now %f %f %f\n", STRING(pChild->pev->targetname), pChild->GetAbsOrigin().x, pChild->GetAbsOrigin().y, pChild->GetAbsOrigin().z, pChild->m_vecPostAssistVel.x, pChild->m_vecPostAssistVel.y, pChild->m_vecPostAssistVel.z, pChild->pev->velocity.x, pChild->pev->velocity.y, pChild->pev->velocity.z);
+
+		AssistChildren(pChild, vecAdjustVel, vecAdjustAVel);
+	}
+}
+
+void UTIL_DesiredAction(CBaseEntity* pEnt)
+{
+	pEnt->m_iLFlags |= LF_DESIRED_ACTION;
+	UTIL_MarkForDesired(pEnt);
+}
+
+void UTIL_DesiredThink(CBaseEntity* pEnt)
+{
+	//	ALERT(at_console, "Setting DesiredThink %s\n", STRING(pEnt->pev->targetname));
+	pEnt->m_iLFlags |= LF_DESIRED_THINK;
+	pEnt->DontThink();
+	UTIL_MarkForDesired(pEnt);
+}
+
+void UTIL_DesiredInfo(CBaseEntity* pEnt)
+{
+	pEnt->m_iLFlags |= LF_DESIRED_INFO;
+	UTIL_MarkForDesired(pEnt);
+}
+
+void UTIL_DesiredPostAssist(CBaseEntity* pEnt)
+{
+	pEnt->m_iLFlags |= LF_DESIRED_POSTASSIST;
+	UTIL_MarkForDesired(pEnt);
+}
+
+void UTIL_MarkForDesired(CBaseEntity* pEnt)
+{
+	pEnt->m_iLFlags |= LF_DODESIRED;
+
+	if (g_doingDesired)
+	{
+		//ALERT(at_console, "doingDesired is true, start immediately\n");
+		ApplyDesiredSettings(pEnt);
+		return;
+	}
+
+	UTIL_AddToAssistList(pEnt);
+}
+
+void UTIL_SetVelocity(CBaseEntity* pEnt, const Vector vecSet)
+{
+	Vector vecNew;
+	if (pEnt->m_pMoveWith)
+		vecNew = vecSet + pEnt->m_pMoveWith->pev->velocity;
+	else
+		vecNew = vecSet;
+
+	//	ALERT(at_console,"SetV: %s is sent (%f,%f,%f) - goes from (%f,%f,%f) to (%f,%f,%f)\n",
+	//	    STRING(pEnt->pev->targetname), vecSet.x, vecSet.y, vecSet.z,
+	//		pEnt->pev->velocity.x, pEnt->pev->velocity.y, pEnt->pev->velocity.z,
+	//		vecNew.x, vecNew.y, vecNew.z
+	//	);
+
+	if (pEnt->m_pChildMoveWith)
+	{
+		CBaseEntity* pMoving = pEnt->m_pChildMoveWith;
+		int sloopbreaker = MAX_MOVEWITH_DEPTH; // LRC - to save us from infinite loops
+		while (pMoving)
+		{
+			UTIL_SetMoveWithVelocity(pMoving, vecNew, MAX_MOVEWITH_DEPTH);
+			if (vecSet != g_vecZero)SetBits(pMoving->m_iLFlags, LF_PARENTMOVE);
+			else ClearBits(pMoving->m_iLFlags, LF_PARENTMOVE);
+			pMoving = pMoving->m_pSiblingMoveWith;
+			sloopbreaker--;
+			if (sloopbreaker <= 0)
+			{
+				ALERT(at_error, "SetVelocity: Infinite sibling list for MoveWith!\n");
+				break;
+			}
+		}
+	}
+
+	pEnt->pev->velocity = vecNew;
+}
+
+void UTIL_SetAvelocity(CBaseEntity* pEnt, const Vector vecSet)
+{
+	Vector vecNew;
+	if (pEnt->m_pMoveWith)
+		vecNew = vecSet + pEnt->m_pMoveWith->pev->avelocity;
+	else
+		vecNew = vecSet;
+
+	//	ALERT(at_console, "Setting AVelocity %f %f %f\n", vecNew.x, vecNew.y, vecNew.z);
+
+	if (pEnt->m_pChildMoveWith)
+	{
+		CBaseEntity* pMoving = pEnt->m_pChildMoveWith;
+		int sloopbreaker = MAX_MOVEWITH_DEPTH; // LRC - to save us from infinite loops
+		while (pMoving)
+		{
+			UTIL_SetMoveWithAvelocity(pMoving, vecNew, MAX_MOVEWITH_DEPTH);
+			UTIL_MergePos(pMoving); //force to update
+			if (vecSet != g_vecZero)SetBits(pMoving->m_iLFlags, LF_PARENTMOVE);
+			else ClearBits(pMoving->m_iLFlags, LF_PARENTMOVE);
+			pMoving = pMoving->m_pSiblingMoveWith;
+			sloopbreaker--;
+			if (sloopbreaker <= 0)
+			{
+				ALERT(at_error, "SetAvelocity: Infinite sibling list for MoveWith!\n");
+				break;
+			}
+		}
+	}
+	pEnt->pev->avelocity = vecNew;
+}
+
+void UTIL_SetAngles(CBaseEntity* pEntity, const Vector vecAngles)
+{
+	UTIL_SetAngles(pEntity, vecAngles, TRUE);
+}
+
+void UTIL_SetAngles(CBaseEntity* pEntity, const Vector vecAngles, BOOL bInitiator)
+{
+	Vector vecDiff = vecAngles - pEntity->pev->angles;
+	if (vecDiff.Length() > 0.01 && CVAR_GET_FLOAT("sohl_mwdebug"))
+		ALERT(at_console, "SetAngles %s %s: (%f %f %f) goes to (%f %f %f)\n", STRING(pEntity->pev->classname), STRING(pEntity->pev->targetname), pEntity->pev->angles.x, pEntity->pev->angles.y, pEntity->pev->angles.z, vecAngles.x, vecAngles.y, vecAngles.z);
+
+	//	UTIL_SetDesiredAngles(pEntity, vecAngles);
+	pEntity->pev->angles = vecAngles;
+
+	if (bInitiator && pEntity->m_pMoveWith)
+	{
+		pEntity->m_vecRotWithOffset = vecAngles - pEntity->m_pMoveWith->pev->angles;
+	}
+	if (pEntity->m_pChildMoveWith) // now I've moved pEntity, does anything else have to move with it?
+	{
+		CBaseEntity* pChild = pEntity->m_pChildMoveWith;
+		Vector vecTemp;
+		while (pChild)
+		{
+			if (pChild->pev->avelocity == pEntity->pev->avelocity) // if the child isn't turning under its own power
+			{
+				UTIL_SetAngles(pChild, vecAngles + pChild->m_vecRotWithOffset, FALSE);
+			}
+			else
+			{
+				vecTemp = vecDiff + pChild->pev->angles;
+				UTIL_SetAngles(pChild, vecTemp, FALSE);
+			}
+			//ALERT(at_console,"  child origin becomes (%f %f %f)\n",pChild->GetAbsOrigin().x,pChild->GetAbsOrigin().y,pChild->GetAbsOrigin().z);
+			//ALERT(at_console,"ent %p has sibling %p\n",pChild,pChild->m_pSiblingMoveWith);
+			pChild = pChild->m_pSiblingMoveWith;
+		}
+	}
+}
+
+void UTIL_MergePos(CBaseEntity* pEnt, int loopbreaker)
+{
+	if (loopbreaker <= 0  || !pEnt->m_pMoveWith)
+		return;
+
+	Vector forward, right, up, vecOrg;
+	UTIL_MakeVectorsPrivate(pEnt->m_pMoveWith->GetAbsAngles(), &forward, &right, &up);
+
+	if (pEnt->m_pMoveWith->pev->flags & FL_MONSTER)
+		vecOrg = pEnt->m_vecPostAssistOrg = pEnt->m_pMoveWith->GetAbsOrigin() + (forward * pEnt->m_vecOffsetOrigin.x) + (right * pEnt->m_vecOffsetOrigin.y) + (up * pEnt->m_vecOffsetOrigin.z);
+	else	
+		vecOrg = pEnt->m_vecPostAssistOrg = pEnt->m_pMoveWith->GetAbsOrigin() + (forward * pEnt->m_vecOffsetOrigin.x) + (-right * pEnt->m_vecOffsetOrigin.y) + (up * pEnt->m_vecOffsetOrigin.z);
+
+	Vector vecAngles = pEnt->m_vecPostAssistAng = pEnt->m_pMoveWith->pev->angles + pEnt->m_vecOffsetAngles;
+
+	if (pEnt->m_pChildMoveWith)
+	{
+		CBaseEntity* pMoving = pEnt->m_pChildMoveWith;
+		int sloopbreaker = MAX_MOVEWITH_DEPTH;
+		while (pMoving)
+		{
+			UTIL_MergePos(pMoving, loopbreaker - 1);
+			pMoving = pMoving->m_pSiblingMoveWith;
+			sloopbreaker--;
+			if (sloopbreaker <= 0)break;
+		}
+	}
+
+	if (pEnt->m_iLFlags & LF_MERGEPOS)
+	{
+		UTIL_AssignOrigin(pEnt, vecOrg);
+		UTIL_SetAngles(pEnt, vecAngles);
+		ClearBits(pEnt->m_iLFlags, LF_MERGEPOS);
+	}
+	
+	if (pEnt->m_iLFlags & LF_POSTORG)
+	{
+		pEnt->SetAbsOrigin(vecOrg);
+		pEnt->pev->angles = vecAngles;
+		SetBits(pEnt->m_iLFlags, LF_DODESIRED); //refresh position every frame
+		if (!pEnt->m_pAssistLink) 
+			UTIL_AddToAssistList(pEnt);
+	}
+}
+
+// called every frame, by StartFrame
+void CheckAssistList()
+{
+	if (!CWorld::GetInstance())
+	{
+		ALERT(at_error, "CheckAssistList has no AssistList!\n");
+		return;
+	}
+
+	CBaseEntity* pListMember = CWorld::GetInstance();
+	while (pListMember->m_pAssistLink) // handle the remaining entries in the list
+	{
+		TryAssistEntity(pListMember->m_pAssistLink);
+		if (!(pListMember->m_pAssistLink->m_iLFlags & LF_ASSISTLIST))
+		{
+			CBaseEntity* pTemp = pListMember->m_pAssistLink;
+			pListMember->m_pAssistLink = pListMember->m_pAssistLink->m_pAssistLink;
+			pTemp->m_pAssistLink = nullptr;
+		}
+		else pListMember = pListMember->m_pAssistLink;
+	}
+}
+
+// called every frame, by PostThink
+void CheckDesiredList()
+{
+	int loopbreaker = 1024; //max edicts
+
+	if (g_doingDesired) 
+		ALERT(at_console, "CheckDesiredList: doingDesired is already set!?\n");
+	
+	g_doingDesired = true;
+
+	if (!CWorld::GetInstance())
+	{
+		ALERT(at_console, "CheckDesiredList has no AssistList!\n");
+		return;
+	}
+
+	CBaseEntity* pListMember = CWorld::GetInstance()->m_pAssistLink;
+	while (pListMember)
+	{
+		// cache this, in case ApplyDesiredSettings does a SUB_Remove.
+		CBaseEntity* pNext = pListMember->m_pAssistLink;
+		ApplyDesiredSettings(pListMember);
+		pListMember = pNext;
+		loopbreaker--;
+		if (loopbreaker <= 0)
+		{
+			ALERT(at_error, "Infinite(?) loop in DesiredList!");
+			break;
+		}
+	}
+
+	g_doingDesired = false;
+}
+
+int TryAssistEntity(CBaseEntity* pEnt)
+{
+	if (!gpGlobals->frametime)
+	{
+		//ALERT(at_console, "frametime 0, don't assist\n");
+		return 0;
+	}
+//	ALERT(at_console, "AssistList: %s\n", STRING(pEnt->pev->classname));
+
+	if (pEnt->m_fNextThink <= 0)
+	{
+		//ALERT(at_console, "Cancelling assist for %s, %f\n", STRING(pEnt->pev->targetname), pEnt->pev->origin.x);
+		pEnt->m_iLFlags &= ~LF_DOASSIST;
+		return 0; // the think has been cancelled. Oh well...
+	}
+
+	// a fraction of the current velocity. (the part of it that the engine should see.)
+	float fFraction = 0;
+
+	// is this the frame when the entity will stop?
+	if (pEnt->pev->movetype == MOVETYPE_PUSH)
+	{
+		if (pEnt->m_fNextThink <= pEnt->pev->ltime + gpGlobals->frametime)
+			fFraction = (pEnt->m_fNextThink - pEnt->pev->ltime) / gpGlobals->frametime;
+	}
+	else if (pEnt->m_fNextThink <= gpGlobals->time + gpGlobals->frametime)
+	{
+		fFraction = (pEnt->m_fNextThink - gpGlobals->time) / gpGlobals->frametime;
+		//ALERT(at_console, "Setting fFraction\n");
+	}
+
+	if (fFraction)
+	{
+		//ALERT(at_console, "Assisting %s \"%s\", %f <= %f + %f\n", STRING(pEnt->pev->classname), STRING(pEnt->pev->targetname), pEnt->m_fNextThink, pEnt->pev->ltime, gpGlobals->frametime);
+
+		if (pEnt->m_iLFlags & LF_CORRECTSPEED)
+		{
+			if (!(pEnt->m_iLFlags & LF_POSTASSISTVEL))
+			{
+				pEnt->m_vecPostAssistVel = pEnt->GetAbsVelocity();
+				pEnt->m_iLFlags |= LF_POSTASSISTVEL;
+			}
+
+			if (!(pEnt->m_iLFlags & LF_POSTASSISTAVEL))
+			{
+				pEnt->m_vecPostAssistAVel = pEnt->GetAngularVelocity();
+				pEnt->m_iLFlags |= LF_POSTASSISTAVEL;
+			}
+
+			Vector vecVelTemp = pEnt->GetAbsVelocity();
+			Vector vecAVelTemp = pEnt->GetAngularVelocity();
+
+			if (pEnt->m_pMoveWith)
+			{
+				pEnt->pev->velocity = (pEnt->GetAbsVelocity() - pEnt->m_pMoveWith->GetAbsVelocity()) * fFraction + pEnt->m_pMoveWith->GetAbsVelocity();
+				pEnt->pev->avelocity = (pEnt->GetAngularVelocity() - pEnt->m_pMoveWith->GetAngularVelocity()) * fFraction + pEnt->m_pMoveWith->GetAngularVelocity();
+			}
+			else
+			{
+				pEnt->pev->velocity = pEnt->pev->velocity * fFraction;
+				pEnt->pev->avelocity = pEnt->GetAngularVelocity() * fFraction;
+			}
+
+			//ALERT(at_console, "Assist %s: origin %f %f %f, old vel %f %f %f. fraction %f, new vel %f %f %f, dest %f %f %f\n",
+			//STRING(pEnt->pev->targetname), pEnt->pev->origin.x, pEnt->pev->origin.y, pEnt->pev->origin.z, pEnt->m_vecPostAssistVel.x,
+			//pEnt->m_vecPostAssistVel.y, pEnt->m_vecPostAssistVel.z, fFraction, pEnt->pev->velocity.x, pEnt->pev->velocity.y, pEnt->pev->velocity.z,
+			//pEnt->pev->origin.x + pEnt->pev->velocity.x*gpGlobals->frametime, pEnt->pev->origin.y + pEnt->pev->velocity.y*gpGlobals->frametime, pEnt->pev->origin.z + pEnt->pev->velocity.z*gpGlobals->frametime);
+
+			AssistChildren(pEnt, vecVelTemp - pEnt->GetAbsVelocity(), vecAVelTemp - pEnt->GetAngularVelocity());
+			UTIL_DesiredPostAssist(pEnt);
+		}
+
+		UTIL_DesiredThink(pEnt);
+		//		ALERT(at_console, "Assist sets DesiredThink for %s\n", STRING(pEnt->pev->classname));
+
+		pEnt->m_iLFlags &= ~LF_DOASSIST;
+	}
+	
+	return 1;
+}
+
+bool NeedUpdate(CBaseEntity* pEnt)
+{
+	if (pEnt->m_pChildMoveWith && pEnt->m_pChildMoveWith->m_vecOffsetOrigin == g_vecZero)//potentially loser
+	{
+		if (pEnt->GetAbsOrigin() != pEnt->m_pChildMoveWith->GetAbsOrigin())
+		{
+			ALERT(at_console, "Warning %s lose synch with child\n", pEnt->GetClassname());
+			return true;
+		}
+	}
+	
+	return false;
+}
+
+void UTIL_AddToAliasList(CBaseAlias* pAlias)
+{
+	CWorld * g_pWorld = CWorld::GetInstance();
+	if (!g_pWorld)
+	{
+		ALERT(at_console, "AddToAliasList has no AliasList!\n");
+		return;
+	}
+
+	pAlias->m_iLFlags |= LF_ALIASLIST;
+
+	//	ALERT(at_console, "Adding %s \"%s\" to alias list\n", STRING(pAlias->pev->classname), STRING(pAlias->pev->targetname));
+	if (g_pWorld->m_pFirstAlias == nullptr)
+	{
+		g_pWorld->m_pFirstAlias = pAlias;
+		pAlias->m_pNextAlias = nullptr;
+	}
+	else if (g_pWorld->m_pFirstAlias == pAlias)
+	{
+		// already in the list
+		return;
+	}
+	else
+	{
+		CBaseAlias* pCurrent = g_pWorld->m_pFirstAlias;
+		while (pCurrent->m_pNextAlias != nullptr)
+		{
+			if (pCurrent->m_pNextAlias == pAlias)
+			{
+				// already in the list
+				return;
+			}
+
+			pCurrent = pCurrent->m_pNextAlias;
+		}
+
+		pCurrent->m_pNextAlias = pAlias;
+		pAlias->m_pNextAlias = nullptr;
+	}
+}
+
+#define MAX_ALIASNAME_LEN 80
+
+// Returns the first entity which szName refers to and which is after pStartEntity.
+CBaseEntity* UTIL_FollowReference(CBaseEntity* pStartEntity, const char* szName)
+{
+	char szRoot[MAX_ALIASNAME_LEN + 1]; // allow room for null-terminator
+	CBaseEntity* pResult;
+
+	if (!szName || szName[0] == 0) 
+		return nullptr;
+
+	// reference through an info_group?
+	for (int i = 0; szName[i]; i++)
+	{
+		if (szName[i] == '.')
+		{
+			// yes, it looks like a reference through an info_group...
+			// FIXME: we should probably check that i < MAX_ALIASNAME_LEN.
+			strncpy(szRoot, szName, i);
+			szRoot[i] = 0;
+			char* szMember = (char*)&szName[i + 1];
+			//ALERT(at_console,"Following reference- group %s with member %s\n",szRoot,szMember);
+			pResult = UTIL_FollowGroupReference(pStartEntity, szRoot, szMember);
+			//if (pResult)
+			//ALERT(at_console,"\"%s\".\"%s\" = %s\n",szRoot,szMember,STRING(pResult->pev->targetname));
+			return pResult;
+		}
+	}
+	// reference through an info_alias?
+	if (szName[0] == '*')
+	{
+		if (FStrEq(szName, "*player"))
+		{
+			CBaseEntity* pPlayer = UTIL_FindEntityByClassname(nullptr, "player");
+			if (pPlayer && (pStartEntity == nullptr || pPlayer->eoffset() > pStartEntity->eoffset()))
+				return pPlayer;
+
+			return nullptr;
+		}
+		//ALERT(at_console,"Following alias %s\n",szName+1);
+		pResult = UTIL_FollowAliasReference(pStartEntity, szName + 1);
+		//if (pResult)
+		//ALERT(at_console,"alias \"%s\" = %s\n",szName+1,STRING(pResult->pev->targetname));
+		return pResult;
+	}
+	// not a reference
+//	ALERT(at_console,"%s is not a reference\n",szName);
+	return nullptr;
+}
+
+// for every info_group which has the given groupname, find the earliest entity which is referred to by its member
+// with the given membername and which is later than pStartEntity.
+CBaseEntity* UTIL_FollowGroupReference(CBaseEntity* pStartEntity, char* szGroupName, char* szMemberName)
+{
+	CBaseEntity* pBestEntity = nullptr; // the entity we're currently planning to return.
+	int iBestOffset = -1; // the offset of that entity.
+	CBaseEntity* pTempEntity;
+	char szBuf[MAX_ALIASNAME_LEN];
+	char* szThisMember = szMemberName;
+	char* szTail = nullptr;
+
+	// find the first '.' in the membername and if there is one, split the string at that point.
+	for (int i = 0; szMemberName[i]; i++)
+	{
+		if (szMemberName[i] == '.')
+		{
+			// recursive member-reference
+			// FIXME: we should probably check that i < MAX_ALIASNAME_LEN.
+			strncpy(szBuf, szMemberName, i);
+			szBuf[i] = 0;
+			szTail = &(szMemberName[i + 1]);
+			szThisMember = szBuf;
+			break;
+		}
+	}
+
+	CBaseEntity* pEntity = UTIL_FindEntityByTargetname(nullptr, szGroupName);
+	while (pEntity)
+	{
+		if (FStrEq(STRING(pEntity->pev->classname), "info_group"))
+		{
+			int iszMemberValue = ((CInfoGroup*)pEntity)->GetMember(szThisMember);
+			//			ALERT(at_console,"survived getMember\n");
+			//			return NULL;
+			if (!FStringNull(iszMemberValue))
+			{
+				if (szTail) // do we have more references to follow?
+					pTempEntity = UTIL_FollowGroupReference(pStartEntity, (char*)STRING(iszMemberValue), szTail);
+				else
+					pTempEntity = UTIL_FindEntityByTargetname(pStartEntity, STRING(iszMemberValue));
+
+				if (pTempEntity)
+				{
+					int iTempOffset = OFFSET(pTempEntity->pev);
+					if (iBestOffset == -1 || iTempOffset < iBestOffset)
+					{
+						iBestOffset = iTempOffset;
+						pBestEntity = pTempEntity;
+					}
+				}
+			}
+		}
+		pEntity = UTIL_FindEntityByTargetname(pEntity, szGroupName);
+	}
+
+	if (pBestEntity)
+	{
+		//		ALERT(at_console,"\"%s\".\"%s\" returns %s\n",szGroupName,szMemberName,STRING(pBestEntity->pev->targetname));
+		return pBestEntity;
+	}
+
+	return nullptr;
+}
+
+// for every alias which has the given name, find the earliest entity which any of them refers to
+// and which is later than pStartEntity.
+CBaseEntity* UTIL_FollowAliasReference(CBaseEntity* pStartEntity, const char* szValue)
+{
+	CBaseEntity* pBestEntity = nullptr; // the entity we're currently planning to return.
+	int iBestOffset = -1; // the offset of that entity.
+
+	CBaseEntity* pEntity = UTIL_FindEntityByTargetname(nullptr, szValue);
+
+	while (pEntity)
+	{
+		if (pEntity->IsAlias())
+		{
+			CBaseEntity* pTempEntity = ((CBaseAlias*)pEntity)->FollowAlias(pStartEntity);
+			if (pTempEntity)
+			{
+				// We've found an entity; only use it if its offset is lower than the offset we've currently got.
+				int iTempOffset = OFFSET(pTempEntity->pev);
+				if (iBestOffset == -1 || iTempOffset < iBestOffset)
+				{
+					iBestOffset = iTempOffset;
+					pBestEntity = pTempEntity;
+				}
+			}
+		}
+		pEntity = UTIL_FindEntityByTargetname(pEntity, szValue);
+	}
+
+	return pBestEntity;
+}
+
+void UTIL_MuzzleLight(Vector vecSrc, float flRadius, byte r, byte g, byte b, float flTime, float flDecay)
+{
+	MESSAGE_BEGIN(MSG_PVS, SVC_TEMPENTITY, vecSrc);
+		WRITE_BYTE(TE_DLIGHT);
+		WRITE_COORD(vecSrc.x);	// X
+		WRITE_COORD(vecSrc.y);	// Y
+		WRITE_COORD(vecSrc.z);	// Z
+		WRITE_BYTE(flRadius * 0.1f);	// radius * 0.1
+		WRITE_BYTE(r);		// r
+		WRITE_BYTE(g);		// g
+		WRITE_BYTE(b);		// b
+		WRITE_BYTE(flTime * 10.0f);	// time * 10
+		WRITE_BYTE(flDecay * 0.1f);	// decay * 0.1
+	MESSAGE_END();
+}
+
+//=========================================================
+// UTIL_StripToken - for redundant keynames
+//=========================================================
+void UTIL_StripToken(const char* pKey, char* pDest)
+{
+	int i = 0;
+
+	while (pKey[i] && pKey[i] != '#')
+	{
+		pDest[i] = pKey[i];
+		i++;
+	}
+	pDest[i] = 0;
+}
+
+//=========================================================
+// UTIL_DotPoints - returns the dot product of a line from
+// src to check and vecdir.
+//=========================================================
+float UTIL_DotPoints(const Vector& vecSrc, const Vector& vecCheck, const Vector& vecDir)
+{
+	Vector2D vec2LOS = (vecCheck - vecSrc).Make2D();
+	vec2LOS = vec2LOS.Normalize();
+
+	return DotProduct(vec2LOS, (vecDir.Make2D()));
+}
+
+//LRC - randomized vectors of the form "0 0 0 .. 1 0 0"
+void UTIL_StringToRandomVector(float* pVector, const char* pString)
+{
+	char* pstr, * pfront, tempString[128];
+	int	j;
+	float pAltVec[3];
+
+	strcpy(tempString, pString);
+	pstr = pfront = tempString;
+
+	for (j = 0; j < 3; j++)			// lifted from pr_edict.c
+	{
+		pVector[j] = atof(pfront);
+
+		while (*pstr && *pstr != ' ') pstr++;
+		if (!*pstr) break;
+		pstr++;
+		pfront = pstr;
+	}
+	if (j < 2)
+	{
+		/*
+		ALERT( at_error, "Bad field in entity!! %s:%s == \"%s\"\n",
+			pkvd->szClassName, pkvd->szKeyName, pkvd->szValue );
+		*/
+		for (j = j + 1; j < 3; j++)
+			pVector[j] = 0;
+	}
+	else if (*pstr == '.')
+	{
+		pstr++;
+		if (*pstr != '.') return;
+		pstr++;
+		if (*pstr != ' ') return;
+
+		UTIL_StringToVector(pAltVec, pstr);
+
+		pVector[0] = RANDOM_FLOAT(pVector[0], pAltVec[0]);
+		pVector[1] = RANDOM_FLOAT(pVector[1], pAltVec[1]);
+		pVector[2] = RANDOM_FLOAT(pVector[2], pAltVec[2]);
+	}
+}
+
+//LRC - randomized vectors of the form "0 0 0 .. 1 0 0"
+void UTIL_StringToVector(float* pVector, const char* pString)
+{
+	char* pstr, * pfront, tempString[128];
+	int	j;
+	float pAltVec[3];
+
+	strcpy(tempString, pString);
+	pstr = pfront = tempString;
+
+	for (j = 0; j < 3; j++)			// lifted from pr_edict.c
+	{
+		pVector[j] = atof(pfront);
+
+		while (*pstr && *pstr != ' ') pstr++;
+		if (!*pstr) break;
+		pstr++;
+		pfront = pstr;
+	}
+	if (j < 2)
+	{
+		/*
+		ALERT( at_error, "Bad field in entity!! %s:%s == \"%s\"\n",
+			pkvd->szClassName, pkvd->szKeyName, pkvd->szValue );
+		*/
+		for (j = j + 1; j < 3; j++)
+			pVector[j] = 0;
+	}
+	else if (*pstr == '.')
+	{
+		pstr++;
+		if (*pstr != '.') return;
+		pstr++;
+		if (*pstr != ' ') return;
+
+		UTIL_StringToVector(pAltVec, pstr);
+
+		pVector[0] = RANDOM_FLOAT(pVector[0], pAltVec[0]);
+		pVector[1] = RANDOM_FLOAT(pVector[1], pAltVec[1]);
+		pVector[2] = RANDOM_FLOAT(pVector[2], pAltVec[2]);
+	}
+}
+
+//LRC - as above, but returns the position of point 1 0 0 under the given rotation
+Vector UTIL_AxisRotationToVec(const Vector& vecAxis, float flDegs)
+{
+	float rgflVecOut[3];
+	float flRads = flDegs * (M_PI / 180.0);
+	float c = cos(flRads);
+	float s = sin(flRads);
+	float v = vecAxis.x * (1 - c);
+
+	//ugh, more maths. Thank goodness for internet geometry sites...
+	rgflVecOut[0] = vecAxis.x * v + c;
+	rgflVecOut[1] = vecAxis.y * v + vecAxis.z * s;
+	rgflVecOut[2] = vecAxis.z * v - vecAxis.y * s;
+	return Vector(rgflVecOut[0], rgflVecOut[1], rgflVecOut[2]);
 }

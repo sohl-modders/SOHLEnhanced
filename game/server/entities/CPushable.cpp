@@ -148,7 +148,7 @@ void CPushable::Move( CBaseEntity *pOther, int push )
 				m_lastSound = RANDOM_LONG( 0, 2 );
 				EMIT_SOUND( this, CHAN_WEAPON, m_soundNames[ m_lastSound ], 0.5, ATTN_NORM );
 				//			SetThink( StopSound );
-				//			SetNextThink( GetLastThink() + 0.1 );
+				//			SetNextThink( 0.1 );
 			}
 			else
 				STOP_SOUND( this, CHAN_WEAPON, m_soundNames[ m_lastSound ] );

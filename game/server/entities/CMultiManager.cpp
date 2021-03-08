@@ -130,7 +130,7 @@ void CMultiManager::ManagerThink( void )
 		SetUse( &CMultiManager::ManagerUse );// allow manager re-use 
 	}
 	else
-		SetNextThink( m_startTime + m_flTargetDelay[ m_index ] );
+		AbsoluteNextThink( m_startTime + m_flTargetDelay[ m_index ] );
 }
 
 CMultiManager *CMultiManager::Clone( void )
@@ -169,7 +169,7 @@ void CMultiManager::ManagerUse( CBaseEntity *pActivator, CBaseEntity *pCaller, U
 	SetUse( NULL );// disable use until all targets have fired
 
 	SetThink( &CMultiManager::ManagerThink );
-	SetNextThink( gpGlobals->time );
+	SetNextThink( 0 );
 }
 
 #if _DEBUG

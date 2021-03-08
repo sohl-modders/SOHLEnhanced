@@ -17,7 +17,7 @@ void CBloodSplat::CreateSplat( CBaseEntity* pOwner )
 	SetOwner( pOwner );
 
 	SetThink( &CBloodSplat::Spray );
-	SetNextThink( gpGlobals->time + 0.1 );
+	SetNextThink( 0.1 );
 }
 
 void CBloodSplat::Spray()
@@ -33,5 +33,5 @@ void CBloodSplat::Spray()
 		UTIL_BloodDecalTrace( &tr, BLOOD_COLOR_RED );
 	}
 	SetThink( &CBloodSplat::SUB_Remove );
-	SetNextThink( gpGlobals->time + 0.1 );
+	SetNextThink( 0.1 );
 }
