@@ -36,7 +36,7 @@ void CXenHair::Spawn( void )
 
 	SetSolidType( SOLID_NOT );
 	SetMoveType( MOVETYPE_NONE );
-	SetNextThink( gpGlobals->time + RANDOM_FLOAT( 0.1, 0.4 ) );	// Load balance these a bit
+	SetNextThink( RANDOM_FLOAT( 0.1, 0.4 ) );	// Load balance these a bit
 }
 
 void CXenHair::Precache( void )
@@ -47,5 +47,5 @@ void CXenHair::Precache( void )
 void CXenHair::Think( void )
 {
 	StudioFrameAdvance();
-	SetNextThink( gpGlobals->time + 0.5 );
+	SetNextThink( 0.5 );
 }

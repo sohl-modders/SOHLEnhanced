@@ -160,7 +160,7 @@ void CDisplacer::PrimaryAttack()
 	{
 		SetThink( &CDisplacer::SpinupThink );
 
-		SetNextThink( gpGlobals->time );
+		SetNextThink(0 );
 
 		m_Mode = Mode::STARTED;
 
@@ -188,7 +188,7 @@ void CDisplacer::SecondaryAttack()
 	{
 		SetThink( &CDisplacer::AltSpinupThink );
 
-		SetNextThink( gpGlobals->time );
+		SetNextThink( 0 );
 
 		m_Mode = Mode::STARTED;
 
@@ -253,7 +253,7 @@ void CDisplacer::SpinupThink()
 
 			SetThink( &CDisplacer::FireThink );
 
-			SetNextThink( gpGlobals->time + 0.1 );
+			SetNextThink( 0.1 );
 		}
 
 		m_iImplodeCounter = static_cast<int>( floorf( ( gpGlobals->time - m_flStartTime ) * 100.0 + 50.0 ) );
@@ -264,7 +264,7 @@ void CDisplacer::SpinupThink()
 
 	m_iSoundState = 128;
 
-	SetNextThink( gpGlobals->time + 0.1 );
+	SetNextThink( 0.1 );
 }
 
 void CDisplacer::AltSpinupThink()
@@ -305,7 +305,7 @@ void CDisplacer::AltSpinupThink()
 
 			SetThink( &CDisplacer::AltFireThink );
 
-			SetNextThink( gpGlobals->time + 0.1 );
+			SetNextThink( 0.1 );
 		}
 
 		m_iImplodeCounter = static_cast<int>( floorf( ( gpGlobals->time - m_flStartTime ) * 100.0 + 50.0 ) );
@@ -316,7 +316,7 @@ void CDisplacer::AltSpinupThink()
 
 	m_iSoundState = 128;
 
-	SetNextThink( gpGlobals->time + 0.1 );
+	SetNextThink( 0.1 );
 }
 
 void CDisplacer::FireThink()

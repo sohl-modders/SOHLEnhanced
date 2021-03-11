@@ -44,7 +44,7 @@ void CTestHull::Spawn()
 	{
 		// graph loaded from disk, so we don't need the test hull
 		SetThink( &CTestHull::SUB_Remove );
-		SetNextThink( gpGlobals->time );
+		SetNextThink( 0 );
 	}
 
 	// Make this invisible
@@ -120,7 +120,7 @@ void CTestHull::BuildNodeGraph()
 	}
 
 	SetThink( &CTestHull::SUB_Remove );// no matter what happens, the hull gets rid of itself.
-	SetNextThink( gpGlobals->time );
+	SetNextThink( 0 );
 
 	ALERT( at_console, "**Building node graph...\n" );
 
@@ -570,7 +570,7 @@ void CTestHull::ShowBadNode()
 	UTIL_ParticleEffect( GetAbsOrigin() + gpGlobals->v_right * 64, g_vecZero, 255, 25 );
 	UTIL_ParticleEffect( GetAbsOrigin() - gpGlobals->v_right * 64, g_vecZero, 255, 25 );
 
-	SetNextThink( gpGlobals->time + 0.1 );
+	SetNextThink( 0.1 );
 }
 
 //=========================================================

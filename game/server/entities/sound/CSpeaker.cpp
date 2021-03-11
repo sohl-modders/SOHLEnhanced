@@ -51,16 +51,16 @@ void CSpeaker::Spawn( void )
 	if( !m_preset && ( !HasMessage() || strlen( szSoundFile ) < 1 ) )
 	{
 		ALERT( at_error, "SPEAKER with no Level/Sentence! at: %f, %f, %f\n", GetAbsOrigin().x, GetAbsOrigin().y, GetAbsOrigin().z );
-		SetNextThink( gpGlobals->time + 0.1 );
+		SetNextThink( 0.1 );
 		SetThink( &CSpeaker::SUB_Remove );
 		return;
 	}
+	
 	SetSolidType( SOLID_NOT );
 	SetMoveType( MOVETYPE_NONE );
 
-
 	SetThink( &CSpeaker::SpeakerThink );
-	SetNextThink( 0.0 );
+	DontThink();
 
 	// allow on/off switching via 'use' function.
 
@@ -73,7 +73,7 @@ void CSpeaker::Precache( void )
 {
 	if( !GetSpawnFlags().Any( SPEAKER_START_SILENT ) )
 		// set first announcement time for random n second
-		SetNextThink( gpGlobals->time + RANDOM_FLOAT( 5.0, 15.0 ) );
+		SetNextThink( RANDOM_FLOAT( 5.0, 15.0 ) );
 }
 
 //
@@ -96,14 +96,14 @@ void CSpeaker::ToggleUse( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYP
 	if( useType == USE_ON )
 	{
 		// turn on announcements
-		SetNextThink( gpGlobals->time + 0.1 );
+		SetNextThink( 0.1 );
 		return;
 	}
 
 	if( useType == USE_OFF )
 	{
 		// turn off announcements
-		SetNextThink( 0.0 );
+		DontThink();
 		return;
 
 	}
@@ -114,12 +114,12 @@ void CSpeaker::ToggleUse( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYP
 	if( fActive )
 	{
 		// turn off announcements
-		SetNextThink( 0.0 );
+		DontThink();
 	}
 	else
 	{
 		// turn on announcements
-		SetNextThink( gpGlobals->time + 0.1 );
+		SetNextThink( 0.1 );
 	}
 }
 
@@ -135,7 +135,7 @@ void CSpeaker::SpeakerThink( void )
 	// Wait for the talkmonster to finish first.
 	if( gpGlobals->time <= CTalkMonster::g_talkWaitTime )
 	{
-		SetNextThink( CTalkMonster::g_talkWaitTime + RANDOM_FLOAT( 5, 10 ) );
+		AbsoluteNextThink( CTalkMonster::g_talkWaitTime + RANDOM_FLOAT( 5, 10 ) );
 		return;
 	}
 
@@ -169,7 +169,7 @@ void CSpeaker::SpeakerThink( void )
 							   flvolume, flattenuation, flags, pitch );
 
 		// shut off and reset
-		SetNextThink( 0.0 );
+		DontThink();
 	}
 	else
 	{
@@ -179,8 +179,7 @@ void CSpeaker::SpeakerThink( void )
 			ALERT( at_console, "Level Design Error!\nSPEAKER has bad sentence group name: %s\n", szSoundFile );
 
 		// set next announcement time for random 5 to 10 minute delay
-		SetNextThink( gpGlobals->time +
-			RANDOM_FLOAT( ANNOUNCE_MINUTES_MIN * 60.0, ANNOUNCE_MINUTES_MAX * 60.0 ) );
+		SetNextThink( RANDOM_FLOAT( ANNOUNCE_MINUTES_MIN * 60.0, ANNOUNCE_MINUTES_MAX * 60.0 ) );
 
 		CTalkMonster::g_talkWaitTime = gpGlobals->time + 5;		// time delay until it's ok to speak: used so that two NPCs don't talk at once
 	}

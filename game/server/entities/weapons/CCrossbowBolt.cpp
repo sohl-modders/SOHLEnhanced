@@ -52,7 +52,7 @@ void CCrossbowBolt::Spawn()
 
 	SetTouch( &CCrossbowBolt::BoltTouch );
 	SetThink( &CCrossbowBolt::BubbleThink );
-	SetNextThink( gpGlobals->time + 0.2 );
+	SetNextThink( 0.2 );
 }
 
 
@@ -118,7 +118,7 @@ void CCrossbowBolt::BoltTouch( CBaseEntity *pOther )
 		EMIT_SOUND_DYN( this, CHAN_BODY, "weapons/xbow_hit1.wav", RANDOM_FLOAT( 0.95, 1.0 ), ATTN_NORM, 0, 98 + RANDOM_LONG( 0, 7 ) );
 
 		SetThink( &CCrossbowBolt::SUB_Remove );
-		SetNextThink( gpGlobals->time );// this will get changed below if the bolt is allowed to stick in what it hit.
+		SetNextThink( 0 );// this will get changed below if the bolt is allowed to stick in what it hit.
 
 		if( pOther->ClassnameIs( "worldspawn" ) )
 		{
@@ -136,7 +136,7 @@ void CCrossbowBolt::BoltTouch( CBaseEntity *pOther )
 			Vector vecAVelocity = GetAngularVelocity();
 			vecAVelocity.z = 0;
 			SetAngularVelocity( vecAVelocity );
-			SetNextThink( gpGlobals->time + 10.0 );
+			SetNextThink( 10.0 );
 		}
 
 		if( UTIL_PointContents( GetAbsOrigin() ) != CONTENTS_WATER )
@@ -148,13 +148,13 @@ void CCrossbowBolt::BoltTouch( CBaseEntity *pOther )
 	if( g_pGameRules->IsMultiplayer() )
 	{
 		SetThink( &CCrossbowBolt::ExplodeThink );
-		SetNextThink( gpGlobals->time + 0.1 );
+		SetNextThink( 0.1 );
 	}
 }
 
 void CCrossbowBolt::BubbleThink()
 {
-	SetNextThink( gpGlobals->time + 0.1 );
+	SetNextThink( 0.1 );
 
 	if( GetWaterLevel() == WATERLEVEL_DRY )
 		return;

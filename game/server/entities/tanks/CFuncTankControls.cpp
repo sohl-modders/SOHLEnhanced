@@ -27,7 +27,7 @@ void CFuncTankControls::Spawn( void )
 	SetSize( GetRelMin(), GetRelMax() );
 	SetAbsOrigin( GetAbsOrigin() );
 
-	SetNextThink( gpGlobals->time + 0.3 );	// After all the func_tank's have spawned
+	SetNextThink( 0.3 );	// After all the func_tank's have spawned
 
 	CBaseEntity::Spawn();
 }

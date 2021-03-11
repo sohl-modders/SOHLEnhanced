@@ -74,12 +74,12 @@ void CTriggerRandom::Spawn()
 
 		if( ShouldStartOn() )
 		{
-			SetNextThink( gpGlobals->time + NextTimeDelay() );
+			SetNextThink( NextTimeDelay() );
 		}
 		else
 		{
 			//In case we're being spawned multiple times, cleans up think time if spawnflags changed.
-			SetNextThink( 0 );
+			DontThink();
 		}
 	}
 	else
@@ -119,10 +119,10 @@ void CTriggerRandom::ToggleUse( CBaseEntity* pActivator, CBaseEntity* pCaller, U
 
 	if( bToggle )
 	{
-		if( GetNextThink() != 0 )
-			SetNextThink( 0 );
+		if (GetNextThink() != 0)
+			DontThink();
 		else
-			SetNextThink( gpGlobals->time + NextTimeDelay() );
+			SetNextThink( NextTimeDelay() );
 	}
 }
 
@@ -131,7 +131,7 @@ void CTriggerRandom::RandomThink()
 	FireRandomTarget( this, IsUnique() );
 
 	if( !ShouldTriggerOnce() )
-		SetNextThink( gpGlobals->time + NextTimeDelay() );
+		SetNextThink( NextTimeDelay() );
 }
 
 size_t CTriggerRandom::SelectTarget( const bool bUnique ) const

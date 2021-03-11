@@ -52,7 +52,7 @@ void CXenTree::Spawn( void )
 
 	SetSize( Vector( -30, -30, 0 ), Vector( 30, 30, 188 ) );
 	SetActivity( ACT_IDLE );
-	SetNextThink( gpGlobals->time + 0.1 );
+	SetNextThink( 0.1 );
 	SetFrame( RANDOM_FLOAT( 0, 255 ) );
 	SetFrameRate( RANDOM_FLOAT( 0.7, 1.4 ) );
 
@@ -83,7 +83,7 @@ void CXenTree::Touch( CBaseEntity *pOther )
 void CXenTree::Think( void )
 {
 	float flInterval = StudioFrameAdvance();
-	SetNextThink( gpGlobals->time + 0.1 );
+	SetNextThink( 0.1 );
 	DispatchAnimEvents( flInterval );
 
 	switch( GetActivity() )

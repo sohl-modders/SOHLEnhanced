@@ -101,7 +101,7 @@ void CSpore::Spawn()
 
 	m_flIgniteTime = gpGlobals->time;
 
-	SetNextThink( gpGlobals->time + 0.01 );
+	SetNextThink( 0.01 );
 
 	m_pSprite = CSprite::SpriteCreate( "sprites/glow01.spr", GetAbsOrigin(), false );
 
@@ -205,7 +205,7 @@ void CSpore::IgniteThink()
 
 	SetThink( &CSpore::SUB_Remove );
 
-	SetNextThink( gpGlobals->time );
+	SetNextThink( 0 );
 }
 
 void CSpore::FlyThink()
@@ -229,7 +229,7 @@ void CSpore::FlyThink()
 		SetThink( &CSpore::IgniteThink );
 	}
 
-	SetNextThink( gpGlobals->time + 0.03 );
+	SetNextThink( 0.03 );
 }
 
 void CSpore::GibThink()

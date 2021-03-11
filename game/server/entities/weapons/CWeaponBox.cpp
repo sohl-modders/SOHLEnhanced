@@ -222,7 +222,7 @@ void CWeaponBox::Kill()
 		while( pWeapon )
 		{
 			pWeapon->SetThink( &CBasePlayerWeapon::SUB_Remove );
-			pWeapon->SetNextThink( gpGlobals->time + 0.1 );
+			pWeapon->SetNextThink( 0.1 );
 			pWeapon = pWeapon->m_pNext;
 		}
 	}

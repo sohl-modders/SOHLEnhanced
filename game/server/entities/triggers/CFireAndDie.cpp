@@ -14,7 +14,7 @@ void CFireAndDie::Spawn( void )
 void CFireAndDie::Precache( void )
 {
 	// This gets called on restore
-	SetNextThink( gpGlobals->time + m_flDelay );
+	SetNextThink( m_flDelay );
 }
 
 void CFireAndDie::Think( void )

@@ -137,7 +137,7 @@ void CBarnacleGrappleTip::Spawn()
 
 	SetGravity( 1.0 );
 
-	SetNextThink( gpGlobals->time + 0.02 );
+	SetNextThink( 0.02 );
 
 	m_bIsStuck = false;
 	m_bMissed = false;
@@ -170,7 +170,7 @@ void CBarnacleGrappleTip::FlyThink()
 		}
 	}
 
-	SetNextThink( gpGlobals->time + 0.02 );
+	SetNextThink( 0.02 );
 }
 
 void CBarnacleGrappleTip::OffsetThink()
@@ -217,7 +217,7 @@ void CBarnacleGrappleTip::TongueTouch( CBaseEntity* pOther )
 	m_GrappleType = targetClass;
 
 	SetThink( &CBarnacleGrappleTip::OffsetThink );
-	SetNextThink( gpGlobals->time + 0.02 );
+	SetNextThink( 0.02 );
 
 	SetTouch( nullptr );
 }

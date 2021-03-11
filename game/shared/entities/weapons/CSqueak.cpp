@@ -77,7 +77,7 @@ void CSqueak::Holster()
 	{
 		m_pPlayer->GetWeapons().ClearFlags( 1 << m_iId );
 		SetThink( &CSqueak::DestroyItem );
-		SetNextThink( gpGlobals->time + 0.1 );
+		SetNextThink( 0.1 );
 		return;
 	}
 	

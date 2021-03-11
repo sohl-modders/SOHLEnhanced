@@ -75,7 +75,7 @@ void CSqueakGrenade::Spawn( void )
 
 	SetTouch( &CSqueakGrenade::SuperBounceTouch );
 	SetThink( &CSqueakGrenade::HuntThink );
-	SetNextThink( gpGlobals->time + 0.1 );
+	SetNextThink( 0.1 );
 	m_flNextHunt = gpGlobals->time + 1E6;
 
 	GetFlags() |= FL_MONSTER;
@@ -117,7 +117,7 @@ void CSqueakGrenade::Killed( const CTakeDamageInfo& info, GibAction gibAction )
 	SetModelName( iStringNull );// make invisible
 	SetThink( &CSqueakGrenade::SUB_Remove );
 	SetTouch( NULL );
-	SetNextThink( gpGlobals->time + 0.1 );
+	SetNextThink( 0.1 );
 
 	// since squeak grenades never leave a body behind, clear out their takedamage now.
 	// Squeaks do a bit of radius damage when they pop, and that radius damage will
@@ -162,7 +162,7 @@ void CSqueakGrenade::HuntThink( void )
 	}
 
 	StudioFrameAdvance();
-	SetNextThink( gpGlobals->time + 0.1 );
+	SetNextThink( 0.1 );
 
 	// explode when ready
 	if( gpGlobals->time >= m_flDie )

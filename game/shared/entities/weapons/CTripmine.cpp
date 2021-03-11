@@ -77,7 +77,7 @@ void CTripmine::Holster()
 		// out of mines
 		m_pPlayer->GetWeapons().ClearFlags( 1 << m_iId );
 		SetThink( &CTripmine::DestroyItem );
-		SetNextThink( gpGlobals->time + 0.1 );
+		SetNextThink( 0.1 );
 	}
 
 	SendWeaponAnim( TRIPMINE_HOLSTER );

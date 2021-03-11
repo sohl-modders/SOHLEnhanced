@@ -146,7 +146,7 @@ void CBasePlayer::PackDeadPlayerItems()
 	pWeaponBox->SetAbsAngles( vecAngles );
 
 	pWeaponBox->SetThink( &CWeaponBox::Kill );
-	pWeaponBox->SetNextThink( gpGlobals->time + 120 );
+	pWeaponBox->SetNextThink( 120 );
 
 	// back these two lists up to their first elements
 	iPA = 0;

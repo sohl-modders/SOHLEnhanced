@@ -16,7 +16,7 @@
 #define GAME_SERVER_CINFOGROUP_H
 
 #define SF_GROUP_DEBUG 2
-#define MAX_MULTI_TARGETS	32
+#define MAX_MULTI_TARGETS_IT	32
 
 class CInfoGroup : public CPointEntity
 {
@@ -29,8 +29,8 @@ public:
 	int GetMember(const char* szMemberName);
 
 	int		m_cMembers;
-	int		m_iszMemberName[MAX_MULTI_TARGETS];
-	int		m_iszMemberValue[MAX_MULTI_TARGETS];
+	int		m_iszMemberName[MAX_MULTI_TARGETS_IT];
+	int		m_iszMemberValue[MAX_MULTI_TARGETS_IT];
 	int		m_iszDefaultMember;
 };
 

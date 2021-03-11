@@ -79,7 +79,7 @@ void CCrowbar::PrimaryAttack()
 	{
 #ifndef CLIENT_DLL
 		SetThink( &CCrowbar::SwingAgain );
-		SetNextThink( gpGlobals->time + 0.1 );
+		SetNextThink( 0.1 );
 #endif
 	}
 }
@@ -243,7 +243,7 @@ bool CCrowbar::Swing( const bool bFirst )
 		m_pPlayer->m_iWeaponVolume = flVol * MELEE_WALLHIT_VOLUME;
 
 		SetThink( &CCrowbar::Smack );
-		SetNextThink( UTIL_WeaponTimeBase() + 0.2 );
+		SetNextThink( 0.2 );
 #endif
 		m_flNextPrimaryAttack = GetNextAttackDelay(0.25);
 	}

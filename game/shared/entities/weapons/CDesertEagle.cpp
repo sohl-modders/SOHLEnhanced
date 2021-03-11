@@ -192,7 +192,7 @@ void CDesertEagle::PrimaryAttack()
 	{
 		m_pLaser->GetEffects() |= EF_NODRAW;
 		m_pLaser->SetThink( &CDesertEagleLaser::Revive );
-		m_pLaser->SetNextThink( gpGlobals->time + 0.6 );
+		m_pLaser->SetNextThink( 0.6 );
 	}
 #endif
 
@@ -271,7 +271,7 @@ void CDesertEagle::Reload()
 		{
 			m_pLaser->GetEffects() |= EF_NODRAW;
 			m_pLaser->SetThink( &CDesertEagleLaser::Revive );
-			m_pLaser->SetNextThink( gpGlobals->time + 1.6 );
+			m_pLaser->SetNextThink( 1.6 );
 
 			m_flNextSecondaryAttack = UTIL_WeaponTimeBase() + 1.5;
 		}

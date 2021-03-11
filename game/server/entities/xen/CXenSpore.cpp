@@ -54,7 +54,7 @@ void CXenSpore::Spawn( void )
 	SetFrame( RANDOM_FLOAT( 0, 255 ) );
 	SetFrameRate( RANDOM_FLOAT( 0.7, 1.4 ) );
 	ResetSequenceInfo();
-	SetNextThink( gpGlobals->time + RANDOM_FLOAT( 0.1, 0.4 ) );	// Load balance these a bit
+	SetNextThink( RANDOM_FLOAT( 0.1, 0.4 ) );	// Load balance these a bit
 }
 
 void CXenSpore::Precache( void )
@@ -69,7 +69,7 @@ void CXenSpore::Touch( CBaseEntity *pOther )
 void CXenSpore::Think( void )
 {
 	/*float flInterval = */StudioFrameAdvance();
-	SetNextThink( gpGlobals->time + 0.1 );
+	SetNextThink( 0.1 );
 
 #if 0
 	DispatchAnimEvents( flInterval );

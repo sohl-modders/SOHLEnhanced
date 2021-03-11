@@ -67,7 +67,7 @@ void CTripmineGrenade::Spawn()
 	}
 
 	SetThink( &CTripmineGrenade::PowerupThink );
-	SetNextThink( gpGlobals->time + 0.2 );
+	SetNextThink( 0.2 );
 
 	SetTakeDamageMode( DAMAGE_YES );
 	SetDamage( gSkillData.GetPlrDmgTripmine() );
@@ -111,7 +111,7 @@ void CTripmineGrenade::WarningThink()
 
 	// set to power up
 	SetThink( &CTripmineGrenade::PowerupThink );
-	SetNextThink( gpGlobals->time + 1.0 );
+	SetNextThink( 1.0 );
 }
 
 
@@ -129,7 +129,7 @@ void CTripmineGrenade::PowerupThink()
 		{
 			SetOwner( oldowner );
 			m_flPowerUp += 0.1;
-			SetNextThink( gpGlobals->time + 0.1 );
+			SetNextThink( 0.1 );
 			return;
 		}
 		if( tr.flFraction < 1.0 )
@@ -144,7 +144,7 @@ void CTripmineGrenade::PowerupThink()
 			STOP_SOUND( this, CHAN_VOICE, "weapons/mine_deploy.wav" );
 			STOP_SOUND( this, CHAN_BODY, "weapons/mine_charge.wav" );
 			SetThink( &CTripmineGrenade::SUB_Remove );
-			SetNextThink( gpGlobals->time + 0.1 );
+			SetNextThink( 0.1 );
 			ALERT( at_console, "WARNING:Tripmine at %.0f, %.0f, %.0f removed\n", GetAbsOrigin().x, GetAbsOrigin().y, GetAbsOrigin().z );
 			KillBeam();
 			return;
@@ -160,7 +160,7 @@ void CTripmineGrenade::PowerupThink()
 
 		SetThink( &CTripmineGrenade::SUB_Remove );
 		KillBeam();
-		SetNextThink( gpGlobals->time + 0.1 );
+		SetNextThink( 0.1 );
 		return;
 	}
 	// ALERT( at_console, "%d %.0f %.0f %0.f\n", GetOwner(), m_pOwner->GetAbsOrigin().x, m_pOwner->GetAbsOrigin().y, m_pOwner->GetAbsOrigin().z );
@@ -176,7 +176,7 @@ void CTripmineGrenade::PowerupThink()
 		// play enabled sound
 		EMIT_SOUND_DYN( this, CHAN_VOICE, "weapons/mine_activate.wav", 0.5, ATTN_NORM, 1.0, 75 );
 	}
-	SetNextThink( gpGlobals->time + 0.1 );
+	SetNextThink( 0.1 );
 }
 
 
@@ -202,7 +202,7 @@ void CTripmineGrenade::MakeBeam()
 
 	// set to follow laser spot
 	SetThink( &CTripmineGrenade::BeamBreakThink );
-	SetNextThink( gpGlobals->time + 0.1 );
+	SetNextThink( 0.1 );
 
 	Vector vecTmpEnd = GetAbsOrigin() + m_vecDir * 2048 * m_flBeamLength;
 
@@ -260,7 +260,7 @@ void CTripmineGrenade::BeamBreakThink()
 		return;
 	}
 
-	SetNextThink( gpGlobals->time + 0.1 );
+	SetNextThink( 0.1 );
 }
 
 void CTripmineGrenade::OnTakeDamage( const CTakeDamageInfo& info )
@@ -270,7 +270,7 @@ void CTripmineGrenade::OnTakeDamage( const CTakeDamageInfo& info )
 		// disable
 		// Create( "weapon_tripmine", GetAbsOrigin() + m_vecDir * 24, GetAbsAngles() );
 		SetThink( &CTripmineGrenade::SUB_Remove );
-		SetNextThink( gpGlobals->time + 0.1 );
+		SetNextThink( 0.1 );
 		KillBeam();
 		return;
 	}
@@ -288,7 +288,7 @@ void CTripmineGrenade::Killed( const CTakeDamageInfo& info, GibAction gibAction 
 	}
 
 	SetThink( &CTripmineGrenade::DelayDeathThink );
-	SetNextThink( gpGlobals->time + RANDOM_FLOAT( 0.1, 0.3 ) );
+	SetNextThink( RANDOM_FLOAT( 0.1, 0.3 ) );
 
 	EMIT_SOUND( this, CHAN_BODY, "common/null.wav", 0.5, ATTN_NORM ); // shut off chargeup
 }

@@ -60,7 +60,7 @@ void CRopeSegment::Spawn()
 
 	SetSize( Vector( -30, -30, -30 ), Vector( 30, 30, 30 ) );
 
-	SetNextThink( gpGlobals->time + 0.5 );
+	SetNextThink( 0.5 );
 }
 
 void CRopeSegment::Think()

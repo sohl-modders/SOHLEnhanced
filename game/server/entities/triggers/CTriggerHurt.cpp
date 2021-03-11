@@ -35,7 +35,7 @@ void CTriggerHurt::Spawn( void )
 	if( m_bitsDamageInflict & DMG_RADIATION )
 	{
 		SetThink( &CTriggerHurt::RadiationThink );
-		SetNextThink( gpGlobals->time + RANDOM_FLOAT( 0.0, 0.5 ) );
+		SetNextThink( RANDOM_FLOAT( 0.0, 0.5 ) );
 	}
 
 	if( GetSpawnFlags().Any( SF_TRIGGER_HURT_START_OFF ) )// if flagged to Start Turned Off, make trigger nonsolid.
@@ -95,7 +95,7 @@ void CTriggerHurt::RadiationThink( void )
 			pPlayer->m_flgeigerRange = flRange;
 	}
 
-	SetNextThink( gpGlobals->time + 0.25 );
+	SetNextThink( 0.25 );
 }
 
 // When touched, a hurt trigger does DMG points of damage each half-second

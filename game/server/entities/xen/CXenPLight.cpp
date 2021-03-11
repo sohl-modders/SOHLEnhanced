@@ -35,7 +35,7 @@ void CXenPLight::Spawn( void )
 
 	SetSize( Vector( -80, -80, 0 ), Vector( 80, 80, 32 ) );
 	SetActivity( ACT_IDLE );
-	SetNextThink( gpGlobals->time + 0.1 );
+	SetNextThink( 0.1 );
 	SetFrame( RANDOM_FLOAT( 0, 255 ) );
 
 	m_pGlow = CSprite::SpriteCreate( XEN_PLANT_GLOW_SPRITE, GetAbsOrigin() + Vector( 0, 0, ( GetRelMin().z + GetRelMax().z )*0.5 ), false );
@@ -64,7 +64,7 @@ void CXenPLight::Touch( CBaseEntity *pOther )
 void CXenPLight::Think( void )
 {
 	StudioFrameAdvance();
-	SetNextThink( gpGlobals->time + 0.1 );
+	SetNextThink( 0.1 );
 
 	switch( GetActivity() )
 	{

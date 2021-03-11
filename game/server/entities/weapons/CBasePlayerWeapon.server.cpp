@@ -79,7 +79,7 @@ void CBasePlayerWeapon::DefaultTouch( CBaseEntity *pOther )
 //=========================================================
 void CBasePlayerWeapon::FallThink( void )
 {
-	SetNextThink( gpGlobals->time + 0.1 );
+	SetNextThink( 0.1 );
 
 	if( GetFlags().Any( FL_ONGROUND ) )
 	{
@@ -136,7 +136,7 @@ void CBasePlayerWeapon::AttemptToMaterialize( void )
 		return;
 	}
 
-	SetNextThink( gpGlobals->time + time );
+	SetNextThink( time );
 }
 
 //=========================================================
@@ -159,7 +159,7 @@ CBaseEntity* CBasePlayerWeapon::Respawn( void )
 
 		// not a typo! We want to know when the weapon the player just picked up should respawn! This new entity we created is the replacement,
 		// but when it should respawn is based on conditions belonging to the weapon that was taken.
-		pNewWeapon->SetNextThink( g_pGameRules->FlWeaponRespawnTime( this ) );
+		pNewWeapon->AbsoluteNextThink( g_pGameRules->FlWeaponRespawnTime( this ) );
 	}
 	else
 	{
@@ -183,7 +183,7 @@ void CBasePlayerWeapon::FallInit( void )
 	SetTouch( &CBasePlayerWeapon::DefaultTouch );
 	SetThink( &CBasePlayerWeapon::FallThink );
 
-	SetNextThink( gpGlobals->time + 0.1 );
+	SetNextThink( 0.1 );
 }
 
 //=========================================================
@@ -324,14 +324,14 @@ void CBasePlayerWeapon::Drop( void )
 {
 	SetTouch( NULL );
 	SetThink( &CBasePlayerWeapon::SUB_Remove );
-	SetNextThink( gpGlobals->time + .1 );
+	SetNextThink( 0.1 );
 }
 
 void CBasePlayerWeapon::Kill( void )
 {
 	SetTouch( NULL );
 	SetThink( &CBasePlayerWeapon::SUB_Remove );
-	SetNextThink( gpGlobals->time + .1 );
+	SetNextThink( 0.1 );
 }
 
 void CBasePlayerWeapon::AttachToPlayer( CBasePlayer *pPlayer )
@@ -343,7 +343,7 @@ void CBasePlayerWeapon::AttachToPlayer( CBasePlayer *pPlayer )
 	SetModelIndex( 0 );// server won't send down to clients if modelindex == 0
 	SetModelName( iStringNull );
 	SetOwner( pPlayer );
-	SetNextThink( gpGlobals->time + .1 );
+	SetNextThink( 0.1 );
 	SetTouch( NULL );
 }
 
@@ -503,4 +503,11 @@ float CBasePlayerWeapon::GetNextAttackDelay( float delay )
 	// 	V_sprintf_safe( szMsg, "next attack time: %0.4f\n", gpGlobals->time + flNextAttack );
 	// 	OutputDebugString( szMsg );
 	return flNextAttack;
+}
+
+//LRC
+void CBasePlayerWeapon::SetNextThink(float delay)
+{
+	m_fNextThink = UTIL_WeaponTimeBase() + delay;
+	pev->nextthink = m_fNextThink;
 }

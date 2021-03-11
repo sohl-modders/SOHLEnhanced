@@ -61,7 +61,7 @@ void CPlatTrigger::Touch( CBaseEntity *pOther )
 	if( pPlatform->m_toggle_state == TS_AT_BOTTOM )
 		pPlatform->GoUp();
 	else if( pPlatform->m_toggle_state == TS_AT_TOP )
-		pPlatform->SetNextThink( pPlatform->GetLastThink() + 1 );// delay going down
+		pPlatform->SetNextThink( 1 );// delay going down
 }
 
 void CPlatTrigger::PlatSpawnInsideTrigger( CFuncPlat* pPlatform )

@@ -79,7 +79,7 @@ void CHandGrenade::Holster()
 		//TODO: should do this through a CBasePlayer method - Solokiller
 		m_pPlayer->GetWeapons().ClearFlags( 1 << m_iId );
 		SetThink( &CHandGrenade::DestroyItem );
-		SetNextThink( gpGlobals->time + 0.1 );
+		SetNextThink( 0.1 );
 	}
 
 	EMIT_SOUND( m_pPlayer, CHAN_WEAPON, "common/null.wav", 1.0, ATTN_NORM);

@@ -1736,21 +1736,16 @@ public:
 	{
 		return pev->owner ? Instance(pev->owner) : nullptr;
 	}
-
+	
 	/**
 	*	Sets this entity's owner.
 	*	@param pOwner Owner to set. Can be null.
 	*/
-	void SetOwner(edict_t* pOwner)
-	{
-		pev->owner = pOwner;
-	}
-	
 	void SetOwner(CBaseEntity* pOwner)
 	{
-		SetOwner(pOwner ? pOwner->edict() : nullptr);
+		pev->owner = pOwner ? pOwner->edict() : nullptr;
 	}
-
+	
 	/**
 	*	@return The entity that this entity is standing on, if any.
 	*/

@@ -12,7 +12,7 @@ void CTriggerMonsterJump::Spawn( void )
 
 	InitTrigger();
 
-	SetNextThink( 0 );
+	DontThink();
 	SetSpeed( 200 );
 	m_flHeight = 150;
 
@@ -52,5 +52,5 @@ void CTriggerMonsterJump::Touch( CBaseEntity *pOther )
 	Vector vecVelocity = GetMoveDir() * GetSpeed();
 	vecVelocity.z += m_flHeight;
 	pOther->SetAbsVelocity( vecVelocity );
-	SetNextThink( gpGlobals->time );
+	SetNextThink( 0 );
 }

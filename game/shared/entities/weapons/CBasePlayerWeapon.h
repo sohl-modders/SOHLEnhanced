@@ -240,6 +240,8 @@ public:
 	int PrimaryAmmoIndex() const;
 	int SecondaryAmmoIndex() const;
 
+	void SetNextThink(float delay);
+
 	/**
 	*	@return 0 to MAX_ITEMS_SLOTS, used in hud.
 	*/

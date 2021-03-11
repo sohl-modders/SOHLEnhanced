@@ -153,3 +153,10 @@ void CBasePlayerWeapon::Kill( void )
 void CBasePlayerWeapon::AttachToPlayer( CBasePlayer* pPlayer )
 {
 }
+
+//LRC
+void CBasePlayerWeapon::SetNextThink(float delay)
+{
+	m_fNextThink = UTIL_WeaponTimeBase() + delay;
+	pev->nextthink = m_fNextThink;
+}

@@ -157,7 +157,7 @@ void CTriggerCamera::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYP
 
 	// follow the player down
 	SetThink( &CTriggerCamera::FollowTarget );
-	SetNextThink( gpGlobals->time );
+	SetNextThink(0 );
 
 	m_moveDistance = 0;
 	Move();
@@ -222,7 +222,7 @@ void CTriggerCamera::FollowTarget()
 			SetAbsVelocity( g_vecZero );
 	}
 
-	SetNextThink( gpGlobals->time );
+	SetNextThink( 0 );
 
 	Move();
 }

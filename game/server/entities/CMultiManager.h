@@ -21,10 +21,10 @@
 // FLAG:		THREAD (create clones when triggered)
 // FLAG:		CLONE (this is a clone for a threaded execution)
 
-#define MAX_MULTI_TARGETS	16 // maximum number of targets a single multi_manager entity may be assigned.
-
 #define SF_MULTIMAN_CLONE		0x80000000
 #define SF_MULTIMAN_THREAD		0x00000001
+
+#define MAX_MULTI_TARGETS	16 // maximum number of targets a single multi_manager entity may be assigned.
 
 class CMultiManager : public CBaseToggle
 {
