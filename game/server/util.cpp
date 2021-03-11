@@ -601,18 +601,6 @@ void ClientPrint( CBaseEntity* pClient, int msg_dest, const char *msg_name, cons
 	MESSAGE_END();
 }
 
-char* UTIL_dtos(const int iValue)
-{
-	//This buffer size calculation determines the number of characters needed for an int, plus a null terminator.
-	//See http://stackoverflow.com/questions/3919995/determining-sprintf-buffer-size-whats-the-standard/3920025#3920025
-	//The old buffer size used by the SDK functions was 8.
-	static char szBuffers[NUM_STATIC_BUFFERS][(((sizeof(int) * CHAR_BIT) / 3) + 3) + 1];
-	static size_t uiBufferIndex = 0;
-	uiBufferIndex = (uiBufferIndex + 1) % NUM_STATIC_BUFFERS;
-	snprintf(szBuffers[uiBufferIndex], sizeof(szBuffers[uiBufferIndex]), "%d", iValue);
-	return szBuffers[uiBufferIndex];
-}
-
 void UTIL_SayText( const char *pText, CBaseEntity *pEntity )
 {
 	if ( !pEntity->IsNetClient() )
@@ -1781,10 +1769,10 @@ void UTIL_SetAvelocity(CBaseEntity* pEnt, const Vector vecSet)
 
 void UTIL_SetAngles(CBaseEntity* pEntity, const Vector vecAngles)
 {
-	UTIL_SetAngles(pEntity, vecAngles, TRUE);
+	UTIL_SetAngles(pEntity, vecAngles, true);
 }
 
-void UTIL_SetAngles(CBaseEntity* pEntity, const Vector vecAngles, BOOL bInitiator)
+void UTIL_SetAngles(CBaseEntity* pEntity, const Vector vecAngles, bool bInitiator)
 {
 	Vector vecDiff = vecAngles - pEntity->pev->angles;
 	if (vecDiff.Length() > 0.01 && CVAR_GET_FLOAT("sohl_mwdebug"))
@@ -2216,33 +2204,6 @@ void UTIL_MuzzleLight(Vector vecSrc, float flRadius, byte r, byte g, byte b, flo
 		WRITE_BYTE(flTime * 10.0f);	// time * 10
 		WRITE_BYTE(flDecay * 0.1f);	// decay * 0.1
 	MESSAGE_END();
-}
-
-//=========================================================
-// UTIL_StripToken - for redundant keynames
-//=========================================================
-void UTIL_StripToken(const char* pKey, char* pDest)
-{
-	int i = 0;
-
-	while (pKey[i] && pKey[i] != '#')
-	{
-		pDest[i] = pKey[i];
-		i++;
-	}
-	pDest[i] = 0;
-}
-
-//=========================================================
-// UTIL_DotPoints - returns the dot product of a line from
-// src to check and vecdir.
-//=========================================================
-float UTIL_DotPoints(const Vector& vecSrc, const Vector& vecCheck, const Vector& vecDir)
-{
-	Vector2D vec2LOS = (vecCheck - vecSrc).Make2D();
-	vec2LOS = vec2LOS.Normalize();
-
-	return DotProduct(vec2LOS, (vecDir.Make2D()));
 }
 
 //LRC - randomized vectors of the form "0 0 0 .. 1 0 0"

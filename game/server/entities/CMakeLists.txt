@@ -38,6 +38,10 @@ add_sources(
 	CFuncMortarField.cpp
 	CGrenade.h
 	CGrenade.cpp
+	CInfoAlias.h
+	CInfoAlias.cpp
+	CInfoGroup.h
+	CInfoGroup.cpp
 	CInfoIntermission.h
 	CInfoIntermission.cpp
 	CLaserSpot.h

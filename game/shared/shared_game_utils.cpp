@@ -276,14 +276,11 @@ char* UTIL_dtos( const int iValue )
 	//This buffer size calculation determines the number of characters needed for an int, plus a null terminator.
 	//See http://stackoverflow.com/questions/3919995/determining-sprintf-buffer-size-whats-the-standard/3920025#3920025
 	//The old buffer size used by the SDK functions was 8.
-	static char szBuffers[ NUM_STATIC_BUFFERS ][ ( ( ( sizeof( int ) * CHAR_BIT ) / 3 ) + 3 ) + 1 ];
+	static char szBuffers[NUM_STATIC_BUFFERS][(((sizeof(int) * CHAR_BIT) / 3) + 3) + 1];
 	static size_t uiBufferIndex = 0;
-
-	uiBufferIndex = ( uiBufferIndex + 1 ) % NUM_STATIC_BUFFERS;
-
-	snprintf( szBuffers[ uiBufferIndex ], sizeof( szBuffers[ uiBufferIndex ] ), "%d", iValue );
-
-	return szBuffers[ uiBufferIndex ];
+	uiBufferIndex = (uiBufferIndex + 1) % NUM_STATIC_BUFFERS;
+	snprintf(szBuffers[uiBufferIndex], sizeof(szBuffers[uiBufferIndex]), "%d", iValue);
+	return szBuffers[uiBufferIndex];
 }
 
 //=========================================================

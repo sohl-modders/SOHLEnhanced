@@ -27,8 +27,8 @@
 
 BEGIN_DATADESC(CInfoGroup)
 	DEFINE_FIELD(m_cMembers, FIELD_INTEGER),
-	DEFINE_ARRAY(m_iszMemberName, FIELD_STRING,MAX_MULTI_TARGETS),
-	DEFINE_ARRAY(m_iszMemberValue, FIELD_STRING,MAX_MULTI_TARGETS),
+	DEFINE_ARRAY(m_iszMemberName, FIELD_STRING, MAX_MULTI_TARGETS_IT),
+	DEFINE_ARRAY(m_iszMemberValue, FIELD_STRING, MAX_MULTI_TARGETS_IT),
 	DEFINE_FIELD(m_iszDefaultMember, FIELD_STRING),
 END_DATADESC()
 
@@ -42,7 +42,7 @@ void CInfoGroup::KeyValue(KeyValueData* pkvd)
 		pkvd->fHandled = true;
 	}
 	// this assumes that additional fields are targetnames and their values are delay values.
-	else if (m_cMembers < MAX_MULTI_TARGETS)
+	else if (m_cMembers < MAX_MULTI_TARGETS_IT)
 	{
 		char tmp[128];
 		UTIL_StripToken(pkvd->szKeyName, tmp);
@@ -54,7 +54,7 @@ void CInfoGroup::KeyValue(KeyValueData* pkvd)
 	else
 	{
 		ALERT(at_error, "Too many members for info_group %s (limit is %d)\n",
-			GetTargetname(), MAX_MULTI_TARGETS);
+			GetTargetname(), MAX_MULTI_TARGETS_IT);
 	}
 }
 

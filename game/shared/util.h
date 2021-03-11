@@ -439,11 +439,8 @@ CBaseEntity* UTIL_FollowGroupReference(CBaseEntity* pStartEntity, char* szGroupN
 CBaseEntity* UTIL_FollowAliasReference(CBaseEntity* pStartEntity, const char* szValue);
 
 void UTIL_MuzzleLight(Vector vecSrc, float flRadius, byte r, byte g, byte b, float flTime, float flDecay);
-void UTIL_StripToken(const char* pKey, char* pDest);
-float UTIL_DotPoints(const Vector& vecSrc, const Vector& vecCheck, const Vector& vecDir);
 void UTIL_StringToVector(float* pVector, const char* pString);
 void UTIL_StringToRandomVector(float* pVector, const char* pString);
-char* UTIL_dtos(const int iValue);
 void UTIL_SetEdictOrigin(edict_t* pEdict, const Vector& vecOrigin);
 Vector UTIL_AxisRotationToVec(const Vector& vecAxis, float flDegs);
 
