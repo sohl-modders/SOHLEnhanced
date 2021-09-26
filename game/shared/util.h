@@ -433,7 +433,6 @@ void UTIL_MergePos(CBaseEntity* pEnt, const int loopbreaker = 100);
 void CheckDesiredList();
 void CheckAssistList();
 
-void UTIL_AddToAliasList(CBaseAlias* pAlias);
 CBaseEntity* UTIL_FollowReference(CBaseEntity* pStartEntity, const char* szName);
 CBaseEntity* UTIL_FollowGroupReference(CBaseEntity* pStartEntity, char* szGroupName, char* szMemberName);
 CBaseEntity* UTIL_FollowAliasReference(CBaseEntity* pStartEntity, const char* szValue);
@@ -443,5 +442,7 @@ void UTIL_StringToVector(float* pVector, const char* pString);
 void UTIL_StringToRandomVector(float* pVector, const char* pString);
 void UTIL_SetEdictOrigin(edict_t* pEdict, const Vector& vecOrigin);
 Vector UTIL_AxisRotationToVec(const Vector& vecAxis, float flDegs);
+void UTIL_AddToAliasList(CBaseAlias* pAlias);
+void UTIL_FlushAliases();
 
 #endif //GAME_SHARED_UTIL_H

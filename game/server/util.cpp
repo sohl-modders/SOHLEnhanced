@@ -2004,6 +2004,32 @@ bool NeedUpdate(CBaseEntity* pEnt)
 	return false;
 }
 
+//LRC - things get messed up if aliases change in the middle of an entity traversal.
+// so instead, they record what changes should be made, and wait until this function gets
+// called.
+void UTIL_FlushAliases()
+{
+	//	ALERT(at_console, "Flushing alias list\n");
+	CWorld* g_pWorld = CWorld::GetInstance();
+	if (!g_pWorld)
+	{
+		ALERT(at_console, "FlushAliases has no AliasList!\n");
+		return;
+	}
+
+	while (g_pWorld->m_pFirstAlias)
+	{
+		if (g_pWorld->m_pFirstAlias->m_iLFlags & LF_ALIASLIST)
+		{
+			//			ALERT(at_console, "call FlushChanges for %s \"%s\"\n", STRING(g_pWorld->m_pFirstAlias->pev->classname), STRING(g_pWorld->m_pFirstAlias->pev->targetname));
+			g_pWorld->m_pFirstAlias->FlushChanges();
+			g_pWorld->m_pFirstAlias->m_iLFlags &= ~LF_ALIASLIST;
+		}
+		
+		g_pWorld->m_pFirstAlias = g_pWorld->m_pFirstAlias->m_pNextAlias;
+	}
+}
+
 void UTIL_AddToAliasList(CBaseAlias* pAlias)
 {
 	CWorld * g_pWorld = CWorld::GetInstance();
@@ -2306,4 +2332,19 @@ Vector UTIL_AxisRotationToVec(const Vector& vecAxis, float flDegs)
 	rgflVecOut[1] = vecAxis.y * v + vecAxis.z * s;
 	rgflVecOut[2] = vecAxis.z * v - vecAxis.y * s;
 	return Vector(rgflVecOut[0], rgflVecOut[1], rgflVecOut[2]);
+}
+
+char* GetStringForUseType(USE_TYPE useType)
+{
+	switch (useType)
+	{
+	case USE_ON: return "USE_ON";
+	case USE_OFF: return "USE_OFF";
+	case USE_SET: return "USE_SET";
+	case USE_KILL: return "USE_KILL";
+	case USE_TOGGLE: return "USE_TOGGLE";
+	case USE_SAME: return "USE_SAME";
+	case USE_NOT: return "USE_NOT";
+	default: return "USE_UNKNOWN!?";
+	}
 }

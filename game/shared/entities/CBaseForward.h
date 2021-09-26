@@ -116,7 +116,10 @@ enum USE_TYPE
 	USE_OFF		= 0,
 	USE_ON		= 1,
 	USE_SET		= 2,
-	USE_TOGGLE	= 3
+	USE_TOGGLE	= 3,
+	USE_KILL	= 4,
+	USE_SAME	= 5,
+	USE_NOT		= 6
 };
 
 enum STATE

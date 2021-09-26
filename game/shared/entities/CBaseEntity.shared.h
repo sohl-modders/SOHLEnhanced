@@ -57,6 +57,8 @@ CBaseEntity
 
 using CEntBitSet = CBitSet<int>;
 
+char* GetStringForUseType(USE_TYPE useType);
+
 //
 // Base Entity.  All entity types derive from this
 //

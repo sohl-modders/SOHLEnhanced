@@ -334,9 +334,9 @@ void DispatchSave( edict_t *pent, SAVERESTOREDATA *pSaveData )
 		if( pEntity->GetMoveType() == MOVETYPE_PUSH )
 		{
 			float delta = pEntity->GetNextThink() - pEntity->GetLastThink();
-			pEntity->SetLastThink(pEntity->GetLastThink() + delta);
-			pEntity->SetNextThink(delta);
-			pEntity->m_fPevNextThink = pEntity->GetLastThink();
+			pEntity->pev->ltime += delta;
+			pEntity->pev->nextthink += delta;
+			pEntity->m_fPevNextThink = pEntity->pev->nextthink;
 			pEntity->m_fNextThink += delta;
 		}
 
